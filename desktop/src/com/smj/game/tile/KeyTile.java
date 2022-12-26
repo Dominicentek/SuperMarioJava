@@ -1,0 +1,27 @@
+package com.smj.game.tile;
+
+import com.smj.game.Game;
+import com.smj.game.GameLevel;
+import com.smj.game.entity.EntityType;
+import com.smj.game.entity.GameEntity;
+import com.smj.util.AudioPlayer;
+
+import java.awt.Point;
+import java.util.ArrayList;
+
+public class KeyTile extends GameTile {
+    public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
+        if (entity.entityType != EntityType.PLAYER) return;
+        level.setTileAt(Tiles.AIR, x, y);
+        ArrayList<Point> starLocations = new ArrayList<>();
+        for (int X = 0; X < level.getLevelBoundaries().width; X++) {
+            for (int Y = 0; Y < level.getLevelBoundaries().height; Y++) {
+                if (level.getTileAt(X, Y) == Tiles.LOCKED_STAR) starLocations.add(new Point(X, Y));
+            }
+        }
+        AudioPlayer.ALL_KEY_COINS.play();
+        for (Point point : starLocations) {
+            level.setTileAt(Tiles.STAR, point.x, point.y);
+        }
+    }
+}

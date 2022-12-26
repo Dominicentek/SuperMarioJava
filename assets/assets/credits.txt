@@ -1,0 +1,35 @@
+Programming
+DOMINICENTEK
+
+Engine used
+libGDX by BADLOGIC GAMES
+
+Level Design
+DOMINICENTEK
+
+Game Design
+DOMINICENTEK
+
+Graphics and Sounds
+SUPER MARIO MAKER 1 & 2
+SUPER MARIO BROS.
+SUPER MARIO BROS. 2
+SUPER MARIO BROS. 3
+
+Music
+Ground - Super Mario Bros. (Ground)
+Underground - Super Mario Bros. (Underground)
+Desert - Super Mario Maker 2 (SMB Desert)
+Snow - Super Mario Maker 2 (SMB Snow)
+Underwater - Super Mario Bros. (Underwater)
+Forest - Super Mario Maker 1 (SMB Ghost House)
+Sky - Super Mario Maker 2 (SMB Sky)
+Lava - Super Mario Maker 2 (SMB Forest)
+Bonus - Super Mario Maker 1 (SMB Bonus Room)
+Enemy - Super Mario Bros. 3 (Hammer Bros)
+Castle - Super Mario Bros. (Castle)
+Superstar - Super Mario Bros. (Superstar)
+Ending - Super Mario Bros. (Ending)
+Credits - Super Mario Bros. 2 (Ending)
+Bossfight - Super Mario Bros. 3 (Bowser Fight)
+Title - Super Mario Bros. 2 (Character Select)
