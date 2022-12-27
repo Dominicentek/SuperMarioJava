@@ -64,10 +64,14 @@ public class Theme {
         addTile(Tiles.INVISIBLE_QUESTION_BLOCK_1UP, new ContainerTile(EntityType.LIFE_MUSHROOM, false), tileset, 0x00);
         addTile(Tiles.INVISIBLE_QUESTION_BLOCK_POISON_MUSHROOM, new ContainerTile(EntityType.POISONOUS_MUSHROOM, false), tileset, 0x00);
         addTile(Tiles.INVISIBLE_QUESTION_BLOCK_SUPERSTAR, new ContainerTile(EntityType.SUPERSTAR, false), tileset, 0x00);
-        addTile(Tiles.PIPE_TOP_LEFT, new GameTile().setSolid(true), tileset, 0x13);
-        addTile(Tiles.PIPE_TOP_RIGHT, new GameTile().setSolid(true), tileset, 0x14);
-        addTile(Tiles.PIPE_BOTTOM_LEFT, new GameTile().setSolid(true), tileset, 0x15);
-        addTile(Tiles.PIPE_BOTTOM_RIGHT, new GameTile().setSolid(true), tileset, 0x16);
+        addTile(Tiles.PIPE_VERTICAL_TOP_LEFT, new GameTile().setSolid(true), tileset, 0x13);
+        addTile(Tiles.PIPE_VERTICAL_TOP_RIGHT, new GameTile().setSolid(true), tileset, 0x14);
+        addTile(Tiles.PIPE_VERTICAL_BOTTOM_LEFT, new GameTile().setSolid(true), tileset, 0x15);
+        addTile(Tiles.PIPE_VERTICAL_BOTTOM_RIGHT, new GameTile().setSolid(true), tileset, 0x16);
+        addTile(Tiles.PIPE_HORIZONTAL_TOP_LEFT, new GameTile().setSolid(true), tileset, 0x9C);
+        addTile(Tiles.PIPE_HORIZONTAL_TOP_RIGHT, new GameTile().setSolid(true), tileset, 0xAC);
+        addTile(Tiles.PIPE_HORIZONTAL_BOTTOM_LEFT, new GameTile().setSolid(true), tileset, 0x9B);
+        addTile(Tiles.PIPE_HORIZONTAL_BOTTOM_RIGHT, new GameTile().setSolid(true), tileset, 0xAB);
         addTile(Tiles.WARPABLE_PIPE, new WarpablePipeTile().setSolid(true), tileset, 0x13);
         addTile(Tiles.ON_OFF_SWITCH_RED, new RedOnOffSwitchTile().setSolid(true), tileset, 0x1B, 0x1B, 0x28, 0x28);
         addTile(Tiles.ON_OFF_SWITCH_BLUE, new BlueOnOffSwitchTile().setSolid(true), tileset, 0x1C, 0x1C, 0x29, 0x29);
@@ -126,6 +130,7 @@ public class Theme {
         addTile(Tiles.BULLET_BILL_LAUNCHER_BOTTOM, new GameTile().setSolid(true), tileset, 0x72);
         addTile(Tiles.EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS, new ExclamationPointCircleBallThingIdkHowToCallThisTile(), tileset, 0x22);
         addTile(Tiles.PUSHABLE_STONE, new EntitySpawnerTile(EntityType.PUSHABLE_STONE), tileset, 0x00);
+        addTile(Tiles.ICICLE, new EntitySpawnerTile(EntityType.PUSHABLE_STONE), tileset, 0x00);
     }
     private void addTile(int id, LevelTile tile, Texture tileset, Integer... locations) {
         tileList.set(id, ((GameTile)tile).setTextureLocations(locations).setTexture(tileset));

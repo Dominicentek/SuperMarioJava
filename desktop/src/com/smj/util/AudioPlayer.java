@@ -36,6 +36,8 @@ public class AudioPlayer {
     public static final AudioPlayer EXPLOSION = new AudioPlayer(Gdx.files.internal("assets/sounds/explosion.wav"));
     public static final AudioPlayer BURNER = new AudioPlayer(Gdx.files.internal("assets/sounds/burner.wav"));
     public static final AudioPlayer PAUSE = new AudioPlayer(Gdx.files.internal("assets/sounds/pause.wav"));
+    public static final AudioPlayer ICICLE_FALL = new AudioPlayer(Gdx.files.internal("assets/sounds/iciclefall.wav"));
+    public static final AudioPlayer ICICLE_BREAK = new AudioPlayer(Gdx.files.internal("assets/sounds/iciclebreak.wav"));
     public static final SMJMusic[] MUSIC = {
         new SMJMusic(Gdx.files.internal("assets/sounds/music/ground.smjaud")),
         new SMJMusic(Gdx.files.internal("assets/sounds/music/underground.smjaud")),

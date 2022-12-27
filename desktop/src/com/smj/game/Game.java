@@ -1,5 +1,7 @@
 package com.smj.game;
 
+// bad code warning (possible heart attack)
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;

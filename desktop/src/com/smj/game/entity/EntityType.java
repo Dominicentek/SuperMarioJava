@@ -50,7 +50,8 @@ public enum EntityType {
     BOWSER_FIRE(new InstanceBuilder<>(BowserFireTextureProvider.class, get(Gdx.files.internal("assets/images/entities/bowserfire.png"))), new Dimension(150, 50), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(FlyingBehavior.class, 7.5), new InstanceBuilder<>(HarmfulBehavior.class)),
     BRICK_BLOCK(new InstanceBuilder<>(StaticTextureProvider.class, get(Gdx.files.internal("assets/images/entities/brickblock.png"))), new Dimension(200, 200), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(BrickBlockBehavior.class), new InstanceBuilder<>(DespawnBehavior.class, 600)),
     FIREBAR_FIREBALL(new InstanceBuilder<>(RotatingTextureProvider.class, get(Gdx.files.internal("assets/images/entities/fireball.png"))), new Dimension(50, 50), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(FirebarBallBehavior.class), new InstanceBuilder<>(HarmfulBehavior.class)),
-    PUSHABLE_STONE(new InstanceBuilder<>(StaticTextureProvider.class, get(Gdx.files.internal("assets/images/entities/pushable_stone.png"))), new Dimension(100, 100), new InstanceBuilder<>(SolidHitboxBehavior.class), new InstanceBuilder<>(PushableBehavior.class))
+    PUSHABLE_STONE(new InstanceBuilder<>(StaticTextureProvider.class, get(Gdx.files.internal("assets/images/entities/pushable_stone.png"))), new Dimension(100, 100), new InstanceBuilder<>(SolidHitboxBehavior.class), new InstanceBuilder<>(PushableBehavior.class)),
+    ICICLE(new InstanceBuilder<>(StaticTextureProvider.class, get(Gdx.files.internal("assets/images/entities/icicle.png"))), new Dimension(100, 200), new InstanceBuilder<>(IcicleBehavior.class)),
     ;
     private final InstanceBuilder<? extends EntityBehavior>[] behaviors;
     private final EntityProperties properties;

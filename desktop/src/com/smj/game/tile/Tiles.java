@@ -51,11 +51,15 @@ public class Tiles {
     public static final int INVISIBLE_QUESTION_BLOCK_1UP = 0x56;
     public static final int INVISIBLE_QUESTION_BLOCK_POISON_MUSHROOM = 0x57;
     public static final int INVISIBLE_QUESTION_BLOCK_SUPERSTAR = 0x58;
-    public static final int PIPE_TOP_LEFT = 0x60;
-    public static final int PIPE_TOP_RIGHT = 0x61;
-    public static final int PIPE_BOTTOM_LEFT = 0x62;
-    public static final int PIPE_BOTTOM_RIGHT = 0x63;
+    public static final int PIPE_VERTICAL_TOP_LEFT = 0x60;
+    public static final int PIPE_VERTICAL_TOP_RIGHT = 0x61;
+    public static final int PIPE_VERTICAL_BOTTOM_LEFT = 0x62;
+    public static final int PIPE_VERTICAL_BOTTOM_RIGHT = 0x63;
     public static final int WARPABLE_PIPE = 0x64;
+    public static final int PIPE_HORIZONTAL_TOP_LEFT = 0x65;
+    public static final int PIPE_HORIZONTAL_TOP_RIGHT = 0x66;
+    public static final int PIPE_HORIZONTAL_BOTTOM_LEFT = 0x67;
+    public static final int PIPE_HORIZONTAL_BOTTOM_RIGHT = 0x68;
     public static final int ON_OFF_SWITCH_RED = 0x70;
     public static final int ON_OFF_SWITCH_BLUE = 0x71;
     public static final int ON_OFF_BLOCK_RED_OFF = 0x72;
@@ -100,12 +104,11 @@ public class Tiles {
     public static final int ENEMY_CHEEP_CHEEP = 0xC7;
     public static final int ENEMY_BLOOPER = 0xC8;
     public static final int ENEMY_PODOBOO = 0xC9;
-    public static final int ENEMY_LAKITU = 0xCA;
-    public static final int ENEMY_HAMMER_BRO = 0xCB;
-    public static final int ENEMY_GREEN_PARAKOOPA = 0xCC;
-    public static final int ENEMY_RED_PARAKOOPA = 0xCD;
-    public static final int UPWARDS_STREAM = 0xCE;
-    public static final int DOWNWARDS_STREAM = 0xCF;
+    public static final int ICICLE = 0xCA;
+    public static final int ENEMY_LAKITU = 0xCB;
+    public static final int ENEMY_HAMMER_BRO = 0xCC;
+    public static final int ENEMY_GREEN_PARAKOOPA = 0xCD;
+    public static final int ENEMY_RED_PARAKOOPA = 0xCE;
     public static final int STAR = 0xD0;
     public static final int LOCKED_STAR = 0xD1;
     public static final int BULLET_BILL_LAUNCHER_TOP = 0xE0;
@@ -113,4 +116,8 @@ public class Tiles {
     public static final int BULLET_BILL_LAUNCHER_BOTTOM = 0xE2;
     public static final int EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS = 0xF0;
     public static final int PUSHABLE_STONE = 0xF1;
+    public static final int UPWARDS_STREAM = 0xF3;
+    public static final int DOWNWARDS_STREAM = 0xF4;
+    public static final int LEFT_STREAM = 0xF5;
+    public static final int RIGHT_STREAM = 0xF6;
 }
