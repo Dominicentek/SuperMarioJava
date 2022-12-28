@@ -193,7 +193,7 @@ public class Level {
                     rectangle.x = (location % 16) * 16;
                     rectangle.y = (location / 16) * 16;
                     renderer.draw(tile.getTexture(), rectangle, x * unitWidth, y * unitHeight, unitWidth, unitHeight);
-                    if (((GameLevel)this).gimmick == GameLevel.Gimmick.SLIPPERY && tile.isSolid()) {
+                    if (((GameLevel)this).theme == 3 && tile.isSolid()) {
                         Point point = new Point(x, y);
                         Boolean exposedToAir = Game.snowCache.get(point);
                         if (exposedToAir == null) {

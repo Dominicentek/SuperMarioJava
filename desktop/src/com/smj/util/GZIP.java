@@ -23,17 +23,7 @@ public class GZIP {
     }
     public static byte[] uncompress(byte[] data) {
         try {
-            ByteArrayInputStream bais = new ByteArrayInputStream(data);
-            GZIPInputStream in = new GZIPInputStream(bais);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int bytesRead = 0;
-            while ((bytesRead = in.read(buffer)) > 0) {
-                baos.write(buffer, 0, bytesRead);
-            }
-            in.close();
-            baos.close();
-            return baos.toByteArray();
+            return safeUncompress(data);
         }
         catch (Exception e) {
             e.printStackTrace();

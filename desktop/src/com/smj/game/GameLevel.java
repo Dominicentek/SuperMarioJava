@@ -27,13 +27,15 @@ public class GameLevel extends Level implements Readable {
     public int spawnX = 0;
     public int spawnY = 0;
     public int id = 0;
+    public int theme = 0;
     public boolean[][] loaded;
     public Fluid fluid = null;
     public ArrayList<Warp> warps = new ArrayList<>();
     public GameLevel(ObjectElement element) {
         super(Short.toUnsignedInt(element.getShort("width")), Short.toUnsignedInt(element.getShort("height")));
         music = Byte.toUnsignedInt(element.getByte("music"));
-        Theme theme = Game.THEMES[Byte.toUnsignedInt(element.getByte("theme"))];
+        theme = Byte.toUnsignedInt(element.getByte("theme"));
+        Theme theme = Game.THEMES[this.theme];
         gimmick = Gimmick.values()[element.getByte("gimmick")];
         time = Short.toUnsignedInt(element.getShort("time"));
         spawnX = Short.toUnsignedInt(element.getShort("spawnX"));

@@ -35,7 +35,7 @@ import java.awt.Rectangle;
 import java.util.*;
 
 public class Game {
-    public static final Theme[] THEMES = new Theme[9];
+    public static final Theme[] THEMES = new Theme[10];
     public static GameLevel currentLevel;
     public static boolean dead = false;
     public static GameEntity player;
@@ -296,7 +296,7 @@ public class Game {
             int y = RNG.bound(currentLevel.getLevelBoundaries().height * 16);
             Game.particles.add(new WindParticle(y));
         }
-        if (currentLevel.gimmick == GameLevel.Gimmick.SLIPPERY) {
+        if (currentLevel.theme == 3) {
             for (int i = 0; i < Math.max(1, currentLevel.getLevelBoundaries().width / 64); i++) {
                 int x = RNG.bound(currentLevel.getLevelBoundaries().width * 16);
                 Game.particles.add(new SnowParticle(x, 0));
@@ -488,7 +488,7 @@ public class Game {
                 particles.add(new WindParticle(X, RNG.bound(currentLevel.getLevelBoundaries().height * 16)));
             }
         }
-        if (currentLevel.gimmick == GameLevel.Gimmick.SLIPPERY) {
+        if (currentLevel.theme == 3) {
             for (int Y = 0; Y < currentLevel.getLevelBoundaries().height * 16; Y++) {
                 for (int i = 0; i < Math.max(2, currentLevel.getLevelBoundaries().width / 32); i++) {
                     int X = RNG.bound(currentLevel.getLevelBoundaries().width * 16);
