@@ -1,4 +1,9 @@
 # Super Mario Java
+
+**WARNING**<br>
+If you want to look into the source code, beware!<br>
+A heart attack is guaranteed. (because I write bad code)
+
 A Super Mario Bros. styled Mario fan game.
 
 **Super Mario Java is a free, open-source,**<br>
@@ -26,16 +31,4 @@ A Super Mario Bros. styled Mario fan game.
 * F3 - Open Console
 
 ### Console Commands
-You can press Enter to execute a command<br>
-or use the arrow keys to execute previous commands
-* `life &lt;set|add&gt; &lt;amount&gt;` - Manages the amount of lives
-* `coin &lt;set|add&gt; &lt;amount&gt;` - Manages the amount of coins
-* `life &lt;set|add&gt; &lt;amount&gt;` - 
-* `life` &lt;set|add&gt; &lt;amount&gt;
-* `life` &lt;set|add&gt; &lt;amount&gt;
-* `life` &lt;set|add&gt; &lt;amount&gt;
-* `life` &lt;set|add&gt; &lt;amount&gt;
-* `life` &lt;set|add&gt; &lt;amount&gt;
-* `life` &lt;set|add&gt; &lt;amount&gt;
-* `life` &lt;set|add&gt; &lt;amount&gt;
-* `life` &lt;set|add&gt; &lt;amount&gt;
+Coming soon
