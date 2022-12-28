@@ -1,5 +1,6 @@
 package com.smj.game.entity.behavior;
 
+import com.smj.Main;
 import com.smj.game.Game;
 import com.smj.game.GameLevel;
 import com.smj.game.Location;
@@ -26,13 +27,14 @@ public class StompableBehavior implements EntityBehavior {
             }
             else {
                 if (collider.getPhysics().getSpeedY() > (level.getPhysicsConfig().underwater ? level.getPhysicsConfig().underwaterGravity : level.getPhysicsConfig().gravity) * 1.5) {
-                    Physics physics = collider.getPhysics();
-                    physics.setSpeedY(-level.getPhysicsConfig().jumpingSpeed);
                     Game.awardScore(collider.score, Location.entity(collider));
                     level.getEntityManager().unloadEntity(entity);
                     Point center = new Point(entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2, entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height);
                     if (spawn != null) spawn.spawn(level, center.x - spawn.getHitbox().width / 2, center.y - spawn.getHitbox().height);
                     AudioPlayer.STOMP.play(Location.entity(entity));
+                    Main.actionQueue.push(() -> {
+                        collider.getPhysics().setSpeedY(-level.getPhysicsConfig().jumpingSpeed);
+                    });
                 }
                 else {
                     Game.damagePlayer();

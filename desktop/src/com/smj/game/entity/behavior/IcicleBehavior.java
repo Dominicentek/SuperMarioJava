@@ -25,12 +25,14 @@ public class IcicleBehavior implements EntityBehavior {
                 entity.getPhysics().getHitbox().y = prevY - 200;
                 falling = false;
             }
+            return;
         }
         if (!falling && entity.getPhysics().getHitbox().y < prevY) {
             entity.getPhysics().getHitbox().y += 5;
             return;
         }
         entity.getProperties().setDrawInBG(false);
+        entity.getPhysics().getConfig().collisionEnabled = true;
         if (x < -200 || x > 200 || Game.player.getPhysics().getHitbox().y < entity.getPhysics().getHitbox().y || falling || respawnTimeout > 0) return;
         prevY = entity.getPhysics().getHitbox().y;
         entity.getPhysics().getConfig().gravity = level.getPhysicsConfig().gravity;
@@ -42,6 +44,7 @@ public class IcicleBehavior implements EntityBehavior {
         if (collider.entityType == EntityType.PLAYER) Game.damagePlayer();
     }
     public void onTileTouchDown(GameEntity entity, GameLevel level, int x, int y) {
+        if (!falling) return;
         if (!level.getTileList().get(level.getTileAt(x, y)).isSolid()) return;
         AudioPlayer.ICICLE_BREAK.play(Location.entity(entity));
         Rectangle hitbox = entity.getPhysics().getHitbox();
@@ -49,6 +52,7 @@ public class IcicleBehavior implements EntityBehavior {
         hitbox.y = level.getLevelBoundaries().height * 100;
         entity.getPhysics().getConfig().gravity = 0;
         entity.getPhysics().setSpeedY(0);
+        entity.getPhysics().getConfig().collisionEnabled = false;
         respawnTimeout = 60;
         entity.getProperties().setDrawInBG(true);
     }

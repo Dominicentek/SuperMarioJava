@@ -66,6 +66,10 @@ public class Main extends ApplicationAdapter {
                 Game.keyTyped(character);
                 return true;
             }
+            public boolean keyDown(int keycode) {
+                Game.keyPressed(keycode);
+                return true;
+            }
         });
     }
     public void render() {

@@ -17,17 +17,18 @@ import com.smj.util.command.console.StdoutConsole;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Stack;
 
 public class Command {
     public static CommandLiteral commands = new CommandLiteral();
     public static Console console = new StdoutConsole();
-    public static ArrayList<String> previousCommands = new ArrayList<>(Collections.singletonList(""));
+    public static ArrayList<String> commandHistory = new ArrayList<>(Collections.singletonList(""));
+    public static int historyIndex = 0;
     public static void run(String command) {
         try {
-            command = command.trim().replaceAll("/\\s+/g", " ");
+            historyIndex = 0;
+            command = command.trim().replaceAll("/\\s+/g", " ").toLowerCase();
             if (command.isEmpty()) return;
-            previousCommands.add(0, command);
+            if (commandHistory.size() <= 1 || !commandHistory.get(1).equals(command)) commandHistory.add(1, command);
             String[] args = command.split(" ");
             run(new CommandContext(), new ArrayList<>(Collections.singletonList(commands)), args, 0);
         }

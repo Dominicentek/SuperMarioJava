@@ -3,7 +3,6 @@ package com.smj.game;
 // bad code warning (possible heart attack)
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.smj.Main;
@@ -26,7 +25,6 @@ import com.smj.jmario.level.decoration.Decoration;
 import com.smj.jmario.level.decoration.DecorationType;
 import com.smj.jmario.level.decoration.Decorations;
 import com.smj.util.command.Command;
-import com.smj.util.command.console.Console;
 import com.smj.util.command.console.TextConsole;
 import com.smj.util.mask.Circle;
 import com.smj.util.*;
@@ -147,14 +145,29 @@ public class Game {
             renderer.drawString(text + (System.currentTimeMillis() % 1000 < 500 ? "_" : ""), 8, Main.HEIGHT - 8 - Font.getHeight());
         }
     }
+    public static void keyPressed(int keycode) {
+        if (!consoleOpen) return;
+        if (keycode == 19) {
+            Command.historyIndex++;
+            if (Command.historyIndex == Command.commandHistory.size()) Command.historyIndex--;
+            cmd = Command.commandHistory.get(Command.historyIndex);
+        }
+        if (keycode == 20) {
+            Command.historyIndex--;
+            if (Command.historyIndex == -1) Command.historyIndex++;
+            cmd = Command.commandHistory.get(Command.historyIndex);
+        }
+    }
     public static void keyTyped(char character) {
         if (!consoleOpen) return;
+        String prev = cmd;
         if (character == 8 && cmd.length() > 0) cmd = cmd.substring(0, cmd.length() - 1);
         else if (character >= 32 && character <= 126) cmd += character;
         else if (character == 10) {
             Command.run(cmd);
             cmd = "";
         }
+        if (!prev.equals(cmd)) Command.commandHistory.set(0, cmd);
     }
     public static void update() {
         if (Menu.currentMenu != null) Menu.currentMenu.update();
