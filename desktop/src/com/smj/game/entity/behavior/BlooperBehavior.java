@@ -26,7 +26,7 @@ public class BlooperBehavior implements EntityBehavior {
         }
         int tx = (entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2) / 100;
         int ty = (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height) / 100;
-        if (((Game.player.getPhysics().getHitbox().y < entity.getPhysics().getHitbox().y || hdis > 75) && dis < 1500) || level.getTileList().get(level.getTileAt(tx, ty + 2)).isSolid()) {
+        if (((Game.player.getPhysics().getHitbox().y < entity.getPhysics().getHitbox().y /*|| hdis > 75*/) && dis < 1500) || level.getTileList().get(level.getTileAt(tx, ty + 2)).isSolid()) {
             chargeTimeout = 15;
         }
     }

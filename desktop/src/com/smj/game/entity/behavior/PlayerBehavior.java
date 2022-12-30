@@ -8,12 +8,14 @@ import com.smj.game.Location;
 import com.smj.game.entity.EntityType;
 import com.smj.game.entity.GameEntity;
 import com.smj.game.options.Controls;
+import com.smj.game.particle.BubbleParticle;
 import com.smj.gui.hud.HUDLayout;
 import com.smj.util.AudioPlayer;
 
 public class PlayerBehavior implements EntityBehavior {
     public boolean facingLeft = false;
     public int jumpTimer = -1;
+    public int bubbleTimeout = 60;
     public void update(GameEntity entity, GameLevel level) {
         if (Game.consoleOpen) {
             entity.getPhysics().getMovement().setWalkingLeft(false);
@@ -48,6 +50,15 @@ public class PlayerBehavior implements EntityBehavior {
         }
         if (!HUDLayout.SPEEDRUN_TIMER.running) HUDLayout.SPEEDRUN_TIMER.start();
         if (jumpTimer >= 0) jumpTimer--;
+        bubbleTimeout--;
+        if (bubbleTimeout == 0) {
+            bubbleTimeout = 60;
+            int x = entity.getPhysics().getHitbox().x + (facingLeft ? 0 : entity.getPhysics().getHitbox().width);
+            int y = entity.getPhysics().getHitbox().y;
+            x = x * 16 / 100;
+            y = y * 16 / 100;
+            if (level.gimmick == GameLevel.Gimmick.UNDERWATER) Game.particles.add(new BubbleParticle(x, y, 0, -0.5));
+        }
     }
     public void onTileTouchUp(GameEntity entity, GameLevel level, int x, int y) {
         if (!level.getTileList().get(level.getTileAt(x, y)).isSolid()) return;
