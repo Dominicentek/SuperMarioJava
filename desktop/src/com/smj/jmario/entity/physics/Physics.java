@@ -5,6 +5,7 @@ import com.smj.game.Game;
 import com.smj.game.GameLevel;
 import com.smj.game.entity.EntityType;
 import com.smj.game.entity.GameEntity;
+import com.smj.game.entity.behavior.PlayerBehavior;
 import com.smj.game.entity.behavior.PushableBehavior;
 import com.smj.game.tile.Tiles;
 import com.smj.jmario.entity.Entity;
@@ -31,6 +32,7 @@ public final class Physics {
     private Double nextSpeedY = null;
     public boolean[][] collision;
     public boolean inAir = false;
+    public boolean visuallyInAir = false;
     public boolean jumping = false;
     public boolean jumpingUpward = false;
     private double jumpOrigin = 0;
@@ -50,8 +52,10 @@ public final class Physics {
     public Physics advance() {
         if (!begun) throw new IllegalStateException("Simulation has not begun yet");
         long delta = 16;
-        inAir = true;
         double maxSpeed = config.underwater ? (inAir ? config.maxUnderwaterSpeed : config.maxUnderwaterOnGroundSpeed) : (movement.isRunning() ? config.maxRunningSpeed : config.maxWalkingSpeed);
+        inAir = true;
+        visuallyInAir = true;
+        Rectangle expandedHitbox = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height + 5);
         if (config.collisionEnabled) {
             hitbox.y += speedY * delta;
             int tileX = (hitbox.x + hitbox.width / 2) / 100;
@@ -62,7 +66,7 @@ public final class Physics {
                     Rectangle tileHitbox = new Rectangle(x * 100, y * 100, 100, 100);
                     if (tileHitbox.intersects(hitbox)) {
                         LevelTile tile = level.getTileList().get(level.getTileAt(x, y));
-                        Rectangle upCollision = new Rectangle(hitbox.x, hitbox.y, hitbox.width, 1);
+                        Rectangle upCollision = new Rectangle(hitbox.x, hitbox.y - 1, hitbox.width, 1);
                         tile.onTouch(entity, level, x, y);
                         if (upCollision.intersects(tileHitbox)) {
                             tile.onTouchBottom(entity, level, x, y);
@@ -79,7 +83,7 @@ public final class Physics {
                 if (this.entity == entity || !entity.getPhysics().getConfig().solidHitbox) continue;
                 Rectangle entityHitbox = entity.getPhysics().hitbox;
                 if (hitbox.intersects(entityHitbox)) {
-                    Rectangle upCollision = new Rectangle(hitbox.x, hitbox.y, hitbox.width, 1);
+                    Rectangle upCollision = new Rectangle(hitbox.x, hitbox.y - 1, hitbox.width, 1);
                     speedY = 0;
                     int x = (entityHitbox.x + entityHitbox.width / 2) / 100;
                     int y = (entityHitbox.y + entityHitbox.height / 2) / 100;
@@ -99,6 +103,10 @@ public final class Physics {
                     }
                     level.setTileAt(prevTile, x, y);
                 }
+                if (expandedHitbox.intersects(entityHitbox)) {
+                    Rectangle upCollision = new Rectangle(expandedHitbox.x, expandedHitbox.y - 1, expandedHitbox.width, 1);
+                    if (!upCollision.intersects(entityHitbox)) visuallyInAir = false;
+                }
             }
             for (int x = tileX - hitbox.width / 200 - 1; x <= tileX + hitbox.width / 200 + 1; x++) {
                 for (int y = tileY - hitbox.height / 200 - 1; y <= tileY + hitbox.height / 200 + 1; y++) {
@@ -106,7 +114,7 @@ public final class Physics {
                     if (!collision[x][y]) continue;
                     Rectangle tileHitbox = new Rectangle(x * 100, y * 100, 100, 100);
                     if (tileHitbox.intersects(hitbox)) {
-                        Rectangle upCollision = new Rectangle(hitbox.x, hitbox.y, hitbox.width, 1);
+                        Rectangle upCollision = new Rectangle(hitbox.x, hitbox.y - 1, hitbox.width, 1);
                         if (upCollision.intersects(tileHitbox)) {
                             hitbox.y = tileHitbox.y + tileHitbox.height;
                             jumpingUpward = false;
@@ -116,6 +124,10 @@ public final class Physics {
                             inAir = false;
                         }
                         speedY = 0;
+                    }
+                    if (expandedHitbox.intersects(tileHitbox)) {
+                        Rectangle upCollision = new Rectangle(expandedHitbox.x, expandedHitbox.y - 1, expandedHitbox.width, 1);
+                        if (!upCollision.intersects(tileHitbox)) visuallyInAir = false;
                     }
                 }
             }
@@ -128,7 +140,7 @@ public final class Physics {
                     Rectangle tileHitbox = new Rectangle(x * 100, y * 100, 100, 100);
                     if (tileHitbox.intersects(hitbox)) {
                         LevelTile tile = level.getTileList().get(level.getTileAt(x, y));
-                        Rectangle leftCollision = new Rectangle(hitbox.x, hitbox.y, 1, hitbox.height);
+                        Rectangle leftCollision = new Rectangle(hitbox.x - 1, hitbox.y, 1, hitbox.height);
                         tile.onTouch(entity, level, x, y);
                         if (leftCollision.intersects(tileHitbox)) {
                             tile.onTouchRight(entity, level, x, y);
@@ -145,7 +157,7 @@ public final class Physics {
                 if (this.entity == entity || !entity.getPhysics().getConfig().solidHitbox) continue;
                 Rectangle entityHitbox = entity.getPhysics().hitbox;
                 if (hitbox.intersects(entityHitbox)) {
-                    Rectangle leftCollision = new Rectangle(hitbox.x, hitbox.y, 1, hitbox.height);
+                    Rectangle leftCollision = new Rectangle(hitbox.x - 1, hitbox.y, 1, hitbox.height);
                     boolean collisionOnLeft = leftCollision.intersects(entityHitbox);
                     if (((GameEntity)entity).getBehavior(PushableBehavior.class) == null) speedX = 0;
                     else {
@@ -176,7 +188,7 @@ public final class Physics {
                     if (!collision[x][y]) continue;
                     Rectangle tileHitbox = new Rectangle(x * 100, y * 100, 100, 100);
                     if (tileHitbox.intersects(hitbox)) {
-                        Rectangle leftCollision = new Rectangle(hitbox.x, hitbox.y, 1, hitbox.height);
+                        Rectangle leftCollision = new Rectangle(hitbox.x - 1, hitbox.y, 1, hitbox.height);
                         hitbox.x = leftCollision.intersects(tileHitbox) ? tileHitbox.x + tileHitbox.width : tileHitbox.x - hitbox.width;
                         if (hitbox.x == tileHitbox.x - hitbox.width) isWindAndTouchingRightWall = ((GameLevel)level).gimmick == GameLevel.Gimmick.WIND;
                         speedX = 0;
@@ -231,6 +243,8 @@ public final class Physics {
         if (movement.isJumping() && !jumping) {
             jump(true);
             jumping = true;
+            PlayerBehavior behavior = ((GameEntity)entity).getBehavior(PlayerBehavior.class);
+            if (behavior != null) behavior.jumpTimer = 15;
         }
         else jumping = false;
         if (jumpingUpward && jumping) {
@@ -247,7 +261,7 @@ public final class Physics {
     }
     public void jump(boolean playSound) {
         if ((inAir && !config.underwater) || jumping) return;
-        if (config.underwater) speedY = config.underwaterSwimSpeed;
+        if (config.underwater) speedY = -config.underwaterSwimSpeed;
         else {
             if (playSound) AudioPlayer.JUMP.play();
             jumpOrigin = hitbox.getY();
@@ -287,6 +301,9 @@ public final class Physics {
     }
     public boolean isInAir() {
         return inAir;
+    }
+    public boolean isVisuallyInAir() {
+        return visuallyInAir;
     }
     public void setHitbox(Rectangle hitbox) {
         this.hitbox = hitbox;

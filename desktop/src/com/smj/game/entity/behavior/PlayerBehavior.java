@@ -13,6 +13,7 @@ import com.smj.util.AudioPlayer;
 
 public class PlayerBehavior implements EntityBehavior {
     public boolean facingLeft = false;
+    public int jumpTimer = -1;
     public void update(GameEntity entity, GameLevel level) {
         if (Game.consoleOpen) {
             entity.getPhysics().getMovement().setWalkingLeft(false);
@@ -21,8 +22,8 @@ public class PlayerBehavior implements EntityBehavior {
             entity.getPhysics().getMovement().setRunning(false);
             return;
         }
-        if (Controls.LEFT.isJustPressed()) facingLeft = true;
-        if (Controls.RIGHT.isJustPressed()) facingLeft = false;
+        if (entity.getPhysics().getSpeedX() < 0) facingLeft = true;
+        if (entity.getPhysics().getSpeedX() > 0) facingLeft = false;
         entity.getPhysics().getMovement().setWalkingLeft(Controls.LEFT.isPressed());
         entity.getPhysics().getMovement().setWalkingRight(Controls.RIGHT.isPressed());
         entity.getPhysics().getMovement().setJumping(Controls.JUMP.isPressed());
@@ -46,6 +47,7 @@ public class PlayerBehavior implements EntityBehavior {
             }
         }
         if (!HUDLayout.SPEEDRUN_TIMER.running) HUDLayout.SPEEDRUN_TIMER.start();
+        if (jumpTimer >= 0) jumpTimer--;
     }
     public void onTileTouchUp(GameEntity entity, GameLevel level, int x, int y) {
         if (!level.getTileList().get(level.getTileAt(x, y)).isSolid()) return;

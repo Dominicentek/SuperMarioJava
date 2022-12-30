@@ -112,7 +112,7 @@ public class Game {
         renderer.setColor(0xFFFFFFFF);
         if (currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN) renderer.setTransformMatrix(renderer.getTransformMatrix().translate(0, Main.HEIGHT, 0).scale(1, -1, 1));
         renderer.resetTranslation();
-        Main.renderMask();
+        if (currentLevel.gimmick == GameLevel.Gimmick.SPOTLIGHT) Main.renderMask();
         if ((!Main.options.hiddenHUD && !title) || Menu.currentMenu == Menus.HUD_LAYOUT) HUDLayout.renderAll(renderer);
         if (Menu.currentMenu == Menus.MAIN) renderer.draw(TextureLoader.get(Gdx.files.internal("assets/images/logo.png")), Main.WIDTH / 2 - 168 / 2, 24);
         if (consoleOpen) {
@@ -395,6 +395,11 @@ public class Game {
                         }
                     }
                 }
+            }
+        }
+        for (Entity entity : new ArrayList<>(currentLevel.getEntityManager().entities)) {
+            if (entity.getPhysics().getHitbox().y > (currentLevel.getLevelBoundaries().height + 5) * 100) {
+                currentLevel.getEntityManager().unloadEntity(entity);
             }
         }
         double cameraX = currentLevel.camera.x - Main.WIDTH / 2.0 / 16;

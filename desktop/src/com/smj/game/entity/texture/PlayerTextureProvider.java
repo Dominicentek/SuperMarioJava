@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.loaders.PixmapLoader;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.smj.game.Game;
 import com.smj.game.entity.GameEntity;
 import com.smj.game.entity.behavior.PlayerBehavior;
@@ -38,11 +39,19 @@ public class PlayerTextureProvider extends TextureProvider {
         int width = 16;
         int height = powerup == 0 ? 16 : 32;
         if (Game.isCrouching) x = STATE_CROUCHING;
-        else if (entity.getPhysics().isInAir()) x = STATE_JUMPING;
+        else if (entity.getPhysics().getConfig().underwater && entity.getPhysics().isVisuallyInAir()) {
+            int jumpTimer = entity.getBehavior(PlayerBehavior.class).jumpTimer;
+            int offset = (int)(System.currentTimeMillis() % 500) / 250;
+            if (jumpTimer == -1) x = STATE_SWIMMING_1;
+            else x = (jumpTimer / 8 * 2) + STATE_SWIMMING_UP_1;
+            x += offset;
+        }
+        else if (entity.getPhysics().isVisuallyInAir()) x = STATE_JUMPING;
         else if (speedX == 0) x = STATE_STANDING;
         else if ((speedX < 0 && flipX) || (speedX > 0 && !flipX)) x = STATE_TURNING;
         else x = entity.getPhysics().getHitbox().x % 150 < 50 ? STATE_WALKING_1 : entity.getPhysics().getHitbox().x % 150 < 100 ? STATE_WALKING_2 : STATE_WALKING_3;
         flipX = entity.getBehavior(PlayerBehavior.class).facingLeft;
+        x = MathUtils.clamp(x, 0, STATE_SWIMMING_UP_4);
         x *= 16;
         return new Rectangle(x, y, width, height);
     }

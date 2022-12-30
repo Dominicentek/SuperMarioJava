@@ -14,7 +14,15 @@ A Super Mario Bros. styled Mario fan game.
 **better Mario games than this one, go support**<br>
 **Nintendo and buy their consoles and games.**<br>
 
-### Controls
+## How to Build
+### Windows
+Just run `gradlew dist` command in the project directory<br>
+The jar should be located at `desktop/build/libs/desktop-1.0.jar`
+### Linux or macOS
+Same as Windows, just include `./` at the beginning.<br>
+Like this: `./gradlew dist`
+
+## Controls
 * W - Up
 * S - Left
 * A - Down
