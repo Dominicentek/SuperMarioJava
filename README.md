@@ -14,6 +14,9 @@ A Super Mario Bros. styled Mario fan game.
 **better Mario games than this one, go support**<br>
 **Nintendo and buy their consoles and games.**<br>
 
+The game is built on top of heavily modified JMario engine, an unreleased,
+broken and confusing Mario engine coded in Java programmed by the same creator.
+
 ## How to Build
 ### Windows
 Just run `gradlew dist` command in the project directory<br>

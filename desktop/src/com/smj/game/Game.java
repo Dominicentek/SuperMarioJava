@@ -187,11 +187,11 @@ public class Game {
         HUDLayout.STAR_TIMER.visible = invincibilityTimeout > 0;
         HUDLayout.STAR_TIMER.attachment.target = (int)Math.ceil(invincibilityTimeout / 60f);
         HUDLayout.SPEEDRUN_TIMER.visible = Main.options.speedrunTimer;
-        if (HUDLayout.COIN_COUNTER.attachment.value == 100) {
+        if (savefile.coins >= 100) {
             HUDLayout.COIN_COUNTER.attachment.value = 0;
             savefile.coins -= 100;
             HUDLayout.COIN_COUNTER.attachment.target = savefile.coins;
-            savefile.lives++;
+            addLives(1);
         }
         HUDLayout.updateAll();
         if (powerupTimeout > 0) {
@@ -209,6 +209,10 @@ public class Game {
                 finishTimeout = 999;
                 Main.setTransition(new Transition(0.5, Game::nextLevel));
             }
+        }
+        ArrayList<Particle> particles = new ArrayList<>(Game.particles);
+        for (Particle particle : particles) {
+            if (particle instanceof MarioDeathParticle) particle.update();
         }
         if (finishTimeout > 0) finishTimeout--;
         if (warpTimeout > 0) {
@@ -235,10 +239,6 @@ public class Game {
                 player.getPhysics().getConfig().underwaterGravity = currentLevel.getPhysicsConfig().underwaterGravity;
             }
         }
-        ArrayList<Particle> particles = new ArrayList<>(Game.particles);
-        for (Particle particle : particles) {
-            particle.update();
-        }
         if (Controls.PAUSE.isJustPressed() && paused == pauseMenuOpen) {
             AudioPlayer.PAUSE.play();
             pauseMenuOpen = !pauseMenuOpen;
@@ -257,6 +257,10 @@ public class Game {
         }
         if (paused) return;
         currentLevel.update();
+        particles = new ArrayList<>(Game.particles);
+        for (Particle particle : particles) {
+            if (!(particle instanceof MarioDeathParticle)) particle.update();
+        }
         timeTimeout--;
         if (timeTimeout == 0) {
             time--;

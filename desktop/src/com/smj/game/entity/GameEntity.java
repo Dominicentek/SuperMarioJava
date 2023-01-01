@@ -30,7 +30,7 @@ public class GameEntity extends Entity {
         this.behaviors.addAll(Arrays.asList(behaviors));
         this.entityType = type;
         Texture texture = provider.getTexture();
-        textureRegion = new Rectangle(0, 0, texture.getWidth(), texture.getHeight());
+        textureRegion = texture == null ? new Rectangle() : new Rectangle(0, 0, texture.getWidth(), texture.getHeight());
         properties.setTexture(texture);
         updateTexture();
     }

@@ -52,6 +52,10 @@ public enum EntityType {
     FIREBAR_FIREBALL(new InstanceBuilder<>(RotatingTextureProvider.class, get(Gdx.files.internal("assets/images/entities/fireball.png"))), new Dimension(50, 50), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(FirebarBallBehavior.class), new InstanceBuilder<>(HarmfulBehavior.class)),
     PUSHABLE_STONE(new InstanceBuilder<>(StaticTextureProvider.class, get(Gdx.files.internal("assets/images/entities/pushable_stone.png"))), new Dimension(100, 100), new InstanceBuilder<>(SolidHitboxBehavior.class), new InstanceBuilder<>(PushableBehavior.class)),
     ICICLE(new InstanceBuilder<>(StaticTextureProvider.class, get(Gdx.files.internal("assets/images/entities/icicle.png"))), new Dimension(100, 200), new InstanceBuilder<>(IcicleBehavior.class)),
+    UP_PIPE_STREAM(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(200, 400), new InstanceBuilder<>(PipeStreamBehavior.class, 0, -1)),
+    LEFT_PIPE_STREAM(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(400, 200), new InstanceBuilder<>(PipeStreamBehavior.class, -1, 0)),
+    DOWN_PIPE_STREAM(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(200, 400), new InstanceBuilder<>(PipeStreamBehavior.class, 0, 1)),
+    RIGHT_PIPE_STREAM(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(400, 200), new InstanceBuilder<>(PipeStreamBehavior.class, 1, 0)),
     ;
     private final InstanceBuilder<? extends EntityBehavior>[] behaviors;
     private final EntityProperties properties;

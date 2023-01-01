@@ -12,7 +12,7 @@
                 0x73,0x74,0x75,0x76,0x77,0x78,0x79,0x7A,0x7B,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                 0x0C,0x7C,0x7D,0x7E,0x7F,0x80,0x81,0x82,0x83,0x84,0x00,0x00,0x00,0x00,0x00,0x00,
                 0x85,0x86,0x87,0x88,0x89,0x8A,0x8B,0x8C,0x8D,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-                0x13,0x14,0x15,0x16,0x8E,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+                0x13,0x14,0x15,0x16,0x8E,0x9C,0xAC,0x9B,0xAB,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                 0x1B,0x1C,0x19,0x1A,0x17,0x18,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                 0x2A,0x2B,0x2C,0x2D,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                 0x30,0x31,0x40,0x41,0x38,0x39,0x48,0x49,0x50,0x51,0x60,0x61,0x00,0x00,0x00,0x00,
@@ -21,7 +21,7 @@
                 0x8F,0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,0x98,0x9A,0x00,0x00,0x00,0x00,0x00,
                 0x6C,0x6F,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
                 0x70,0x71,0x72,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-                0x00,0x22,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+                0x00,0x22,0xA7,0xA8,0xA9,0xAA,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
             ]
             function setWindow(type) {
                 if (type == -1) {
@@ -49,6 +49,30 @@
                     document.getElementById("spawnx").value = json.spawnX
                     document.getElementById("spawny").value = json.spawnY
                     document.getElementById("gimmick").selectedIndex = json.gimmick
+					document.getElementById("hasfluid").checked = json.fluid != undefined
+					if (json.fluid != undefined) {
+						document.getElementById("hightide").value = json.fluid.hightide
+						document.getElementById("lowtide").value = json.fluid.lowtide
+						document.getElementById("staytime").value = json.fluid.staytime
+						document.getElementById("movetime").value = json.fluid.movetime
+						document.getElementById("fluid-mov-type").selectedIndex = json.fluid.movtype
+						document.getElementById("fluid-type").selectedIndex = json.fluid.type
+					}
+					showFluidSettings(json.fluid != undefined)
+					while (document.getElementById("warp-edit").children.length > 1) {
+						document.getElementById("warp-edit").lastChild.remove()
+					}
+					for (var i = 0; i < json.warps.length; i++) {
+						addWarp()
+						var warp = json.warps[i]
+						var w = document.getElementById("warp-edit").lastChild
+						w.children[0].children[0].value = warp.x
+						w.children[1].children[0].value = warp.y
+						w.children[2].children[0].value = warp.levelID
+						w.children[3].children[0].value = warp.spawnX
+						w.children[4].children[0].value = warp.spawnY
+						w.children[5].children[0].checked = warp.goDown
+					}
                     var grid = document.getElementById("grid")
                     grid.innerHTML = ""
                     var width = json.width
@@ -84,6 +108,29 @@
                 json.spawnX = document.getElementById("spawnx").valueAsNumber
                 json.spawnY = document.getElementById("spawny").valueAsNumber
                 json.gimmick = document.getElementById("gimmick").selectedIndex
+				if (document.getElementById("hasfluid").checked) {
+					var fluid = {}
+					fluid.hightide = document.getElementById("hightide").valueAsNumber
+					fluid.lowtide = document.getElementById("lowtide").valueAsNumber
+					fluid.staytime = document.getElementById("staytime").valueAsNumber
+					fluid.movetime = document.getElementById("movetime").valueAsNumber
+					fluid.movtype = document.getElementById("fluid-mov-type").selectedIndex
+					fluid.type = document.getElementById("fluid-type").selectedIndex
+					json.fluid = fluid
+				}
+				var warps = []
+				for (var i = 1; i < document.getElementById("warp-edit").children.length; i++) {
+					var warp = {}
+					var w = document.getElementById("warp-edit").children[i]
+					warp.x = w.children[0].children[0].valueAsNumber
+					warp.y = w.children[1].children[0].valueAsNumber
+					warp.levelID = w.children[2].children[0].valueAsNumber
+					warp.spawnX = w.children[3].children[0].valueAsNumber
+					warp.spawnY = w.children[4].children[0].valueAsNumber
+					warp.goDown = w.children[5].children[0].checked
+					warps.push(warp)
+				}
+				json.warps = warps
                 var tileData = []
                 for (var x = 0; x < width; x++) {
                     var column = []
@@ -94,12 +141,14 @@
                     tileData.push(column)
                 }
                 json.tileData = tileData
+				console.log(json)
                 download(JSON.stringify(json), "level.json")
             }
             function exportFile() {
                 var grid = document.getElementById("grid")
                 var width = grid.children[0].children.length
                 var height = grid.children.length
+				var warps = document.getElementById("warp-edit").children.length - 1
                 var data = []
                 data.push(0x03, 0x00, 0x05, 0x6D, 0x75, 0x73, 0x69, 0x63)
                 data.push(document.getElementById("music").selectedIndex & 0xFF)
@@ -117,7 +166,47 @@
                 data.push((document.getElementById("spawnx").valueAsNumber >> 8) & 0xFF, document.getElementById("spawnx").valueAsNumber & 0xFF)
                 data.push(0x04, 0x00, 0x06, 0x73, 0x70, 0x61, 0x77, 0x6E, 0x59)
                 data.push((document.getElementById("spawny").valueAsNumber >> 8) & 0xFF, document.getElementById("spawny").valueAsNumber & 0xFF)
-                data.push(0x02, 0x00, 0x05, 0x77, 0x61, 0x72, 0x70, 0x73, 0x00, 0x00, 0x00, 0x00)
+				if (document.getElementById("hasfluid").checked) {
+					data.push(0x01, 0x00, 0x05, 0x66, 0x6C, 0x75, 0x69, 0x64)
+					data.push(0x03, 0x00, 0x08, 0x68, 0x69, 0x67, 0x68, 0x54, 0x69, 0x64, 0x65)
+					data.push(document.getElementById("hightide").valueAsNumber)
+					data.push(0x03, 0x00, 0x07, 0x6C, 0x6F, 0x77, 0x54, 0x69, 0x64, 0x65)
+					data.push(document.getElementById("lowtide").valueAsNumber)
+					data.push(0x03, 0x00, 0x08, 0x73, 0x74, 0x61, 0x79, 0x54, 0x69, 0x6D, 0x65)
+					data.push(document.getElementById("staytime").valueAsNumber)
+					data.push(0x03, 0x00, 0x08, 0x66, 0x61, 0x6C, 0x6C, 0x54, 0x69, 0x6D, 0x65)
+					data.push(document.getElementById("movetime").valueAsNumber)
+					data.push(0x03, 0x00, 0x0C, 0x6D, 0x6F, 0x76, 0x65, 0x6D, 0x65, 0x6E, 0x74, 0x54, 0x79, 0x70, 0x65)
+					data.push(document.getElementById("fluid-mov-type").selectedIndex)
+					data.push(0x03, 0x00, 0x04, 0x74, 0x79, 0x70, 0x65)
+					data.push(document.getElementById("fluid-type").selectedIndex)
+					data.push(0x00)
+				}
+                data.push(0x02, 0x00, 0x05, 0x77, 0x61, 0x72, 0x70, 0x73)
+				data.push((warps >> 24) & 0xFF, (warps >> 16) & 0xFF, (warps >> 8) & 0xFF, warps & 0xFF)
+				for (var i = 1; i < document.getElementById("warp-edit").children.length; i++) {
+					var warp = document.getElementById("warp-edit").children[i]
+					var x = warp.children[0].children[0].valueAsNumber
+					var y = warp.children[1].children[0].valueAsNumber
+					var levelID = warp.children[2].children[0].valueAsNumber
+					var spawnX = warp.children[3].children[0].valueAsNumber
+					var spawnY = warp.children[4].children[0].valueAsNumber
+					var goDown = warp.children[5].children[0].checked
+					data.push(0x01)
+					data.push(0x04, 0x00, 0x01, 0x78)
+					data.push((x >> 8) & 0xFF, x & 0xFF)
+					data.push(0x04, 0x00, 0x01, 0x79)
+					data.push((y >> 8) & 0xFF, y & 0xFF)
+					data.push(0x03, 0x00, 0x07, 0x6C, 0x65, 0x76, 0x65, 0x6C, 0x49, 0x44)
+					data.push(levelID & 0xFF)
+					data.push(0x04, 0x00, 0x06, 0x73, 0x70, 0x61, 0x77, 0x6E, 0x58)
+					data.push((spawnX >> 8) & 0xFF, spawnX & 0xFF)
+					data.push(0x04, 0x00, 0x06, 0x73, 0x70, 0x61, 0x77, 0x6E, 0x59)
+					data.push((spawnY >> 8) & 0xFF, spawnY & 0xFF)
+					data.push(0x0A, 0x00, 0x06, 0x67, 0x6F, 0x44, 0x6F, 0x77, 0x6E)
+					data.push(goDown ? 0x01 : 0x00)
+					data.push(0x00)
+				}
                 data.push(0x02, 0x00, 0x08, 0x74, 0x69, 0x6C, 0x65, 0x44, 0x61, 0x74, 0x61)
                 data.push((height >> 24) & 0xFF, (height >> 16) & 0xFF, (height >> 8) & 0xFF, height & 0xFF)
                 for (var y = 0; y < height; y++) {
@@ -247,6 +336,17 @@
                 y *= 32
                 document.getElementById("current-tile").style.backgroundPosition = "-" + x + "px -" + y + "px"
             }
+			function showFluidSettings(show) {
+				var elements = document.getElementsByClassName("fluid")
+				for (var i = 0; i < elements.length; i++) {
+					elements[i].style.display = show ? "table-row" : "none"
+				}
+			}
+			function addWarp() {
+				var element = document.createElement("tr")
+				element.innerHTML = document.getElementById("warp-template").innerHTML
+				document.getElementById("warp-edit").appendChild(element)
+			}
         </script>
         <style>
             * {
@@ -281,7 +381,7 @@
                 top: 0px;
                 left: 0px;
                 width: 100%;
-                height: 100%
+                height: 100%;
             }
             .window-table {
                 transform: translate(-50%, -50%);
@@ -370,19 +470,19 @@
                         <tr>
                             <td>Time</td>
                             <td>
-                                <input id="time" type="number" min="10" max="1000" value="300" step="10" style="width: 128px">
+                                <input id="time" type="number" min="10" max="1000" value="300" step="10">
                             </td>
                         </tr>
                         <tr>
                             <td>Spawn X</td>
                             <td>
-                                <input id="spawnx" type="number" min="0" max="23" value="0" style="width: 128px">
+                                <input id="spawnx" type="number" min="0" max="23" value="0">
                             </td>
                         </tr>
                         <tr>
                             <td>Spawn Y</td>
                             <td>
-                                <input id="spawny" type="number" min="0" max="15" value="0" style="width: 128px">
+                                <input id="spawny" type="number" min="0" max="15" value="0">
                             </td>
                         </tr>
                         <tr>
@@ -402,6 +502,60 @@
                                 </select>
                             </td>
                         </tr>
+						<tr>
+							<td>Warps</td>
+							<td><button onclick="setWindow(-1); setWindow(2)" style="width: 100%">Edit</button>
+						</tr>
+						<tr>
+							<td>Has Fluid</td>
+							<td>
+								<input type="checkbox" id="hasfluid" onchange="showFluidSettings(this.checked)">
+							</td>
+						</tr>
+						<tr class="fluid">
+							<td>High Tide</td>
+							<td>
+								<input id="hightide" type="number" min="0" max="255" value="244">
+							</td>
+						</tr>
+						<tr class="fluid">
+							<td>Low Tide</td>
+							<td>
+								<input id="lowtide" type="number" min="0" max="255" value="244">
+							</td>
+						</tr>
+						<tr class="fluid">
+							<td>Stay Time</td>
+							<td>
+								<input id="staytime" type="number" min="0" max="255" value="0">
+							</td>
+						</tr>
+						<tr class="fluid">
+							<td>Move Time</td>
+							<td>
+								<input id="movetime" type="number" min="0" max="255" value="0">
+							</td>
+						</tr>
+						<tr class="fluid">
+							<td>Movement Type</td>
+							<td>
+                                <select id="fluid-mov-type" style="width: 100%">
+                                    <option name="fall">Fall</option>
+                                    <option name="rise">Rise</option>
+                                    <option name="waves">Waves</option>
+                                </select>
+							</td>
+						</tr>
+						<tr class="fluid">
+							<td>Fluid Type</td>
+							<td>
+                                <select id="fluid-type" style="width: 100%">
+                                    <option name="water">Water</option>
+                                    <option name="poison">Poison</option>
+                                    <option name="lava">Lava</option>
+                                </select>
+							</td>
+						</tr>
                     </table>
                 </div>
                 <div style="display: none">
@@ -409,6 +563,28 @@
                         <tr>
 
                         </tr>
+                    </table>
+                </div>
+                <div style="display: none">
+                    <table class="window-table" id="warp-edit">
+                        <tr>
+							<td style="min-width: 128px">X Pos</td>
+							<td style="min-width: 128px">Y Pos</td>
+							<td style="min-width: 128px">Dest Level</td>
+							<td style="min-width: 128px">Dest X Pos</td>
+							<td style="min-width: 128px">Dest Y Pos</td>
+							<td style="min-width: 128px">Go Down</td>
+							<td style="min-width: 128px"><button onclick="addWarp()" style="width: 100%">Add Warp</button></td>
+                        </tr>
+						<tr id="warp-template" style="display: none">
+							<td><input type="number" min="0" max="65535" value="0" style="width: 100%"></td>
+							<td><input type="number" min="0" max="65535" value="0" style="width: 100%"></td>
+							<td><input type="number" min="0" max="255" value="0" style="width: 100%"></td>
+							<td><input type="number" min="0" max="65535" value="0" style="width: 100%"></td>
+							<td><input type="number" min="0" max="65535" value="0" style="width: 100%"></td>
+							<td><input type="checkbox"></td>
+							<td><button onclick="this.parentNode.parentNode.remove()" style="width: 100%">Remove</button></td>
+						</tr>
                     </table>
                 </div>
                 <button style="top: 5px; right: 5px; width: 32px; height: 32px; position: absolute" onclick="setWindow(-1)">X</button>
@@ -463,6 +639,7 @@
             var spawny = document.getElementById("spawny")
             spawnx.value = parseInt(spawnx.value) > parseInt(spawnx.max) ? parseInt(spawnx.max) : parseInt(spawnx.value)
             spawny.value = parseInt(spawny.value) > parseInt(spawny.max) ? parseInt(spawny.max) : parseInt(spawny.value)
+			showFluidSettings(document.getElementById("hasfluid").checked)
         </script>
     </body>
 </html>

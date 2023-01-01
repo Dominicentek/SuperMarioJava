@@ -14,6 +14,7 @@ public class IcicleBehavior implements EntityBehavior {
     public boolean falling = false;
     public int prevY = 0;
     public int respawnTimeout = 0;
+    public boolean grow = false;
     public void onLoad(GameEntity entity, GameLevel level) {
         entity.getPhysics().getConfig().gravity = 0;
         entity.spawnOffsetX = 0;
@@ -26,6 +27,7 @@ public class IcicleBehavior implements EntityBehavior {
             if (respawnTimeout == 0) {
                 entity.getPhysics().getHitbox().y = prevY - 200;
                 falling = false;
+                grow = false;
             }
             return;
         }
@@ -35,8 +37,9 @@ public class IcicleBehavior implements EntityBehavior {
         int py = playerHitbox.y + playerHitbox.height / 2;
         int X = hitbox.x + hitbox.width / 2;
         int Y = hitbox.y + hitbox.height / 2;
+        if (!grow) grow = Math.sqrt(Math.pow(px - X, 2) + Math.pow(py - Y, 2)) > 400;
         if (!falling && entity.getPhysics().getHitbox().y < prevY) {
-            if (Math.sqrt(Math.pow(px - X, 2) + Math.pow(py - Y, 2)) > 400) entity.getPhysics().getHitbox().y += 5;
+            if (grow) entity.getPhysics().getHitbox().y += 5;
             return;
         }
         entity.getProperties().setDrawInBG(false);

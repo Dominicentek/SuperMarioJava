@@ -131,6 +131,10 @@ public class Theme {
         addTile(Tiles.EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS, new ExclamationPointCircleBallThingIdkHowToCallThisTile(), tileset, 0x22);
         addTile(Tiles.PUSHABLE_STONE, new EntitySpawnerTile(EntityType.PUSHABLE_STONE), tileset, 0x00);
         addTile(Tiles.ICICLE, new EntitySpawnerTile(EntityType.ICICLE), tileset, 0x00);
+        addTile(Tiles.UPWARDS_STREAM, new EntitySpawnerTile(EntityType.UP_PIPE_STREAM), tileset, 0x00);
+        addTile(Tiles.LEFT_STREAM, new EntitySpawnerTile(EntityType.LEFT_PIPE_STREAM), tileset, 0x00);
+        addTile(Tiles.DOWNWARDS_STREAM, new EntitySpawnerTile(EntityType.DOWN_PIPE_STREAM), tileset, 0x00);
+        addTile(Tiles.RIGHT_STREAM, new EntitySpawnerTile(EntityType.RIGHT_PIPE_STREAM), tileset, 0x00);
     }
     private void addTile(int id, LevelTile tile, Texture tileset, Integer... locations) {
         tileList.set(id, ((GameTile)tile).setTextureLocations(locations).setTexture(tileset));

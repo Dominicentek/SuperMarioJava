@@ -213,7 +213,7 @@ public final class Physics {
             }
         }
         speedY += (config.underwater ? config.underwaterGravity : config.gravity);
-        if (speedY >= config.terminalVelocity) speedY = config.terminalVelocity;
+        if (speedY >= config.terminalVelocity / (config.underwater ? 5 : 1)) speedY = config.terminalVelocity / (config.underwater ? 5 : 1);
         if (!fixedSpeedX) {
             double acceleration = config.underwater ? config.underwaterAcceleration : config.acceleration;
             float speedFactor = ((GameEntity)entity).entityType == EntityType.PLAYER && Game.savefile.powerupState == 5 ? 1.5f : 1f;

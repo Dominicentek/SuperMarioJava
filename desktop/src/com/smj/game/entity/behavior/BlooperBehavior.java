@@ -30,7 +30,4 @@ public class BlooperBehavior implements EntityBehavior {
             chargeTimeout = 15;
         }
     }
-    public void onLoad(GameEntity entity, GameLevel level) {
-        entity.getPhysics().getConfig().terminalVelocity /= 10;
-    }
 }
