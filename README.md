@@ -41,5 +41,20 @@ Like this: `./gradlew dist`
 * F2 - Screenshot
 * F3 - Open Console
 
-### Console Commands
-Coming soon
+## Console Commands
+| Name        | Aliases         | Syntax                                       | Description                                        |
+|-------------|-----------------|----------------------------------------------|----------------------------------------------------|
+| `life`      |                 | `<set,add> <amount>`                         | Manages the amount of lives                        |
+| `coin`      |                 | `<set,add> <amount>`                         | Manages the amount of coins                        |
+| `time`      |                 | `<set,add> <amount>`                         | Manages the time remaining                         |
+| `score`     |                 | `<set,add> <amount>`                         | Manages the score                                  |
+| `powerup`   |                 | `<state>`                                    | Sets the powerup state for the player              |
+| `superstar` |                 | `<seconds>`                                  | Adds an amount of seconds to player's star powerup |
+| `entity`    |                 | `<type> <entity x> <entity y>`               | Spawns an entity                                   |
+| `tile`      |                 | `<type> <tile x> <tile y>`                   | Sets a tile to a position                          |
+| `position`  | `teleport` `tp` | `<entity x> <entity y> [absolute,relative] ` | Teleport player to position                        |
+| `die`       |                 |                                              | Makes Mario die                                    |
+| `finish`    |                 |                                              | Finishes the level                                 |
+| `save`      |                 |                                              | Saves the game                                     |
+| `clear`     |                 |                                              | Clears the console                                 |
+
