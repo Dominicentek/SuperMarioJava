@@ -19,20 +19,35 @@ public class FluidMovement {
         this.fallTime = fallTime;
         this.movementType = movementType;
         timeout = stayTime;
-        stage = movementType == 0 ? 0 : 2;
-        y = movementType == 0 ? highTide : lowTide;
+        stage = movementType == FALL ? 0 : 2;
+        y = movementType == FALL ? highTide : lowTide;
     }
     public void update() {
         timeout--;
+        timeout = Math.max(0, timeout);
         if (timeout == 0) {
-            stage++;
-            if (stage == 4) stage = 0;
-            timeout = stage % 2 == 0 ? stayTime : fallTime;
+            if (movementType == WAVES) {
+                stage++;
+                if (stage == 4) stage = 0;
+                timeout = stage % 2 == 0 ? stayTime : fallTime;
+            }
+            if (movementType == FALL) {
+                if (stage != 3) {
+                    stage = 3;
+                    timeout = fallTime;
+                }
+            }
+            if (movementType == RISE) {
+                if (stage != 1) {
+                    stage = 1;
+                    timeout = fallTime;
+                }
+            }
         }
-        if (stage == 0) y = highTide;
-        if (stage == 1) y = (int)((Math.sin(90 + ((fallTime - 1 - timeout) / (double)fallTime * 180)) / 2 + 0.5) * (highTide - lowTide)) + lowTide;
-        if (stage == 2) y = lowTide;
-        if (stage == 3) y = (int)((Math.sin(270 + ((timeout - 1) / (double)fallTime * 180)) / 2 + 0.5) * (highTide - lowTide)) + lowTide;
+        if (stage == 0) y = lowTide;
+        if (stage == 1) y = (int)((Math.sin(Math.toRadians(270 + (timeout / (double)fallTime * 180))) / 2 + 0.5) * (lowTide - highTide)) + highTide;
+        if (stage == 2) y = highTide;
+        if (stage == 3) y = (int)((Math.sin(Math.toRadians(90 + (timeout / (double)fallTime * 180))) / 2 + 0.5) * (lowTide - highTide)) + highTide;
     }
     public int getFluidLevel() {
         return y;
