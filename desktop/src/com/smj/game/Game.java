@@ -212,7 +212,7 @@ public class Game {
         }
         ArrayList<Particle> particles = new ArrayList<>(Game.particles);
         for (Particle particle : particles) {
-            if (particle instanceof MarioDeathParticle) particle.update();
+            if (!particle.noUpdatePaused) particle.update();
         }
         if (finishTimeout > 0) finishTimeout--;
         if (warpTimeout > 0) {
@@ -257,10 +257,6 @@ public class Game {
         }
         if (paused) return;
         currentLevel.update();
-        particles = new ArrayList<>(Game.particles);
-        for (Particle particle : particles) {
-            if (!(particle instanceof MarioDeathParticle)) particle.update();
-        }
         timeTimeout--;
         if (timeTimeout == 0) {
             time--;
@@ -287,6 +283,10 @@ public class Game {
             if (invincibilityTimeout == 0) {
                 AudioPlayer.MUSIC[currentLevel.music].play(timeRunningOut ? 1.5f : 1f);
             }
+        }
+        particles = new ArrayList<>(Game.particles);
+        for (Particle particle : particles) {
+            if (particle.noUpdatePaused) particle.update();
         }
         if (invincibilityFrames > 0) invincibilityFrames--;
         if (currentLevel.gimmick == GameLevel.Gimmick.ENEMY && currentLevel.getEntityManager().loadedEntityAmount() == 1 && time < currentLevel.time && currentLevel.getTileAt(12, 12) != Tiles.STAR && finishTimeout == -1) {

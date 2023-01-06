@@ -22,6 +22,7 @@ public class BubbleParticle extends Particle {
         this.speedX = speedX;
         this.speedY = speedY;
         alphaTimeout = RNG.range(1.0, 2.0);
+        noUpdatePaused = true;
     }
     public void update() {
         alpha -= alphaTimeout;

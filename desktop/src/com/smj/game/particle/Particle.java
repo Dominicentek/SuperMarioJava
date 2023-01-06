@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 
 public abstract class Particle {
     public Texture texture;
+    public boolean noUpdatePaused = false;
     public Particle(Texture texture) {
         this.texture = texture;
     }

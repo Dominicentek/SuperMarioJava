@@ -12,13 +12,19 @@ import java.awt.Rectangle;
 public class PipeStreamBehavior implements EntityBehavior {
     public int dirX;
     public int dirY;
-    public PipeStreamBehavior(Integer dirX, Integer dirY) {
+    public int offX;
+    public int offY;
+    public PipeStreamBehavior(Integer dirX, Integer dirY, Integer offX, Integer offY) {
         this.dirX = dirX;
         this.dirY = dirY;
+        this.offX = offX;
+        this.offY = offY;
     }
     public void onLoad(GameEntity entity, GameLevel level) {
         entity.getPhysics().getConfig().underwaterGravity = 0;
         entity.getPhysics().getConfig().collisionEnabled = false;
+        entity.spawnOffsetX = offX;
+        entity.spawnOffsetY = offY;
     }
     public void update(GameEntity entity, GameLevel level) {
         Rectangle hitbox = entity.getPhysics().getHitbox();

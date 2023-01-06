@@ -117,7 +117,7 @@ public class Tiles {
     public static final int EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS = 0xF0;
     public static final int PUSHABLE_STONE = 0xF1;
     public static final int UPWARDS_STREAM = 0xF2;
-    public static final int LEFT_STREAM = 0xF4;
-    public static final int DOWNWARDS_STREAM = 0xF3;
+    public static final int LEFT_STREAM = 0xF3;
+    public static final int DOWNWARDS_STREAM = 0xF4;
     public static final int RIGHT_STREAM = 0xF5;
 }
