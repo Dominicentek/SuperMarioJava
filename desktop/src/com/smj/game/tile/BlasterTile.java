@@ -19,14 +19,8 @@ public class BlasterTile extends GameTile {
             int X = x * 100 + 50;
             int Y = y * 100 + 50;
             if (Math.sqrt(Math.pow(mx - X, 2) + Math.pow(my - Y, 2)) < 300) return;
-            int check = -1;
             float speedFactor = 1f;
-            if (mx > X) {
-                speedFactor *= -1;
-                check *= -1;
-            }
-            if (check < 0 || check >= level.getLevelBoundaries().width) return;
-            if (level.getTileList().get(level.getTileAt(x + check, y)).isSolid()) return;
+            if (mx > X) speedFactor *= -1;
             GameEntity bullet = EntityType.BULLET_BILL.spawn(level, x * 100, y * 100);
             bullet.getProperties().drawInBG = true;
             AudioPlayer.EXPLOSION.play(Location.tile(x, y, level));
