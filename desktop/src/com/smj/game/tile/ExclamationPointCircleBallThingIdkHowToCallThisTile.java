@@ -1,5 +1,6 @@
 package com.smj.game.tile;
 
+import com.smj.game.Game;
 import com.smj.game.GameLevel;
 import com.smj.game.Location;
 import com.smj.game.entity.EntityType;
@@ -12,6 +13,7 @@ public class ExclamationPointCircleBallThingIdkHowToCallThisTile extends GameTil
             EntityType.BRICK_BLOCK.spawn(level, level.getLevelBoundaries().width * 100 - 300, -1000);
             AudioPlayer.KEY_COIN.play(Location.tile(x, y, level));
             level.setTileAt(Tiles.AIR, x, y);
+            Game.bossFightTilesTimeout = 1;
         }
     }
 }
