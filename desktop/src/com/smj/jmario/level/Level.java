@@ -138,7 +138,7 @@ public class Level {
         int fullWidth = getLevelBoundaries().width * unitWidth;
         int fullHeight = getLevelBoundaries().height * unitHeight;
         renderer.setColor(bg.getColor());
-        renderer.fillRect(0, 0, width, height);
+        renderer.rect(0, 0, width, height);
         renderer.setColor(0xFFFFFFFF);
         double[] cameraTarget = focusEntity.getTextureOrigin(unitWidth, unitHeight);
         camera.setTarget(cameraTarget[0] + ((GameEntity)focusEntity).textureRegion.width / 2.0 / (double)unitWidth, -cameraTarget[1] - ((GameEntity)focusEntity).textureRegion.height / 2.0 / (double)unitHeight + Main.HEIGHT / (double)unitHeight);
@@ -220,10 +220,16 @@ public class Level {
         }
         Fluid fluid = ((GameLevel)this).fluid;
         if (fluid != null) {
-            int amount = (int)Math.ceil(Main.WIDTH / 8.0) + 2;
-            for (int i = 0; i < amount; i++) {
-                renderer.draw(fluid.type.texture, i * 8 - (int)(System.currentTimeMillis() % 800 / 100) + (int)cameraX / 8 * 8, fluid.movement.getFluidLevel());
-            }
+            int offset = (int)(System.currentTimeMillis() % 800 / 100);
+            int x = (int)cameraX / 8 * 8;
+            int y = fluid.movement.getFluidLevel();
+            Texture overlay = TextureLoader.get(Gdx.files.internal("assets/images/fluid/overlay.png"));
+            Texture mask = TextureLoader.get(Gdx.files.internal("assets/images/fluid/mask.png"));
+            renderer.setColor(fluid.type.color);
+            renderer.draw(mask, x - offset, y);
+            renderer.rect(x - offset, y + 8, Main.WIDTH + 16, Main.HEIGHT);
+            renderer.setColor(0xFFFFFFFF);
+            renderer.draw(overlay, x - offset, y);
         }
     }
 }

@@ -28,7 +28,7 @@ public class Menu {
         int height = (items.length + (title.isEmpty() ? 0 : 2)) * 12 + 4;
         int x = Main.WIDTH / 2 - width / 2 + offsetX;
         int y = Main.HEIGHT / 2 - height / 2 + offsetY;
-        renderer.fillRect(x, y, width, height, 0x0000007F);
+        renderer.rect(x, y, width, height, 0x0000007F);
         renderer.setColor(0xFFFFFFFF);
         x += 4;
         y += 4;

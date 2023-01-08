@@ -4,14 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.smj.Main;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.smj.gui.font.Font;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 public class Renderer extends SpriteBatch {
-    private static final Texture pixel;
+    public static final Texture pixel;
     private int translateX;
     private int translateY;
     public int height;
@@ -52,25 +51,13 @@ public class Renderer extends SpriteBatch {
         if (topLeft) y = this.height - y - height;
         draw(texture, x + translateX, y + translateY, width, height, bounds.x, bounds.y, bounds.width, bounds.height, flipX, flipY);
     }
-    public void fillRect(int x, int y, int width, int height) {
+    public void rect(int x, int y, int width, int height) {
         draw(pixel, x, y, width, height);
     }
-    public void fillRect(int x, int y, int width, int height, int color) {
+    public void rect(int x, int y, int width, int height, int color) {
         Color prevColor = getColor();
         setColor(color);
-        fillRect(x, y, width, height);
-        setColor(prevColor);
-    }
-    public void drawRect(int x, int y, int width, int height) {
-        draw(pixel, x, y, width, 1);
-        draw(pixel, x, y, 1, height);
-        draw(pixel, x + width - 1, y, 1, height);
-        draw(pixel, x, y + height - 1, width, 1);
-    }
-    public void drawRect(int x, int y, int width, int height, int color) {
-        Color prevColor = getColor();
-        setColor(color);
-        drawRect(x, y, width, height);
+        rect(x, y, width, height);
         setColor(prevColor);
     }
     public void translate(int x, int y) {

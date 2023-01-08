@@ -117,8 +117,8 @@ public class Game {
         if (Menu.currentMenu == Menus.MAIN) renderer.draw(TextureLoader.get(Gdx.files.internal("assets/images/logo.png")), Main.WIDTH / 2 - 168 / 2, 24);
         if (consoleOpen) {
             renderer.setColor(0x0000007F);
-            renderer.fillRect(4, 4, Main.WIDTH - 8, Main.HEIGHT - 20 - Font.getHeight());
-            renderer.fillRect(4, Main.HEIGHT - 12 - Font.getHeight(), Main.WIDTH - 8, Font.getHeight() + 8);
+            renderer.rect(4, 4, Main.WIDTH - 8, Main.HEIGHT - 20 - Font.getHeight());
+            renderer.rect(4, Main.HEIGHT - 12 - Font.getHeight(), Main.WIDTH - 8, Font.getHeight() + 8);
             renderer.setColor(0xFFFFFFFF);
             List<String> lineList = Arrays.asList(console.data.split("\n"));
             Collections.reverse(lineList);

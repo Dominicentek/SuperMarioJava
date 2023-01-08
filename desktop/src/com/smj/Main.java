@@ -20,7 +20,6 @@ import com.smj.gui.font.Font;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.util.Arrays;
 
 public class Main extends ApplicationAdapter {
     public static Renderer renderer;
@@ -85,11 +84,11 @@ public class Main extends ApplicationAdapter {
         renderer.begin();
         renderer.setProjectionMatrix(mainCamera.combined);
         renderer.setTransformMatrix(new Matrix4().translate(-WIDTH / 2f, -HEIGHT / 2f, 0));
-        renderer.fillRect(0, 0, WIDTH, HEIGHT, 0x000000FF);
+        renderer.rect(0, 0, WIDTH, HEIGHT, 0x000000FF);
         Game.render(renderer);
         renderer.resetTranslation();
         if (menu != null) menu.render(renderer);
-        renderer.fillRect(0, 0, WIDTH, HEIGHT, transition.alpha);
+        renderer.rect(0, 0, WIDTH, HEIGHT, transition.alpha);
         if (Controls.SCREENSHOT.isJustPressed()) Screenshot.take();
         renderer.end();
         buffer.end();

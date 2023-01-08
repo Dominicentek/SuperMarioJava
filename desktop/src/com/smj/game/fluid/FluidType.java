@@ -5,12 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.smj.util.TextureLoader;
 
 public enum FluidType {
-    WATER(TextureLoader.get(Gdx.files.internal("assets/images/fluids/water.png"))),
-    POISON(TextureLoader.get(Gdx.files.internal("assets/images/fluids/poison.png"))),
-    LAVA(TextureLoader.get(Gdx.files.internal("assets/images/fluids/lava.png"))),
-    ;
-    public Texture texture;
-    FluidType(Texture texture) {
-        this.texture = texture;
+    WATER(0x0000FF3F),
+    POISON(0xBF00BF7F),
+    LAVA(0xBF0000FF);
+    public final int color;
+    FluidType(int color) {
+        this.color = color;
     }
 }
