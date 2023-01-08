@@ -12,15 +12,15 @@ public class Fluid implements Readable {
     }
     public Fluid(ObjectElement element) {
         movement = new FluidMovement(
-            Byte.toUnsignedInt(element.getByte("highTide")),
-            Byte.toUnsignedInt(element.getByte("lowTide")),
-            Byte.toUnsignedInt(element.getByte("stayTime")),
-            Byte.toUnsignedInt(element.getByte("fallTime")),
+            Short.toUnsignedInt(element.getShort("highTide")),
+            Short.toUnsignedInt(element.getShort("lowTide")),
+            Short.toUnsignedInt(element.getShort("stayTime")),
+            Short.toUnsignedInt(element.getShort("moveTime")),
             Byte.toUnsignedInt(element.getByte("movementType"))
         );
         type = FluidType.values()[element.getByte("type")];
     }
     public String toString() {
-        return "h=" + movement.highTide + ";l=" + movement.lowTide + ";s=" + movement.stayTime + ";f=" + movement.fallTime + ";m=" + movement.movementType + ";t=" + type;
+        return "h=" + movement.highTide + ";l=" + movement.lowTide + ";s=" + movement.stayTime + ";f=" + movement.moveTime + ";m=" + movement.movementType + ";t=" + type;
     }
 }
