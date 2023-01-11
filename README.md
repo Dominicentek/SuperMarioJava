@@ -42,19 +42,28 @@ Like this: `./gradlew dist`
 * F3 - Open Console
 
 ## Console Commands
-| Name        | Aliases         | Syntax                                       | Description                                        |
-|-------------|-----------------|----------------------------------------------|----------------------------------------------------|
-| `life`      |                 | `<set,add> <amount>`                         | Manages the amount of lives                        |
-| `coin`      |                 | `<set,add> <amount>`                         | Manages the amount of coins                        |
-| `time`      |                 | `<set,add> <amount>`                         | Manages the time remaining                         |
-| `score`     |                 | `<set,add> <amount>`                         | Manages the score                                  |
-| `powerup`   |                 | `<state>`                                    | Sets the powerup state for the player              |
-| `superstar` |                 | `<seconds>`                                  | Adds an amount of seconds to player's star powerup |
-| `entity`    |                 | `<type> <entity x> <entity y>`               | Spawns an entity                                   |
-| `tile`      |                 | `<type> <tile x> <tile y>`                   | Sets a tile to a position                          |
-| `position`  | `teleport` `tp` | `<entity x> <entity y> [absolute,relative] ` | Teleport player to position                        |
-| `die`       |                 |                                              | Makes Mario die                                    |
-| `finish`    |                 |                                              | Finishes the level                                 |
-| `save`      |                 |                                              | Saves the game                                     |
-| `clear`     |                 |                                              | Clears the console                                 |
+| Name        | Aliases         | Syntax               | Description                                        |
+|-------------|-----------------|----------------------|----------------------------------------------------|
+| `life`      |                 | `<set,add> <amount>` | Manages the amount of lives                        |
+| `coin`      |                 | `<set,add> <amount>` | Manages the amount of coins                        |
+| `time`      |                 | `<set,add> <amount>` | Manages the time remaining                         |
+| `score`     |                 | `<set,add> <amount>` | Manages the score                                  |
+| `powerup`   |                 | `<state>`            | Sets the powerup state for the player              |
+| `superstar` |                 | `<seconds>`          | Adds an amount of seconds to player's star powerup |
+| `entity`    |                 | `<type> <position>`  | Spawns an entity                                   |
+| `tile`      |                 | `<type> <position>`  | Sets a tile to a position                          |
+| `position`  | `teleport` `tp` | `<position>`         | Teleport player to position                        |
+| `die`       |                 |                      | Makes Mario die                                    |
+| `finish`    |                 |                      | Finishes the level                                 |
+| `save`      |                 |                      | Saves the game                                     |
+| `clear`     |                 |                      | Clears the console                                 |
+| `help`      |                 | `[command]`          | Shows the help                                     |
 
+The position argument is a set of 2 numeric values.
+Those value are the X and Y coordinates of the position.
+The values can have a decimal point, and are on the scale of a tile (16 pixels).
+You can use the `~` symbol right behind a value like this: `~0.5`.
+This will make the coordinate relative to right (or down), and go left (or up)
+instead of the other way around.
+Use the `@` symbol to make the coordinates relative to the player,
+or the `&` symbol to make it relative to the middle of the camera.

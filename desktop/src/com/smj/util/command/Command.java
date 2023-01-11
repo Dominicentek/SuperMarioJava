@@ -12,9 +12,11 @@ import com.smj.game.tile.Tiles;
 import com.smj.util.AccessCounter;
 import com.smj.util.ArrayStringifier;
 import com.smj.util.Saveable;
+import com.smj.util.command.arguments.PositionArgument;
 import com.smj.util.command.console.Console;
 import com.smj.util.command.console.StdoutConsole;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,10 +62,17 @@ public class Command {
                 return;
             }
             if (node instanceof CommandArgument) {
-                CommandArgument<?> argument = (CommandArgument<?>)node;
-                AccessCounter counter = new AccessCounter(i);
-                context.values.put(argument.name, argument.parse(args, counter));
-                i = counter.access();
+                try {
+                    CommandArgument<?> argument = (CommandArgument<?>)node;
+                    AccessCounter counter = new AccessCounter(i);
+                    context.values.put(argument.name, argument.parse(args, counter));
+                    i = counter.access();
+                }
+                catch (CommandException e) {
+                    console.err(e.getMessage());
+                    e.printStackTrace();
+                    return;
+                }
             }
         }
     }
@@ -158,16 +167,15 @@ public class Command {
                 return value.name().toLowerCase();
             }, EntityType.values()))
         ).addNode(
-            new IntegerArgument("x")
-        ).addNode(
-            new IntegerArgument("y")
+            new PositionArgument("pos", PositionArgument.ENTITY)
         ).addNode(
             (CommandExecution)context -> {
                 if (context.<Integer>get("type") == -1 || context.<Integer>get("type") >= EntityType.values().length) {
                     console.err("Invalid entity");
                     return;
                 }
-                EntityType.values()[context.<Integer>get("type")].spawn(Game.currentLevel, context.get("x"), context.get("y"));
+                Point position = context.get("pos");
+                EntityType.values()[context.<Integer>get("type")].spawn(Game.currentLevel, position.x, position.y);
                 console.log("Spawned entity " + EntityType.values()[context.<Integer>get("type")].name().toLowerCase());
             }
         ).get());
@@ -176,51 +184,34 @@ public class Command {
                 return value.getName().toLowerCase();
             }, Tiles.class.getFields()))
         ).addNode(
-            new IntegerArgument("x")
-        ).addNode(
-            new IntegerArgument("y")
+            new PositionArgument("pos", PositionArgument.TILE)
         ).addNode(
             (CommandExecution)context -> {
                 try {
-                    if (context.<Integer>get("state") == -1 || context.<Integer>get("state") >= Tiles.class.getFields().length) {
-                        console.err("Invalid state");
+                    if (context.<Integer>get("tile") == -1 || context.<Integer>get("tile") >= Tiles.class.getFields().length) {
+                        console.err("Invalid tile");
                         return;
                     }
-                    Game.currentLevel.setTileAt(Tiles.class.getFields()[(int)context.get("tile")].getInt(null), context.get("x"), context.get("y"));
-                    console.log("Set tile " + Tiles.class.getFields()[(int)context.get("tile")].getName().toLowerCase() + " to pos (" + context.get("x") + ", " + context.get("y") + ")");
+                    Point position = context.get("pos");
+                    Game.currentLevel.setTileAt(Tiles.class.getFields()[(int)context.get("tile")].getInt(null), position.x, position.y);
+                    console.log("Set tile " + Tiles.class.getFields()[(int)context.get("tile")].getName().toLowerCase() + " to pos (" + position.x + ", " + position.y + ")");
                 }
                 catch (Exception e) {
+                    console.err("An unknown error occured");
                     e.printStackTrace();
                 }
             }
         ).get());
         commands.addPath("position", new CommandBuilder().addNode(
-            new IntegerArgument("x")
-        ).addNode(
-            new IntegerArgument("y")
+            new PositionArgument("pos", PositionArgument.ENTITY)
         ).addNode(
             (CommandExecution)context -> {
+                Point position = context.get("pos");
                 Rectangle hitbox = Game.player.getPhysics().getHitbox();
-                hitbox.x = context.<Integer>get("x");
-                hitbox.y = context.<Integer>get("y");
-                console.log("Teleported to pos (" + context.get("x") + ", " + context.get("y") + ")");
+                hitbox.x = position.x - hitbox.width / 2;
+                hitbox.y = position.y - hitbox.height;
+                console.log("Teleported to pos (" + position.x + ", " + position.y + ")");
             }
-        ).addNode(
-            new CommandLiteral().addPath("absolute", new CommandBuilder().addNode(
-                (CommandExecution)context -> {
-                    Rectangle hitbox = Game.player.getPhysics().getHitbox();
-                    hitbox.x = context.<Integer>get("x");
-                    hitbox.y = context.<Integer>get("y");
-                    console.log("Teleported to pos (" + context.get("x") + ", " + context.get("y") + ")");
-                }
-            ).get()).addPath("relative", new CommandBuilder().addNode(
-                (CommandExecution)context -> {
-                    Rectangle hitbox = Game.player.getPhysics().getHitbox();
-                    hitbox.x += context.<Integer>get("x");
-                    hitbox.y += context.<Integer>get("y");
-                    console.log("Moved by pos (" + context.get("x") + ", " + context.get("y") + ")");
-                }
-            ).get())
         ).get()).aliasTo("teleport", "position").aliasTo("tp", "position");
         commands.addPath("level", new CommandBuilder().addNode(
             new IntegerArgument("id")
