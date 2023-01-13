@@ -2,6 +2,8 @@ package com.smj.util.command;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.smj.Main;
+import com.smj.game.cutscene.Cutscene;
 import com.smj.util.command.arguments.CommandArgument;
 import com.smj.util.command.arguments.IntegerArgument;
 import com.smj.util.command.arguments.ListArgument;
@@ -170,7 +172,7 @@ public class Command {
             new PositionArgument("pos", PositionArgument.ENTITY)
         ).addNode(
             (CommandExecution)context -> {
-                if (context.<Integer>get("type") == -1 || context.<Integer>get("type") >= EntityType.values().length) {
+                if (context.<Integer>get("type") < 0 || context.<Integer>get("type") >= EntityType.values().length) {
                     console.err("Invalid entity");
                     return;
                 }
@@ -188,7 +190,7 @@ public class Command {
         ).addNode(
             (CommandExecution)context -> {
                 try {
-                    if (context.<Integer>get("tile") == -1 || context.<Integer>get("tile") >= Tiles.class.getFields().length) {
+                    if (context.<Integer>get("tile") < 0 || context.<Integer>get("tile") >= Tiles.class.getFields().length) {
                         console.err("Invalid tile");
                         return;
                     }
@@ -250,6 +252,20 @@ public class Command {
             (CommandExecution)context -> {
                 Game.finishLevel();
                 console.log("Level finished");
+            }
+        ).get());
+        String[] cutsceneIDList = Cutscene.cutscenes.keySet().toArray(new String[0]);
+        commands.addPath("cutscene", new CommandBuilder().addNode(
+            new ListArgument("id", cutsceneIDList)
+        ).addNode(
+            (CommandExecution)context -> {
+                int id = context.get("id");
+                if (id < 0 || id >= Cutscene.cutscenes.size()) {
+                    console.err("Invalid cutscene");
+                    return;
+                }
+                console.log("Starting cutscene");
+                Main.startCutscene(cutsceneIDList[id]);
             }
         ).get());
     }

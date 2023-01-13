@@ -57,7 +57,7 @@ Like this: `./gradlew dist`
 | `finish`    |                 |                      | Finishes the level                                 |
 | `save`      |                 |                      | Saves the game                                     |
 | `clear`     |                 |                      | Clears the console                                 |
-| `help`      |                 | `[command]`          | Shows the help                                     |
+| `cutscene`  |                 | `<cutscene>`         | Plays a cutscene                                   |
 
 The position argument is a set of 2 numeric values.
 Those value are the X and Y coordinates of the position.

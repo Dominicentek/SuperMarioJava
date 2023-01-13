@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.smj.game.cutscene.Cutscene;
+import com.smj.game.cutscene.Dialog;
 import com.smj.game.options.Controls;
 import com.smj.gui.menu.Menu;
 import com.smj.util.command.Command;
@@ -40,6 +42,7 @@ public class Main extends ApplicationAdapter {
     public static Queue<Runnable> actionQueue = new Queue<>();
     public static Mask mask;
     public static Menu menu;
+    public static Cutscene currentCutscene = null;
     public void create() {
         renderer = new Renderer(HEIGHT);
         viewer = new Renderer(windowHeight);
@@ -51,6 +54,7 @@ public class Main extends ApplicationAdapter {
         viewCamera.position.set(windowWidth / 2f, windowHeight / 2f, 0f);
         options = Options.load();
         SMJMusic.setVolumeAll(Main.options.musicVolume);
+        Dialog.parse();
         Command.loadCommands();
         GameText.parse();
         Font.loadFromBinaryData(Gdx.files.internal("assets/font.fnt").readBytes());
@@ -85,9 +89,12 @@ public class Main extends ApplicationAdapter {
         renderer.setProjectionMatrix(mainCamera.combined);
         renderer.setTransformMatrix(new Matrix4().translate(-WIDTH / 2f, -HEIGHT / 2f, 0));
         renderer.rect(0, 0, WIDTH, HEIGHT, 0x000000FF);
-        Game.render(renderer);
-        renderer.resetTranslation();
-        if (menu != null) menu.render(renderer);
+        if (currentCutscene == null) {
+            Game.render(renderer);
+            renderer.resetTranslation();
+            if (menu != null) menu.render(renderer);
+        }
+        else currentCutscene.render(renderer);
         renderer.rect(0, 0, WIDTH, HEIGHT, transition.alpha);
         if (Controls.SCREENSHOT.isJustPressed()) Screenshot.take();
         renderer.end();
@@ -123,7 +130,8 @@ public class Main extends ApplicationAdapter {
         viewCamera.position.set(windowWidth / 2f, windowHeight / 2f, 0f);
         viewCamera.update();
         viewer.height = windowHeight;
-        Game.update();
+        if (currentCutscene == null) Game.update();
+        else currentCutscene.update();
         Gdx.graphics.setTitle("Super Mario Java - FPS: " + Gdx.graphics.getFramesPerSecond());
         transition.update();
         while (!actionQueue.empty()) {
@@ -150,5 +158,10 @@ public class Main extends ApplicationAdapter {
     }
     public void dispose() {
         System.exit(0);
+    }
+    public static void startCutscene(String id) {
+        setTransition(new Transition(0.5, () -> {
+            currentCutscene = Cutscene.cutscenes.get(id).build();
+        }));
     }
 }

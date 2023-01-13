@@ -92,7 +92,7 @@ public class JSONParser {
                     Token t = tokens.get(j);
                     if (t.tokenType == TokenType.OBJECT_OPEN) layer++;
                     if (t.tokenType == TokenType.OBJECT_CLOSE) layer--;
-                    objectTokens.add(token);
+                    objectTokens.add(t);
                     if (layer == -1) break;
                 }
                 i = j;
@@ -107,7 +107,7 @@ public class JSONParser {
                     Token t = tokens.get(j);
                     if (t.tokenType == TokenType.LIST_OPEN) layer++;
                     if (t.tokenType == TokenType.LIST_CLOSE) layer--;
-                    listTokens.add(token);
+                    listTokens.add(t);
                     if (layer == -1) break;
                 }
                 i = j;
