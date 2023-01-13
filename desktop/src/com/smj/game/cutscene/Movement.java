@@ -12,13 +12,11 @@ public class Movement {
     public int frame = 0;
     public KeyframeType type;
     public Movement(FieldInstance instance, int from, int to, int length, KeyframeType type) {
-        System.out.println(from);
         this.instance = instance;
         this.from = from;
         this.to = to;
         this.length = length;
         this.type = type;
-        System.out.println(from);
         value = from;
     }
     public void update() {

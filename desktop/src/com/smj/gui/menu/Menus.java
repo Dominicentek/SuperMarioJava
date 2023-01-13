@@ -117,14 +117,15 @@ public class Menus {
             }));
         }),
         new MenuButtonItem((menu, index, item) -> {
-            Main.setTransition(new Transition(0.5, () -> {
+            Main.startCutscene("beginning", () -> {
                 Game.pauseMenuOpen = false;
                 Game.title = false;
                 Menu.loadMenu(null);
                 Game.savefile = new SaveFile();
                 Saveable.save(Game.savefile, Gdx.files.local("save.sav"));
+                SMJMusic.stopMusic();
                 Game.loadLevel(Game.savefile.levelsCompleted, true);
-            }));
+            });
         }),
         new MenuButtonItem((menu, index, item) -> {
             Menu.loadMenu(OPTIONS);

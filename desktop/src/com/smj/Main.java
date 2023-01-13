@@ -43,6 +43,7 @@ public class Main extends ApplicationAdapter {
     public static Mask mask;
     public static Menu menu;
     public static Cutscene currentCutscene = null;
+    public static Runnable afterCutscene = null;
     public void create() {
         renderer = new Renderer(HEIGHT);
         viewer = new Renderer(windowHeight);
@@ -160,8 +161,17 @@ public class Main extends ApplicationAdapter {
         System.exit(0);
     }
     public static void startCutscene(String id) {
+        startCutscene(id, null);
+    }
+    public static void startCutscene(String id, Runnable after) {
+        for (String key : Dialog.dialogs.keySet()) {
+            for (Dialog dialog : Dialog.dialogs.get(key)) {
+                dialog.progress = 0;
+            }
+        }
         setTransition(new Transition(0.5, () -> {
             currentCutscene = Cutscene.cutscenes.get(id).build();
+            afterCutscene = after;
         }));
     }
 }

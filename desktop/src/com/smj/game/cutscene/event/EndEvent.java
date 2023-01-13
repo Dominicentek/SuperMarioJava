@@ -13,6 +13,10 @@ public class EndEvent extends CutsceneEvent {
     public void run(Cutscene cutscene) {
         Main.setTransition(new Transition(fade, () -> {
             Main.currentCutscene = null;
+            if (Main.afterCutscene != null) {
+                Main.afterCutscene.run();
+                Main.afterCutscene = null;
+            }
         }));
     }
 }

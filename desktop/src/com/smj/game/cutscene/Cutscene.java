@@ -7,10 +7,7 @@ import com.smj.game.cutscene.keyframe.ActorKeyframe;
 import com.smj.game.cutscene.keyframe.CameraKeyframe;
 import com.smj.game.cutscene.keyframe.Keyframe;
 import com.smj.game.cutscene.keyframe.KeyframeType;
-import com.smj.util.AudioPlayer;
-import com.smj.util.FieldInstance;
-import com.smj.util.Renderer;
-import com.smj.util.TextureLoader;
+import com.smj.util.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,11 +72,11 @@ public class Cutscene {
     }
     public void render(Renderer renderer) {
         renderer.setColor(0xFFFFFFFF);
-        renderer.translate(cameraX, cameraY);
+        renderer.translate(-cameraX, -cameraY);
         for (Actor actor : actors) {
             renderer.draw(actor.texture, actor.x, actor.y);
         }
-        renderer.translate(-cameraX, -cameraY);
+        renderer.translate(cameraX, cameraY);
         if (currentDialog == null) return;
         int x = 0;
         int y = Main.HEIGHT - 32;
@@ -97,7 +94,10 @@ public class Cutscene {
         renderer.rect(x + w - 1, y, 1, h);
         renderer.rect(x, y + h - 1, w, 1);
         if (currentDialog.icon != null) renderer.draw(currentDialog.icon, x + 8, y + 8);
-        renderer.drawString(currentDialog.text.substring(0, currentDialog.progress / DIAGSPD_INVERTED), x + 32, y + 8);
+        int linelen = (Main.WIDTH - 40) / 8;
+        int chars = currentDialog.progress / DIAGSPD_INVERTED;
+        renderer.drawString(currentDialog.text.substring(0, Math.min(chars, linelen)).trim(), x + 32, y + 8);
+        if (chars >= linelen) renderer.drawString(currentDialog.text.substring(linelen, Math.min(chars, linelen * 2)).trim(), x + 32, y + 16);
     }
     static {
         Actor mario = new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/icons/mario.png")));
@@ -120,6 +120,35 @@ public class Cutscene {
             .addEvent(new DialogEvent(480, "test", 4))
             .addEvent(new RemoveDialogEvent(600))
             .addEvent(new EndEvent(600, 0.5))
+        );
+        Actor bowser = new Actor(680, -32, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/bowser.png")));
+        Actor peach = new Actor(726, 140, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/peach.png")));
+        cutscenes.put("beginning", new CutsceneBuilder()
+            .addActor(new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/beginning_bg.png"))))
+            .addActor(new Actor(392, 176, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/mario.png"))))
+            .addActor(peach)
+            .addActor(bowser)
+            .addKeyframe(new CameraKeyframe(0, KeyframeType.WAIT, 0, 0))
+            .addKeyframe(new CameraKeyframe(180, KeyframeType.WAIT, 384, 0))
+            .addKeyframe(new ActorKeyframe(600, KeyframeType.LINEAR, bowser, 680, -32))
+            .addKeyframe(new ActorKeyframe(610, KeyframeType.WAIT, bowser, 680, 144))
+            .addKeyframe(new ActorKeyframe(1000, KeyframeType.LINEAR, bowser, 680, 144))
+            .addKeyframe(new ActorKeyframe(1060, KeyframeType.LINEAR, bowser, 768, 144))
+            .addKeyframe(new ActorKeyframe(0, KeyframeType.WAIT, peach, 726, 140))
+            .addKeyframe(new ActorKeyframe(1030, KeyframeType.LINEAR, peach, 726, 140))
+            .addKeyframe(new ActorKeyframe(1060, KeyframeType.LINEAR, peach, 792, 140))
+            .addEvent(new MusicEvent(0, AudioPlayer.MUSIC[6]))
+            .addEvent(new DialogEvent(60, "beginning", 0))
+            .addEvent(new RemoveDialogEvent(180))
+            .addEvent(new DialogEvent(240, "beginning", 1))
+            .addEvent(new DialogEvent(360, "beginning", 2))
+            .addEvent(new MusicEvent(610, AudioPlayer.MUSIC[8]))
+            .addEvent(new SFXEvent(610, AudioPlayer.EXPLOSION))
+            .addEvent(new DialogEvent(660, "beginning", 3))
+            .addEvent(new DialogEvent(900, "beginning", 4))
+            .addEvent(new DialogEvent(1020, "beginning", 5))
+            .addEvent(new DialogEvent(1140, "beginning", 6))
+            .addEvent(new EndEvent(1320, 0.5))
         );
     }
 }
