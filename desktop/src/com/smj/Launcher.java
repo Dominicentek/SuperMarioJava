@@ -20,6 +20,7 @@ public class Launcher {
         config.setForegroundFPS(60);
         config.setWindowedMode(Main.windowWidth, Main.windowHeight);
         config.setTitle("Super Mario Java");
+        config.useVsync(false);
         new Lwjgl3Application(new Main(), config);
     }
 }

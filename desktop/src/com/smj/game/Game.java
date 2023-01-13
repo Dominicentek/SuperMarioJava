@@ -51,6 +51,7 @@ public class Game {
     public static int invincibilityFrames = 0;
     public static int powerupTimeout = 0;
     public static int finishTimeout = -1;
+    public static boolean playCastleCutscene = false;
     public static int prevState = 0;
     public static ArrayList<Particle> particles = new ArrayList<>();
     public static int checkpointX = -1;
@@ -207,7 +208,9 @@ public class Game {
             }
             else {
                 finishTimeout = 999;
-                Main.setTransition(new Transition(0.5, Game::nextLevel));
+                if (playCastleCutscene) Main.startCutscene("in_another_castle_" + (savefile.levelsCompleted / 5 + 1), Game::nextLevel);
+                else Main.setTransition(new Transition(0.5, Game::nextLevel));
+                playCastleCutscene = false;
             }
         }
         ArrayList<Particle> particles = new ArrayList<>(Game.particles);
@@ -312,6 +315,7 @@ public class Game {
             currentLevel.music = 12;
             AudioPlayer.MUSIC[12].play(timeRunningOut ? 1.5f : 1f);
             bossFightBegan = true;
+            playCastleCutscene = true;
             bossFightTilesTimeout = 300;
         }
         if (currentLevel.gimmick == GameLevel.Gimmick.CASTLE && bossFightFinishTimeout == -1) {

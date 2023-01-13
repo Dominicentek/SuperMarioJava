@@ -150,5 +150,21 @@ public class Cutscene {
             .addEvent(new DialogEvent(1140, "beginning", 6))
             .addEvent(new EndEvent(1320, 0.5))
         );
+        for (int i = 1; i <= 7; i++) {
+            Actor castleMario = new Actor(-16, 176, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/mario.png")));
+            cutscenes.put("in_another_castle_" + i, new CutsceneBuilder()
+                .addActor(new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/castleend.png"))))
+                .addActor(new Actor(285, 16, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/cage.png"))))
+                .addActor(new Actor(290, 115, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/toad.png"))))
+                .addActor(castleMario)
+                .addKeyframe(new ActorKeyframe(0, KeyframeType.SMOOTH, castleMario, -16, 176))
+                .addKeyframe(new ActorKeyframe(120, KeyframeType.LINEAR, castleMario, 200, 176))
+                .addEvent(new MusicEvent(0, AudioPlayer.MUSIC[8]))
+                .addEvent(new DialogEvent(120, "in_another_castle_" + i, 0))
+                .addEvent(new DialogEvent(240, "in_another_castle_" + i, 1))
+                .addEvent(new DialogEvent(420, "in_another_castle_" + i, 2))
+                .addEvent(new EndEvent(540, 0.5))
+            );
+        }
     }
 }
