@@ -26,7 +26,7 @@ public class CutsceneBuilder {
         cutscene.keyframes.addAll(keyframes);
         cutscene.events.addAll(events);
         for (Actor actor : actors) {
-            cutscene.actors.add(actor.restorePos());
+            cutscene.actors.add(actor.restore());
         }
         return cutscene;
     }

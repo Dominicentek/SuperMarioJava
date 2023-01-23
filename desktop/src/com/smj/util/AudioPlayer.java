@@ -52,7 +52,8 @@ public class AudioPlayer {
         new SMJMusic(Gdx.files.internal("assets/sounds/music/enemy.smjaud")),
         new SMJMusic(Gdx.files.internal("assets/sounds/music/superstar.smjaud")),
         new SMJMusic(Gdx.files.internal("assets/sounds/music/boss.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/title.smjaud"))
+        new SMJMusic(Gdx.files.internal("assets/sounds/music/title.smjaud")),
+        new SMJMusic(Gdx.files.internal("assets/sounds/music/ending.smjaud"))
     };
     private final Sound sound;
     private long time = System.currentTimeMillis();

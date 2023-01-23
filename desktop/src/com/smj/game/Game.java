@@ -208,7 +208,15 @@ public class Game {
             }
             else {
                 finishTimeout = 999;
-                if (playCastleCutscene) Main.startCutscene("in_another_castle_" + (savefile.levelsCompleted / 5 + 1), Game::nextLevel);
+                if (playCastleCutscene) {
+                    if (savefile.levelsCompleted == 39) Main.startCutscene("peach_saved", () -> {
+                        Game.title = true;
+                        Game.loadLevel(Game.savefile.levelsCompleted, true);
+                        Menu.loadMenu(null);
+                        Menu.loadMenu(Menus.MAIN);
+                    });
+                    else Main.startCutscene("in_another_castle_" + (savefile.levelsCompleted / 5 + 1), Game::nextLevel);
+                }
                 else Main.setTransition(new Transition(0.5, Game::nextLevel));
                 playCastleCutscene = false;
             }
@@ -389,7 +397,9 @@ public class Game {
             int entityFluidPos = currentLevel.fluid.movement.getFluidLevel() * 100 / 16;
             for (Entity entity : Arrays.asList(currentLevel.getEntityManager().array())) {
                 Rectangle h = entity.getPhysics().getHitbox();
-                entity.getPhysics().getConfig().underwater = h.y + h.height >= entityFluidPos;
+                entity.getPhysics().getConfig().underwater = h.y >= entityFluidPos;
+                entity.getPhysics().getConfig().maxWalkingSpeed = h.y >= entityFluidPos ? currentLevel.getPhysicsConfig().maxUnderwaterOnGroundSpeed : currentLevel.getPhysicsConfig().maxWalkingSpeed;
+                entity.getPhysics().getConfig().maxRunningSpeed = h.y >= entityFluidPos ? currentLevel.getPhysicsConfig().maxUnderwaterOnGroundSpeed : currentLevel.getPhysicsConfig().maxRunningSpeed;
                 if (h.y + h.height >= entityFluidPos) {
                     if (((GameEntity)entity).entityType == EntityType.PLAYER) {
                         if (currentLevel.fluid.type == FluidType.LAVA) die();

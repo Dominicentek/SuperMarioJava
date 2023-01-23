@@ -54,11 +54,11 @@ public class Main extends ApplicationAdapter {
         viewCamera = new OrthographicCamera(windowWidth, windowHeight);
         viewCamera.position.set(windowWidth / 2f, windowHeight / 2f, 0f);
         options = Options.load();
+        Font.loadFromBinaryData(Gdx.files.internal("assets/font.fnt").readBytes());
         SMJMusic.setVolumeAll(Main.options.musicVolume);
         Dialog.parse();
         Command.loadCommands();
         GameText.parse();
-        Font.loadFromBinaryData(Gdx.files.internal("assets/font.fnt").readBytes());
         Game.loadThemes();
         Game.loadSavefile();
         transition.stage = 1;
@@ -133,6 +133,7 @@ public class Main extends ApplicationAdapter {
         viewer.height = windowHeight;
         if (currentCutscene == null) Game.update();
         else currentCutscene.update();
+        AnimatedRectangle.updateAll();
         Gdx.graphics.setTitle("Super Mario Java - FPS: " + Gdx.graphics.getFramesPerSecond());
         transition.update();
         while (!actionQueue.empty()) {

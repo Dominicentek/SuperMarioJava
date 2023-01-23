@@ -168,14 +168,14 @@
                 data.push((document.getElementById("spawny").valueAsNumber >> 8) & 0xFF, document.getElementById("spawny").valueAsNumber & 0xFF)
 				if (document.getElementById("hasfluid").checked) {
 					data.push(0x01, 0x00, 0x05, 0x66, 0x6C, 0x75, 0x69, 0x64)
-					data.push(0x03, 0x00, 0x08, 0x68, 0x69, 0x67, 0x68, 0x54, 0x69, 0x64, 0x65)
-					data.push(document.getElementById("hightide").valueAsNumber)
-					data.push(0x03, 0x00, 0x07, 0x6C, 0x6F, 0x77, 0x54, 0x69, 0x64, 0x65)
-					data.push(document.getElementById("lowtide").valueAsNumber)
-					data.push(0x03, 0x00, 0x08, 0x73, 0x74, 0x61, 0x79, 0x54, 0x69, 0x6D, 0x65)
-					data.push(document.getElementById("staytime").valueAsNumber)
-					data.push(0x03, 0x00, 0x08, 0x66, 0x61, 0x6C, 0x6C, 0x54, 0x69, 0x6D, 0x65)
-					data.push(document.getElementById("movetime").valueAsNumber)
+					data.push(0x04, 0x00, 0x08, 0x68, 0x69, 0x67, 0x68, 0x54, 0x69, 0x64, 0x65)
+                    data.push((document.getElementById("hightide").valueAsNumber >> 8) & 0xFF, document.getElementById("hightide").valueAsNumber & 0xFF)
+					data.push(0x04, 0x00, 0x07, 0x6C, 0x6F, 0x77, 0x54, 0x69, 0x64, 0x65)
+                    data.push((document.getElementById("lowtide").valueAsNumber >> 8) & 0xFF, document.getElementById("lowtide").valueAsNumber & 0xFF)
+					data.push(0x04, 0x00, 0x08, 0x73, 0x74, 0x61, 0x79, 0x54, 0x69, 0x6D, 0x65)
+                    data.push((document.getElementById("staytime").valueAsNumber >> 8) & 0xFF, document.getElementById("staytime").valueAsNumber & 0xFF)
+					data.push(0x04, 0x00, 0x08, 0x6D, 0x6F, 0x76, 0x65, 0x54, 0x69, 0x6D, 0x65)
+                    data.push((document.getElementById("movetime").valueAsNumber >> 8) & 0xFF, document.getElementById("movetime").valueAsNumber & 0xFF)
 					data.push(0x03, 0x00, 0x0C, 0x6D, 0x6F, 0x76, 0x65, 0x6D, 0x65, 0x6E, 0x74, 0x54, 0x79, 0x70, 0x65)
 					data.push(document.getElementById("fluid-mov-type").selectedIndex)
 					data.push(0x03, 0x00, 0x04, 0x74, 0x79, 0x70, 0x65)
@@ -515,25 +515,25 @@
 						<tr class="fluid">
 							<td>High Tide</td>
 							<td>
-								<input id="hightide" type="number" min="0" max="255" value="244">
+								<input id="hightide" type="number" min="0" max="65535" value="244">
 							</td>
 						</tr>
 						<tr class="fluid">
 							<td>Low Tide</td>
 							<td>
-								<input id="lowtide" type="number" min="0" max="255" value="244">
+								<input id="lowtide" type="number" min="0" max="65535" value="244">
 							</td>
 						</tr>
 						<tr class="fluid">
 							<td>Stay Time</td>
 							<td>
-								<input id="staytime" type="number" min="0" max="255" value="0">
+								<input id="staytime" type="number" min="0" max="65535" value="0">
 							</td>
 						</tr>
 						<tr class="fluid">
 							<td>Move Time</td>
 							<td>
-								<input id="movetime" type="number" min="0" max="255" value="0">
+								<input id="movetime" type="number" min="0" max="65535" value="0">
 							</td>
 						</tr>
 						<tr class="fluid">

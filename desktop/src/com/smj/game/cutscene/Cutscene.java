@@ -1,12 +1,14 @@
 package com.smj.game.cutscene;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.smj.Main;
 import com.smj.game.cutscene.event.*;
 import com.smj.game.cutscene.keyframe.ActorKeyframe;
 import com.smj.game.cutscene.keyframe.CameraKeyframe;
 import com.smj.game.cutscene.keyframe.Keyframe;
 import com.smj.game.cutscene.keyframe.KeyframeType;
+import com.smj.gui.font.Font;
 import com.smj.util.*;
 
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public class Cutscene {
         renderer.setColor(0xFFFFFFFF);
         renderer.translate(-cameraX, -cameraY);
         for (Actor actor : actors) {
-            renderer.draw(actor.texture, actor.x, actor.y);
+            renderer.draw(actor.texture, actor.region, actor.x, actor.y);
         }
         renderer.translate(cameraX, cameraY);
         if (currentDialog == null) return;
@@ -154,8 +156,8 @@ public class Cutscene {
             Actor castleMario = new Actor(-16, 176, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/mario.png")));
             cutscenes.put("in_another_castle_" + i, new CutsceneBuilder()
                 .addActor(new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/castleend.png"))))
-                .addActor(new Actor(285, 16, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/cage.png"))))
                 .addActor(new Actor(290, 115, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/toad.png"))))
+                .addActor(new Actor(285, 16, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/cage.png"))))
                 .addActor(castleMario)
                 .addKeyframe(new ActorKeyframe(0, KeyframeType.SMOOTH, castleMario, -16, 176))
                 .addKeyframe(new ActorKeyframe(120, KeyframeType.LINEAR, castleMario, 200, 176))
@@ -166,5 +168,58 @@ public class Cutscene {
                 .addEvent(new EndEvent(540, 0.5))
             );
         }
+        Actor castleMario = new Actor(-16, 176, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/mario.png")));
+        Actor ground = new Actor(272, 256, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/ground.png")));
+        Actor cage = new Actor(285, 16, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/cage.png")));
+        Actor castlePeach = new Actor(290, 115, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/peach.png")));
+        cutscenes.put("peach_saved", new CutsceneBuilder()
+            .addActor(new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/castleend.png"))))
+            .addActor(castlePeach)
+            .addActor(cage)
+            .addActor(ground)
+            .addActor(castleMario)
+            .addActor(new Actor(272, -48, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/ground.png"))))
+            .addKeyframe(new ActorKeyframe(0, KeyframeType.SMOOTH, castleMario, -16, 176))
+            .addKeyframe(new ActorKeyframe(120, KeyframeType.LINEAR, castleMario, 200, 176))
+            .addKeyframe(new ActorKeyframe(1200, KeyframeType.SMOOTH, ground, 272, 256))
+            .addKeyframe(new ActorKeyframe(1320, KeyframeType.SMOOTH, ground, 272, 192))
+            .addKeyframe(new ActorKeyframe(1320, KeyframeType.SMOOTH, cage, 285, 16))
+            .addKeyframe(new ActorKeyframe(1440, KeyframeType.SMOOTH, cage, 285, -110))
+            .addKeyframe(new ActorKeyframe(1320, KeyframeType.LINEAR, castlePeach, 290, 115))
+            .addKeyframe(new ActorKeyframe(1440, KeyframeType.LINEAR, castlePeach, 290, 168))
+            .addEvent(new MusicEvent(0, AudioPlayer.MUSIC[14]))
+            .addEvent(new DialogEvent(120, "peach_saved", 0))
+            .addEvent(new DialogEvent(360, "peach_saved", 1))
+            .addEvent(new DialogEvent(480, "peach_saved", 2))
+            .addEvent(new DialogEvent(720, "peach_saved", 3))
+            .addEvent(new DialogEvent(840, "peach_saved", 4))
+            .addEvent(new DialogEvent(960, "peach_saved", 5))
+            .addEvent(new DialogEvent(1080, "peach_saved", 6))
+            .addEvent(new RemoveDialogEvent(1200))
+            .addEvent(new StartCutsceneEvent(1500, "credits"))
+        );
+        String[] credits = Gdx.files.internal("assets/credits.txt").readString().split("\n");
+        CutsceneBuilder creditsCutscene = new CutsceneBuilder();
+        Texture[] creditsTextures = new Texture[credits.length];
+        for (int i = 0; i < credits.length; i++) {
+            String creditsLine = credits[i];
+            if (creditsLine.isEmpty()) creditsLine = " ";
+            creditsTextures[i] = Font.getTexture(creditsLine);
+        }
+        int creditsHeight = (creditsTextures.length - 2) * Font.getHeight();
+        int targetY = -creditsHeight;
+        int length = Math.abs(targetY - Main.HEIGHT);
+        length *= 8;
+        creditsCutscene.addActor(new Actor(0, 0, TextureLoader.getPlainTexture(Main.WIDTH, Main.HEIGHT, 0x56AFFF)));
+        for (int i = 0; i < creditsTextures.length; i++) {
+            Actor actor = new Actor(8, Main.HEIGHT + i * Font.getHeight(), creditsTextures[i]);
+            creditsCutscene
+                .addActor(actor)
+                .addKeyframe(new ActorKeyframe(0, KeyframeType.LINEAR, actor, 8, Main.HEIGHT + i * Font.getHeight()))
+                .addKeyframe(new ActorKeyframe(length, KeyframeType.LINEAR, actor, 8, targetY + i * Font.getHeight()));
+        }
+        cutscenes.put("credits", creditsCutscene
+            .addEvent(new EndEvent(length, 3))
+        );
     }
 }
