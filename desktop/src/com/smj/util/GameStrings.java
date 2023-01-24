@@ -7,7 +7,7 @@ import com.smj.util.bjson.ObjectElement;
 
 import java.util.HashMap;
 
-public class GameText {
+public class GameStrings {
     private static final HashMap<String, String> globalTexts = new HashMap<>();
     private static final HashMap<String, MenuText> menus = new HashMap<>();
     public static String get(String key) {
@@ -17,7 +17,7 @@ public class GameText {
         return menus.get(key);
     }
     public static void parse() {
-        ObjectElement element = JSONParser.parse(Gdx.files.internal("assets/texts.json").readString());
+        ObjectElement element = JSONParser.parse(Gdx.files.internal("assets/strings/texts.json").readString());
         ObjectElement globals = element.getObject("global");
         for (String key : globals.keys()) {
             if (globals.isString(key)) {
@@ -42,7 +42,7 @@ public class GameText {
                 items[i] = itemsList.getString(i);
             }
             MenuText menuText = new MenuText(title, items);
-            GameText.menus.put(key, menuText);
+            GameStrings.menus.put(key, menuText);
         }
     }
     public static class MenuText {

@@ -3,7 +3,7 @@ package com.smj.gui.menu;
 import com.smj.Main;
 import com.smj.game.options.Controls;
 import com.smj.gui.font.Font;
-import com.smj.util.GameText;
+import com.smj.util.GameStrings;
 import com.smj.util.Renderer;
 
 import java.util.Stack;
@@ -58,9 +58,9 @@ public class Menu {
         return this;
     }
     public Menu text(String menuID) {
-        title = GameText.getMenu(menuID).getTitle();
+        title = GameStrings.getMenu(menuID).getTitle();
         for (int i = 0; i < items.length; i++) {
-            items[i].label = GameText.getMenu(menuID).getItem(i);
+            items[i].label = GameStrings.getMenu(menuID).getItem(i);
         }
         return this;
     }

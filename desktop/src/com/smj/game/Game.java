@@ -70,7 +70,7 @@ public class Game {
     public static boolean pauseMenuOpen = false;
     public static boolean title = true;
     public static int legalNoticeTimeout = 300;
-    public static String legalNoticeText = GameText.get("legal_notice");
+    public static String legalNoticeText = GameStrings.get("legal_notice");
     public static HashMap<Point, Boolean> snowCache = new HashMap<>();
     public static boolean consoleOpen = false;
     public static TextConsole console = new TextConsole();
@@ -172,7 +172,7 @@ public class Game {
     }
     public static void update() {
         if (Menu.currentMenu != null) Menu.currentMenu.update();
-        HUDLayout.WORLD_TEXT.text = GameText.get("world_prefix") + " " + (savefile.levelsCompleted / 5 + 1) + "-" + (savefile.levelsCompleted % 5 + 1);
+        HUDLayout.WORLD_TEXT.text = GameStrings.get("world_prefix") + " " + (savefile.levelsCompleted / 5 + 1) + "-" + (savefile.levelsCompleted % 5 + 1);
         if (title) {
             HUDLayout.SPEEDRUN_TIMER.finish();
             return;
@@ -181,7 +181,7 @@ public class Game {
         HUDLayout.LIFE_COUNTER.attachment.target = savefile.lives;
         savefile.lives = Math.min(99, savefile.lives);
         HUDLayout.SCORE.target = savefile.score;
-        HUDLayout.DEATH_TEXT.text = "$cFF3F3F" + (MarioDeathParticle.played ? GameText.get("game_over") : time == 0 && finishTimeout == -1 ? GameText.get("time_up") : "");
+        HUDLayout.DEATH_TEXT.text = "$cFF3F3F" + (MarioDeathParticle.played ? GameStrings.get("game_over") : time == 0 && finishTimeout == -1 ? GameStrings.get("time_up") : "");
         HUDLayout.DEATH_TEXT.position.x = HUDLayout.WIDTH / 2 - Font.stringWidth(HUDLayout.DEATH_TEXT.text) / 8;
         HUDLayout.DEATH_TEXT.position.y = HUDLayout.HEIGHT / 2 - 1;
         HUDLayout.KEY_COIN_COUNTER.attachment.target = keycoinsCollected;

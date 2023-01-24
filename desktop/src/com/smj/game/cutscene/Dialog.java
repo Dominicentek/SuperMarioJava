@@ -23,7 +23,7 @@ public class Dialog {
     public static void parse() {
         if (parsed) return;
         parsed = true;
-        ObjectElement element = JSONParser.parse(Gdx.files.internal("assets/cutscenedialog.json").readString());
+        ObjectElement element = JSONParser.parse(Gdx.files.internal("assets/strings/cutscenedialog.json").readString());
         for (String key : element.keys()) {
             ListElement dialogsList = element.getList(key);
             Dialog[] dialogs = new Dialog[dialogsList.size()];

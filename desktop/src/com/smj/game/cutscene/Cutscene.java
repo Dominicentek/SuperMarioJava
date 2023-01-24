@@ -198,7 +198,7 @@ public class Cutscene {
             .addEvent(new RemoveDialogEvent(1200))
             .addEvent(new StartCutsceneEvent(1500, "credits"))
         );
-        String[] credits = Gdx.files.internal("assets/credits.txt").readString().split("\n");
+        String[] credits = Gdx.files.internal("assets/strings/credits.txt").readString().split("\n");
         CutsceneBuilder creditsCutscene = new CutsceneBuilder();
         Texture[] creditsTextures = new Texture[credits.length];
         for (int i = 0; i < credits.length; i++) {
