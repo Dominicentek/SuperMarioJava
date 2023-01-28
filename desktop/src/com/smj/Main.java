@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.smj.game.achievement.Achievement;
 import com.smj.game.cutscene.Cutscene;
 import com.smj.game.cutscene.Dialog;
 import com.smj.game.options.Controls;
@@ -59,7 +58,6 @@ public class Main extends ApplicationAdapter {
         SMJMusic.setVolumeAll(Main.options.musicVolume);
         Dialog.parse();
         Command.loadCommands();
-        Achievement.registerAchievements();
         GameStrings.parse();
         Game.loadThemes();
         Game.loadSavefile();
