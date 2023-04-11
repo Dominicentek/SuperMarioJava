@@ -403,7 +403,7 @@ public class Game {
                 if (h.y + h.height >= entityFluidPos) {
                     if (((GameEntity)entity).entityType == EntityType.PLAYER) {
                         if (currentLevel.fluid.type == FluidType.LAVA) die();
-                        if (currentLevel.fluid.type == FluidType.POISON) damagePlayer();
+                        if (currentLevel.fluid.type == FluidType.POISON && invincibilityTimeout == 0) damagePlayer();
                     }
                     else {
                         if (currentLevel.fluid.type != FluidType.WATER && !entity.getProperties().immuneToFluid) {
