@@ -206,20 +206,20 @@ public class Cutscene {
             if (creditsLine.isEmpty()) creditsLine = " ";
             creditsTextures[i] = Font.getTexture(creditsLine);
         }
-        int creditsHeight = (creditsTextures.length - 2) * Font.getHeight();
+        int creditsHeight = (creditsTextures.length - 2) * 12;
         int targetY = -creditsHeight;
         int length = Math.abs(targetY - Main.HEIGHT);
-        length *= 8;
+        length *= 12;
         creditsCutscene.addActor(new Actor(0, 0, TextureLoader.getPlainTexture(Main.WIDTH, Main.HEIGHT, 0x56AFFF)));
         for (int i = 0; i < creditsTextures.length; i++) {
-            Actor actor = new Actor(8, Main.HEIGHT + i * Font.getHeight(), creditsTextures[i]);
+            Actor actor = new Actor(8, Main.HEIGHT + i * 12, creditsTextures[i]);
             creditsCutscene
                 .addActor(actor)
-                .addKeyframe(new ActorKeyframe(0, KeyframeType.LINEAR, actor, 8, Main.HEIGHT + i * Font.getHeight()))
-                .addKeyframe(new ActorKeyframe(length, KeyframeType.LINEAR, actor, 8, targetY + i * Font.getHeight()));
+                .addKeyframe(new ActorKeyframe(0, KeyframeType.LINEAR, actor, 8, Main.HEIGHT + i * 12))
+                .addKeyframe(new ActorKeyframe(length, KeyframeType.LINEAR, actor, 8, targetY + i * 12));
         }
         cutscenes.put("credits", creditsCutscene
-            .addEvent(new EndEvent(length, 3))
+            .addEvent(new EndEvent(length + 180, 3))
         );
     }
 }
