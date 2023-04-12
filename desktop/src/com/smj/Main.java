@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.smj.game.cutscene.Cutscene;
 import com.smj.game.cutscene.Dialog;
@@ -44,6 +46,7 @@ public class Main extends ApplicationAdapter {
     public static Menu menu;
     public static Cutscene currentCutscene = null;
     public static Runnable afterCutscene = null;
+    public static ShaderProgram crtShader;
     public void create() {
         renderer = new Renderer(HEIGHT);
         viewer = new Renderer(windowHeight);
@@ -75,6 +78,11 @@ public class Main extends ApplicationAdapter {
                 return true;
             }
         });
+        crtShader = new ShaderProgram(Gdx.files.internal("assets/shaders/crt-vertex.glsl"), Gdx.files.internal("assets/shaders/crt-fragment.glsl"));
+        if (!crtShader.isCompiled()) {
+            System.out.println(crtShader.getLog());
+        }
+        ShaderProgram.pedantic = false;
     }
     public void render() {
         update();
@@ -101,6 +109,13 @@ public class Main extends ApplicationAdapter {
         renderer.end();
         buffer.end();
         viewer.begin();
+        crtShader.setUniformf("flicker", RNG.range(0f, 1f));
+        crtShader.setUniformf("distortionAmount", 0.5f);
+        crtShader.setUniformf("flickerStrength", 0.025f);
+        crtShader.setUniformf("scanlineBrightness", 0.8f);
+        crtShader.setUniformf("chromaticAberration", 0.015f);
+        crtShader.setUniformf("scanlineAmount", 512);
+        viewer.setShader(options.crtShader ? crtShader : null);
         viewer.setProjectionMatrix(viewCamera.combined);
         Texture texture = buffer.getColorBufferTexture();
         texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);

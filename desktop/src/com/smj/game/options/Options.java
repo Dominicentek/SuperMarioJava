@@ -15,6 +15,7 @@ public class Options implements Saveable {
     public float soundVolume = 1f;
     public float musicVolume = 1f;
     public boolean speedrunTimer = false;
+    public boolean crtShader = false;
     public Options() {}
     public Options(ObjectElement element) {
         hiddenHUD = element.getBoolean("hiddenHUD");
@@ -24,6 +25,7 @@ public class Options implements Saveable {
         soundVolume = element.getFloat("sound");
         musicVolume = element.getFloat("music");
         speedrunTimer = element.getBoolean("speedrun");
+        crtShader = element.getBoolean("crt");
         ObjectElement input = element.getObject("input");
         for (String inputName : input.keys()) {
             Controls.valueOf(inputName).keybind = Byte.toUnsignedInt(input.getByte(inputName));
@@ -39,6 +41,7 @@ public class Options implements Saveable {
         element.setFloat("sound", soundVolume);
         element.setFloat("music", musicVolume);
         element.setBoolean("speedrun", speedrunTimer);
+        element.setBoolean("crt", crtShader);
         ObjectElement input = new ObjectElement();
         for (Controls control : Controls.values()) {
             input.setByte(control.name(), (byte)control.keybind);

@@ -17,13 +17,13 @@ public class RNG {
         return random.nextFloat() <= ratio;
     }
     public static float range(float min, float max) {
-        return random.nextFloat() * (max - min + 1) + min;
+        return random.nextFloat() * (max - min) + min;
     }
     public static float bound(float bound) {
         return random.nextFloat() * bound;
     }
     public static double range(double min, double max) {
-        return random.nextDouble() * (max - min + 1) + min;
+        return random.nextDouble() * (max - min) + min;
     }
     public static double bound(double bound) {
         return random.nextDouble() * bound;

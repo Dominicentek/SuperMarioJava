@@ -105,7 +105,10 @@ public class Menus {
         }, Main.options.saveFileScreenshot),
         new MenuToggleItem((menu, index, item) -> {
             Main.options.speedrunTimer = item.value != 0;
-        }, Main.options.speedrunTimer)
+        }, Main.options.speedrunTimer),
+        new MenuToggleItem((menu, index, item) -> {
+            Main.options.crtShader = item.value != 0;
+        }, Main.options.crtShader)
     ).text("options");
     public static final Menu MAIN = new Menu(
         new MenuButtonItem((menu, index, item) -> {
