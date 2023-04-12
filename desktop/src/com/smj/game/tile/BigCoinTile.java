@@ -19,11 +19,10 @@ public class BigCoinTile extends GameTile {
     }
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
-        Game.addCoins(amount);
         AudioPlayer.BIG_COIN.play();
         int topLeftX = corner.toTopLeftX + x;
         int topLeftY = corner.toTopLeftY + y;
-        Game.awardScore(new StaticScore(score), Location.custom((topLeftX + 1) * 16, (topLeftY + 1) * 16, 32, 32, level));
+        Game.awardScore(new StaticScore().score(score).coins(amount), Location.custom((topLeftX + 1) * 16, (topLeftY + 1) * 16, 32, 32, level));
         Game.spawnSparklesTile(topLeftX, topLeftY, 5);
         Game.spawnSparklesTile(topLeftX + 1, topLeftY, 5);
         Game.spawnSparklesTile(topLeftX, topLeftY + 1, 5);

@@ -23,4 +23,7 @@ public class SuccessionScore extends Score {
     public int awardLives() {
         return level == REWARDS.length ? 1 : 0;
     }
+    public int awardCoins() {
+        return 0;
+    }
 }

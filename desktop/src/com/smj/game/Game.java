@@ -566,14 +566,28 @@ public class Game {
     public static void awardScore(Score score, Location source) {
         int amount = score.awardScore();
         savefile.score += amount;
+        int y = 0;
         if (amount > 0) {
             particles.add(new RisingTextParticle(amount + "", source.getX() + source.getWidth() / 4, source.getY()));
+            y += 8;
         }
-        addLives(score.awardLives(), source);
+        int lives = score.awardLives();
+        addLives(lives, source.move(0, -y));
+        if (lives > 0) y += 8;
+        awardCoins(score.awardCoins(), source.move(0, -y));
         score.awarded();
     }
     public static void addCoins(int coins) {
         savefile.coins += coins;
+    }
+    public static void awardCoins(int coins) {
+        awardCoins(coins, Location.entity(player));
+    }
+    public static void awardCoins(int coins, Location source) {
+        if (coins == 0) return;
+        addCoins(coins);
+        particles.add(new RisingTextParticle("$cFFFF00+" + coins, source.getX() + source.getWidth() / 4, source.getY()));
+        AudioPlayer.BIG_COIN.play();
     }
     public static void addLives(int lives) {
         addLives(lives, Location.entity(player));
@@ -581,7 +595,7 @@ public class Game {
     public static void addLives(int lives, Location source) {
         if (lives == 0) return;
         savefile.lives += lives;
-        particles.add(new RisingTextParticle(lives + "UP", source.getX() + source.getWidth() / 4, source.getY()));
+        particles.add(new RisingTextParticle("$c00FF00" + lives + "UP", source.getX() + source.getWidth() / 4, source.getY()));
         AudioPlayer.LIFE.play();
     }
     public static void removeLives(int lives) {

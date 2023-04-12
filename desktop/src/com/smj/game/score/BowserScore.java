@@ -15,4 +15,7 @@ public class BowserScore extends Score {
     public int awardLives() {
         return 0;
     }
+    public int awardCoins() {
+        return 0;
+    }
 }

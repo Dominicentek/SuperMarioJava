@@ -134,7 +134,7 @@ public class Command {
             new IntegerArgument("amount")
         ).addNode(
             (CommandExecution)context -> {
-                Game.awardScore(new StaticScore(context.get("amount")));
+                Game.awardScore(new StaticScore().score(context.get("amount")));
                 console.log("Awarded " + context.get("amount") + " score");
             }
         ).get());
