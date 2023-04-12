@@ -128,7 +128,7 @@ public class Theme {
         addTile(Tiles.BULLET_BILL_LAUNCHER_TOP, new BlasterTile().setSolid(true), tileset, 0x70);
         addTile(Tiles.BULLET_BILL_LAUNCHER_MIDDLE, new GameTile().setSolid(true), tileset, 0x71);
         addTile(Tiles.BULLET_BILL_LAUNCHER_BOTTOM, new GameTile().setSolid(true), tileset, 0x72);
-        addTile(Tiles.EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS_BUT_IT_IS_VERY_IMPORTANT_FOR_THE_BOWSER_BOSS_FIGHT_IG, new ExclamationPointCircleBallThingIdkHowToCallThisTile(), tileset, 0x22);
+        addTile(Tiles.EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS_BUT_IT_IS_VERY_IMPORTANT_FOR_THE_BOWSER_BOSS_FIGHT_IG, new ExclamationPointCircleBallThingIdkHowToCallThisButItIsVeryImportantForTheBowserBossFightIGTile(), tileset, 0x22);
         addTile(Tiles.PUSHABLE_STONE, new EntitySpawnerTile(EntityType.PUSHABLE_STONE), tileset, 0x00);
         addTile(Tiles.ICICLE, new EntitySpawnerTile(EntityType.ICICLE), tileset, 0x00);
         addTile(Tiles.CRATE, new EntitySpawnerTile(EntityType.CRATE), tileset, 0x00);
