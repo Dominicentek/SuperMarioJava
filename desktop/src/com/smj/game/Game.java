@@ -348,7 +348,7 @@ public class Game {
                 int X = RNG.bound(arena.width) + arena.x;
                 for (int x = arena.x; x < arena.x + arena.width; x++) {
                     for (int y = arena.y; y < arena.y + arena.height; y++) {
-                        if (X == x && y == 1) currentLevel.setTileAt(Tiles.EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS, x, y);
+                        if (X == x && y == 1) currentLevel.setTileAt(Tiles.EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS_BUT_IT_IS_VERY_IMPORTANT_FOR_THE_BOWSER_BOSS_FIGHT_IG, x, y);
                         else if (RNG.chance(1 / 3f)) currentLevel.setTileAt(Tiles.FRAGILE_BRICK, x, y);
                     }
                 }

@@ -56,6 +56,7 @@ public enum EntityType {
     LEFT_PIPE_STREAM(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(400, 200), new InstanceBuilder<>(PipeStreamBehavior.class, -1, 0, -150, 100)),
     DOWN_PIPE_STREAM(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(200, 400), new InstanceBuilder<>(PipeStreamBehavior.class, 0, 1, 50, 300)),
     RIGHT_PIPE_STREAM(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(400, 200), new InstanceBuilder<>(PipeStreamBehavior.class, 1, 0, 150, 100)),
+    CRATE(new InstanceBuilder<>(StaticTextureProvider.class, get(Gdx.files.internal("assets/images/entities/crate.png"))), new Dimension(200, 100), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(SolidHitboxBehavior.class), new InstanceBuilder<>(CrateBehavior.class))
     ;
     private final InstanceBuilder<? extends EntityBehavior>[] behaviors;
     private final EntityProperties properties;

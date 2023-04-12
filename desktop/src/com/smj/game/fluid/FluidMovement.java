@@ -19,7 +19,7 @@ public class FluidMovement {
         this.moveTime = moveTime;
         this.movementType = movementType;
         timeout = stayTime;
-        stage = movementType == FALL ? 0 : 2;
+        stage = movementType == FALL ? 2 : 0;
         y = movementType == FALL ? highTide : lowTide;
     }
     public void update() {

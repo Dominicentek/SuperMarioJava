@@ -109,12 +109,13 @@ public class Tiles {
     public static final int ENEMY_HAMMER_BRO = 0xCC;
     public static final int ENEMY_GREEN_PARAKOOPA = 0xCD;
     public static final int ENEMY_RED_PARAKOOPA = 0xCE;
+    public static final int CRATE = 0xCF;
     public static final int STAR = 0xD0;
     public static final int LOCKED_STAR = 0xD1;
     public static final int BULLET_BILL_LAUNCHER_TOP = 0xE0;
     public static final int BULLET_BILL_LAUNCHER_MIDDLE = 0xE1;
     public static final int BULLET_BILL_LAUNCHER_BOTTOM = 0xE2;
-    public static final int EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS = 0xF0;
+    public static final int EXCLAMATION_POINT_CIRCLE_BALL_THING_IDK_HOW_TO_CALL_THIS_BUT_IT_IS_VERY_IMPORTANT_FOR_THE_BOWSER_BOSS_FIGHT_IG = 0xF0;
     public static final int PUSHABLE_STONE = 0xF1;
     public static final int UPWARDS_STREAM = 0xF2;
     public static final int LEFT_STREAM = 0xF3;
