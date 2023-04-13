@@ -163,7 +163,7 @@ public class Command {
                 Game.getSuperstar(seconds);
                 console.log("Granted invincibility for " + seconds + " seconds");
             }
-        ).get());
+        ).get()).aliasTo("star", "superstar");
         commands.addPath("entity", new CommandBuilder().addNode(
             new ListArgument("type", ArrayStringifier.modify(value -> {
                 return value.name().toLowerCase();

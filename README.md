@@ -49,7 +49,7 @@ Like this: `./gradlew dist`
 | `time`      |                 | `<set,add> <amount>` | Manages the time remaining                         |
 | `score`     |                 | `<set,add> <amount>` | Manages the score                                  |
 | `powerup`   |                 | `<state>`            | Sets the powerup state for the player              |
-| `superstar` |                 | `<seconds>`          | Adds an amount of seconds to player's star powerup |
+| `superstar` | `star`          | `<seconds>`          | Adds an amount of seconds to player's star powerup |
 | `entity`    |                 | `<type> <position>`  | Spawns an entity                                   |
 | `tile`      |                 | `<type> <position>`  | Sets a tile to a position                          |
 | `position`  | `teleport` `tp` | `<position>`         | Teleport player to position                        |
