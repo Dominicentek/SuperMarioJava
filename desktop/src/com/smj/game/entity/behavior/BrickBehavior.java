@@ -10,8 +10,8 @@ public class BrickBehavior implements EntityBehavior {
     public int timeout = 300;
     public void onLoad(GameEntity entity, GameLevel level) {
         entity.getPhysics().fixedSpeedX = true;
-        entity.getPhysics().setSpeedY((RNG.range(0.5f, 0.75f)) * -entity.getPhysics().getConfig().jumpingSpeed);
-        entity.getPhysics().setSpeedX((RNG.chance(1 / 2f) ? -1 : 1) * (RNG.range(0.05f, 0.15f)));
+        entity.getPhysics().setSpeedY((RNG.range(0.5f, 1.5f)) * -entity.getPhysics().getConfig().jumpingSpeed);
+        entity.getPhysics().setSpeedX((RNG.chance(1 / 2f) ? -1 : 1) * (RNG.range(0.25f, 0.75f)));
     }
     public void onTileTouchDown(GameEntity entity, GameLevel level, int x, int y) {
         if (level.getTileList().get(level.getTileAt(x, y)).isSolid()) entity.getPhysics().setSpeedX(0);

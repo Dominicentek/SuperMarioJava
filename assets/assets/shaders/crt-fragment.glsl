@@ -1,24 +1,19 @@
-#ifdef GL_ES
-precision mediump float;
-#endif
-
-varying vec4 v_color;
 varying vec2 v_texCoords;
 uniform sampler2D u_texture;
-uniform mat4 u_projTrans;
 
-uniform float flicker;
-uniform float flickerStrength;
-uniform float distortionAmount;
-uniform float chromaticAberration;
-uniform float scanlineBrightness;
-uniform float scanlineAmount;
+uniform float flicker = 1;
+uniform float flickerStrength = 0.05;
+uniform float distortionAmount = -10;
+uniform float chromaticAberration = 0.015;
+uniform float scanlineBrightness = 0.8;
+uniform float scanlineAmount = 480;
 
 vec4 get(vec2 texCoords, vec4 mask, float scale, inout vec2 uv) {
-    vec2 point = texCoords - vec2(0.5, 0.5);
+    vec2 center = vec2(0.5, 0.5);
+    vec2 point = texCoords - center;
     float radius = length(point);
-    vec2 distortion = point * ((1.0 + distortionAmount * radius * radius) / (1.0 - scale)) / 1.1;
-    uv = distortion + vec2(0.5, 0.5);
+    vec2 distortion = point * ((1.0 + distortionAmount * radius * radius) / (1.0 - scale)) / ((0.25 * distortionAmount) + 1);
+    uv = distortion + center;
     if (uv.x < 0 || uv.y < 0 || uv.x > 1 || uv.y > 1) return vec4(0, 0, 0, 1) * mask;
     return texture2D(u_texture, uv) * mask;
 }
@@ -31,7 +26,6 @@ vec4 getColor(vec4 texColor, vec2 texCoords) {
     if (uint(uvG.y * scanlineAmount) % 2 == 1) multiplier *= scanlineBrightness;
     return col * multiplier;
 }
-
 void main() {
     vec4 texColor = texture2D(u_texture, v_texCoords);
     gl_FragColor = getColor(texColor, v_texCoords);

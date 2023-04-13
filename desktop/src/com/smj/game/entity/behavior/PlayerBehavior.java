@@ -24,8 +24,8 @@ public class PlayerBehavior implements EntityBehavior {
             entity.getPhysics().getMovement().setRunning(false);
             return;
         }
-        if (entity.getPhysics().getSpeedX() < 0) facingLeft = true;
-        if (entity.getPhysics().getSpeedX() > 0) facingLeft = false;
+        if (Controls.LEFT.isPressed()) facingLeft = true;
+        if (Controls.RIGHT.isPressed()) facingLeft = false;
         entity.getPhysics().getMovement().setWalkingLeft(Controls.LEFT.isPressed());
         entity.getPhysics().getMovement().setWalkingRight(Controls.RIGHT.isPressed());
         entity.getPhysics().getMovement().setJumping(Controls.JUMP.isPressed());

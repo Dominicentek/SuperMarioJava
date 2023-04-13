@@ -110,11 +110,6 @@ public class Main extends ApplicationAdapter {
         buffer.end();
         viewer.begin();
         crtShader.setUniformf("flicker", RNG.range(0f, 1f));
-        crtShader.setUniformf("distortionAmount", 0.5f);
-        crtShader.setUniformf("flickerStrength", 0.025f);
-        crtShader.setUniformf("scanlineBrightness", 0.8f);
-        crtShader.setUniformf("chromaticAberration", 0.015f);
-        crtShader.setUniformf("scanlineAmount", 512);
         viewer.setShader(options.crtShader ? crtShader : null);
         viewer.setProjectionMatrix(viewCamera.combined);
         Texture texture = buffer.getColorBufferTexture();
