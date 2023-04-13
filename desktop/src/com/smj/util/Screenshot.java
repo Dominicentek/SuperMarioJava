@@ -28,7 +28,9 @@ public class Screenshot implements ClipboardOwner {
             if (Main.options.saveFileScreenshot) {
                 String path = ensureNotExists(Gdx.files.local("smj_screenshots/" + getTimestamp() + ".png"));
                 try {
-                    ImageIO.write(image, "png", new File(path));
+                    File file = new File(path);
+                    file.getParentFile().mkdirs();
+                    ImageIO.write(image, "png", file);
                 }
                 catch (Exception e) {
                     e.printStackTrace();

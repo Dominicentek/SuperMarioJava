@@ -10,6 +10,7 @@ public class DialogEvent extends CutsceneEvent {
         dialog = Dialog.dialogs.get(scriptID)[dialogID].copy();
     }
     public void run(Cutscene cutscene) {
+        dialog.progress = 0;
         cutscene.currentDialog = dialog;
     }
 }
