@@ -10,7 +10,9 @@ import com.smj.jmario.tile.level.LevelTileList;
 public class Theme {
     public LevelTileList tileList = new LevelTileList();
     public LevelBackground background;
+    public Texture tileset;
     public Theme(Texture tileset, LevelBackground background) {
+        this.tileset = tileset;
         this.background = background;
         for (int i = 1; i < 256; i++) {
             tileList.add(tileList.get(0));

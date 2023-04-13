@@ -17,7 +17,10 @@ public class BrickTile extends GameTile {
     }
     public void onTouchBottom(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
-        if (Game.savefile.powerupState == 0 && hasToBeBig) return;
+        if (Game.savefile.powerupState == 0 && hasToBeBig) {
+            GameTile.bump(level, x, y);
+            return;
+        }
         destroy(level, x, y);
         Game.awardScore(StaticScore.BRICK, Location.tile(x, y, level));
         entity.getPhysics().setSpeedY(0);

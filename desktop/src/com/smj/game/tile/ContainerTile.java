@@ -21,6 +21,7 @@ public class ContainerTile extends GameTile {
         EntityType type = getEntity();
         type.spawn(level, x * 100 + 50 - type.getHitbox().width / 2, y * 100 + 50 - type.getHitbox().height / 2);
         level.setTileAt(Tiles.EMPTY_BLOCK, x, y);
+        GameTile.bump(level, x, y);
     }
     public EntityType getEntity() {
         return progressive && Game.savefile.powerupState == 0 ? EntityType.MUSHROOM : entity;

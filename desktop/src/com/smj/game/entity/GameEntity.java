@@ -32,7 +32,6 @@ public class GameEntity extends Entity {
         Texture texture = provider.getTexture();
         textureRegion = texture == null ? new Rectangle() : new Rectangle(0, 0, texture.getWidth(), texture.getHeight());
         properties.setTexture(texture);
-        updateTexture();
     }
     public Level getLevel() {
         return getPhysics().getLevel();

@@ -49,7 +49,7 @@ public class PositionArgument extends CommandArgument<Point> {
         if (cameraX > Game.currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) cameraX = Game.currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH;
         if (cameraY < Main.HEIGHT - Game.currentLevel.getLevelBoundaries().height * 16) cameraY = Main.HEIGHT - Game.currentLevel.getLevelBoundaries().height * 16;
         if (xMod == RELATIVE) X += (hitbox.x + hitbox.width / 2) / 100.0 * scale;
-        if (yMod == RELATIVE) Y += (hitbox.y + hitbox.height) / 100.0 * scale;
+        if (yMod == RELATIVE) Y += (hitbox.y + hitbox.height / 2) / 100.0 * scale;
         if (xMod == CAMERA) X += cameraX / 16.0 * scale;
         if (yMod == CAMERA) Y += cameraY / 16.0 * scale;
         if (xMod == WRAPPED) X = Game.currentLevel.getLevelBoundaries().width * scale - X;

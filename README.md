@@ -58,6 +58,7 @@ Like this: `./gradlew dist`
 | `save`      |                 |                      | Saves the game                                     |
 | `clear`     |                 |                      | Clears the console                                 |
 | `cutscene`  |                 | `<cutscene>`         | Plays a cutscene                                   |
+| `bump`      |                 | `<position>`         | Bumps a tile at a certain position                 |
 
 The position argument is a set of 2 numeric values.
 Those value are the X and Y coordinates of the position.

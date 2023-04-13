@@ -1,7 +1,10 @@
 package com.smj.game.tile;
 
+import com.smj.game.Game;
 import com.smj.game.GameLevel;
+import com.smj.game.entity.EntityType;
 import com.smj.game.entity.GameEntity;
+import com.smj.game.entity.behavior.BumpTileBehavior;
 import com.smj.jmario.entity.Entity;
 import com.smj.jmario.level.Level;
 import com.smj.jmario.tile.level.LevelTile;
@@ -52,5 +55,11 @@ public class GameTile extends LevelTile {
     }
     public int getCurrentTextureLocation() {
         return textureLocations.get(currentLocationIndex);
+    }
+    public static void bump(GameLevel level, int x, int y) {
+        int tileID = level.getTileAt(x, y);
+        GameEntity entity = EntityType.BUMP_TILE.spawn(level, x * 100, y * 100);
+        entity.getBehavior(BumpTileBehavior.class).tile = tileID;
+        entity.updateTexture();
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.smj.Main;
 import com.smj.game.cutscene.Cutscene;
+import com.smj.game.tile.GameTile;
 import com.smj.util.command.arguments.CommandArgument;
 import com.smj.util.command.arguments.IntegerArgument;
 import com.smj.util.command.arguments.ListArgument;
@@ -266,6 +267,15 @@ public class Command {
                 }
                 console.log("Starting cutscene");
                 Main.startCutscene(cutsceneIDList[id]);
+            }
+        ).get());
+        commands.addPath("bump", new CommandBuilder().addNode(
+            new PositionArgument("pos", PositionArgument.TILE)
+        ).addNode(
+            (CommandExecution)context -> {
+                Point pos = context.get("pos");
+                GameTile.bump(Game.currentLevel, pos.x, pos.y);
+                console.log("Bumped a tile at pos " + pos.x + " " + pos.y);
             }
         ).get());
     }
