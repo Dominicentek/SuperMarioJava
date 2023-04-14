@@ -23,7 +23,7 @@ vec4 getColor(vec4 texColor, vec2 texCoords) {
     vec2 uvB = vec2(0, 0);
     vec4 col = get(texCoords, vec4(1, 0, 0, 1), -chromaticAberration, uvR) + get(texCoords, vec4(0, 1, 0, 1), 0, uvG) + get(texCoords, vec4(0, 0, 1, 1), chromaticAberration, uvB);
     float multiplier = flicker * flickerStrength + (1 - flickerStrength);
-    if (uint(uvG.y * scanlineAmount) % 2 == 1) multiplier *= scanlineBrightness;
+    if (uint(uvG.y * scanlineAmount) % uint(2) == uint(1)) multiplier *= scanlineBrightness;
     return col * multiplier;
 }
 void main() {
