@@ -3,7 +3,7 @@ uniform sampler2D u_texture;
 
 uniform float flicker = 1;
 uniform float flickerStrength = 0.05;
-uniform float distortionAmount = 1;
+uniform float distortionAmount = 0.5;
 uniform float chromaticAberration = 0.015;
 uniform float scanlineBrightness = 0.8;
 uniform float scanlineAmount = 480;
