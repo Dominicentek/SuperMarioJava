@@ -4,6 +4,9 @@ import com.smj.game.GameLevel;
 import com.smj.game.entity.GameEntity;
 
 public class CrateBehavior implements EntityBehavior {
+    public void onLoad(GameEntity entity, GameLevel level) {
+        entity.spawnOffsetX = 50;
+    }
     public void update(GameEntity entity, GameLevel level) {
         if (level.fluid == null) return;
 
