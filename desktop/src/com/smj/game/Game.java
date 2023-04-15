@@ -300,7 +300,7 @@ public class Game {
             if (particle.noUpdatePaused) particle.update();
         }
         if (invincibilityFrames > 0) invincibilityFrames--;
-        if (currentLevel.gimmick == GameLevel.Gimmick.ENEMY && currentLevel.getEntityManager().loadedEntityAmount() == 1 && time < currentLevel.time && currentLevel.getTileAt(12, 12) != Tiles.STAR && finishTimeout == -1) {
+        if (currentLevel.gimmick == GameLevel.Gimmick.ENEMY && currentLevel.finishedEnemyBattle() && time < currentLevel.time && currentLevel.getTileAt(12, 12) != Tiles.STAR && finishTimeout == -1) {
             currentLevel.setTileAt(Tiles.STAR, 12, 12);
             Game.particles.add(new SmokeParticle(200, 200));
             AudioPlayer.ALL_KEY_COINS.play();

@@ -1,5 +1,6 @@
 package com.smj.game;
 
+import com.smj.game.entity.GameEntity;
 import com.smj.game.fluid.Fluid;
 import com.smj.game.tile.GameTile;
 import com.smj.game.tile.Tiles;
@@ -98,6 +99,13 @@ public class GameLevel extends Level implements Readable {
             if (warp.x == x && warp.y == y) return warp;
         }
         return new Warp(x, y, 0, 21, 11, false);
+    }
+    public boolean finishedEnemyBattle() {
+        for (Entity entity : getEntityManager()) {
+            GameEntity gameEntity = (GameEntity)entity;
+            if (gameEntity.requiredToNotExistInEnemyFight) return false;
+        }
+        return true;
     }
     public enum Gimmick {
         NONE,

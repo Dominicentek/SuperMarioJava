@@ -22,6 +22,7 @@ public class GameEntity extends Entity {
     public final EntityType entityType;
     public SuccessionScore score = new SuccessionScore();
     public boolean invisible = false;
+    public boolean requiredToNotExistInEnemyFight = false;
     public int spawnOffsetX = 0;
     public int spawnOffsetY = 0;
     public GameEntity(PhysicsConfig physicsConfig, EntityProperties properties, TextureProvider provider, EntityType type, EntityBehavior... behaviors) {
