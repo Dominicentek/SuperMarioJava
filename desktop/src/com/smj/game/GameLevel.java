@@ -19,7 +19,8 @@ import java.util.Arrays;
 public class GameLevel extends Level implements Readable {
     public static final PhysicsConfig PHYSICS_GROUND = new PhysicsConfig().maxJumpHeight(250);
     public static final PhysicsConfig PHYSICS_UNDERWATER = new PhysicsConfig(PHYSICS_GROUND).underwater(true);
-    public static final PhysicsConfig PHYSICS_LOW_GRAVITY = new PhysicsConfig(PHYSICS_GROUND).gravity(PHYSICS_GROUND.gravity * 0.75).underwaterGravity(PHYSICS_GROUND.underwaterGravity * 0.75).maxJumpHeight(PHYSICS_GROUND.maxJumpHeight * 1.5).underwaterSwimSpeed(PHYSICS_GROUND.underwaterSwimSpeed * 1.5);
+    public static final PhysicsConfig PHYSICS_LOW_GRAVITY = new PhysicsConfig(PHYSICS_GROUND).gravity(PHYSICS_GROUND.gravity * 0.25).underwaterGravity(PHYSICS_GROUND.underwaterGravity * 0.25).maxJumpHeight(PHYSICS_GROUND.maxJumpHeight * 3).underwaterSwimSpeed(PHYSICS_GROUND.underwaterSwimSpeed * 3);
+    public static boolean onOffTreatment = true;
     public Gimmick gimmick;
     public int music;
     public int tileAnimationTimeout = 10;
@@ -57,12 +58,12 @@ public class GameLevel extends Level implements Readable {
             for (int x = 0; x < row.size(); x++) {
                 int tile = Byte.toUnsignedInt(row.getByte(x));
                 setTileAt(tile, x, y);
-                if (tile == Tiles.ON_OFF_SWITCH_BLUE && Game.onOff) setTileAt(Tiles.ON_OFF_SWITCH_RED, x, y);
-                if (tile == Tiles.ON_OFF_BLOCK_RED_OFF && Game.onOff) setTileAt(Tiles.ON_OFF_BLOCK_RED_ON, x, y);
-                if (tile == Tiles.ON_OFF_BLOCK_BLUE_ON && Game.onOff) setTileAt(Tiles.ON_OFF_BLOCK_BLUE_OFF, x, y);
-                if (tile == Tiles.ON_OFF_SWITCH_RED && !Game.onOff) setTileAt(Tiles.ON_OFF_SWITCH_BLUE, x, y);
-                if (tile == Tiles.ON_OFF_BLOCK_RED_ON && !Game.onOff) setTileAt(Tiles.ON_OFF_BLOCK_RED_OFF, x, y);
-                if (tile == Tiles.ON_OFF_BLOCK_BLUE_OFF && !Game.onOff) setTileAt(Tiles.ON_OFF_BLOCK_BLUE_ON, x, y);
+                if (tile == Tiles.ON_OFF_SWITCH_BLUE && Game.onOff && onOffTreatment) setTileAt(Tiles.ON_OFF_SWITCH_RED, x, y);
+                if (tile == Tiles.ON_OFF_BLOCK_RED_OFF && Game.onOff && onOffTreatment) setTileAt(Tiles.ON_OFF_BLOCK_RED_ON, x, y);
+                if (tile == Tiles.ON_OFF_BLOCK_BLUE_ON && Game.onOff && onOffTreatment) setTileAt(Tiles.ON_OFF_BLOCK_BLUE_OFF, x, y);
+                if (tile == Tiles.ON_OFF_SWITCH_RED && !Game.onOff && onOffTreatment) setTileAt(Tiles.ON_OFF_SWITCH_BLUE, x, y);
+                if (tile == Tiles.ON_OFF_BLOCK_RED_ON && !Game.onOff && onOffTreatment) setTileAt(Tiles.ON_OFF_BLOCK_RED_OFF, x, y);
+                if (tile == Tiles.ON_OFF_BLOCK_BLUE_OFF && !Game.onOff && onOffTreatment) setTileAt(Tiles.ON_OFF_BLOCK_BLUE_ON, x, y);
                 if (tile == Tiles.KEY_COIN) keycoinAmount++;
             }
         }

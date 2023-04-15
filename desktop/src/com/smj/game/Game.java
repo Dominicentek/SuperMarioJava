@@ -453,6 +453,7 @@ public class Game {
         loadLevel(id, newLevel, null, null);
     }
     public static void loadLevel(int id, boolean newLevel, Integer spawnX, Integer spawnY) {
+        GameLevel.onOffTreatment = !newLevel;
         MarioDeathParticle.played = false;
         bossFightBegan = false;
         bossFightTiles = false;
@@ -538,6 +539,7 @@ public class Game {
         if (level.gimmick == GameLevel.Gimmick.SPOTLIGHT) {
             Main.mask.add(spotlightCircle);
         }
+        GameLevel.onOffTreatment = true;
     }
     public static void damagePlayer() {
         damagePlayer(false);
