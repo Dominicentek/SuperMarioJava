@@ -153,6 +153,8 @@ public class Level {
         if (cameraY > 0) cameraY = 0;
         if (cameraX > fullWidth - width) cameraX = fullWidth - width;
         if (cameraY < height - fullHeight) cameraY = height - fullHeight;
+        if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
+        Main.solidColorShader.setUniformf("color", 0, 0, 0, 1);
         Texture bgImage = bg.getImage();
         int bgRepeatX = (int)Math.ceil((double)width / bgImage.getWidth()) + 1;
         int bgRepeatY = (int)Math.ceil((double)height / bgImage.getHeight()) + 1;
@@ -164,11 +166,15 @@ public class Level {
                 renderer.draw(bgImage, x * bgImage.getWidth(), y * bgImage.getHeight());
             }
         }
+        if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
+        Main.solidColorShader.setUniformf("color", 0.5f, 0.5f, 0.5f, 1);
         renderer.resetTranslation();
         renderer.translate(-(int)cameraX, (int)cameraY);
         for (Map.Entry<Point, Decoration> decoration : decorations.entrySet()) {
             renderer.draw(decoration.getValue().getTexture(), decoration.getKey().x * unitWidth, decoration.getKey().y * unitHeight);
         }
+        if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
+        Main.solidColorShader.setUniformf("color", 1, 1, 1, 1);
         for (Entity entity : entities) {
             if (!entity.getProperties().drawInBG || ((GameEntity)entity).invisible || (((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityFrames % 2 == 1 && Game.powerupTimeout == 0) || Game.title || entity.getProperties().texture == null) continue;
             double[] origin = entity.getTextureOrigin(unitWidth, unitHeight);
@@ -231,5 +237,6 @@ public class Level {
             renderer.setColor(0xFFFFFFFF);
             renderer.draw(overlay, x - offset, y);
         }
+        renderer.setShader(null);
     }
 }

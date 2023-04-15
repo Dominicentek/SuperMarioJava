@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.smj.game.cutscene.Cutscene;
 import com.smj.game.cutscene.Dialog;
@@ -47,6 +46,7 @@ public class Main extends ApplicationAdapter {
     public static Cutscene currentCutscene = null;
     public static Runnable afterCutscene = null;
     public static ShaderProgram crtShader;
+    public static ShaderProgram solidColorShader;
     public void create() {
         renderer = new Renderer(HEIGHT);
         viewer = new Renderer(windowHeight);
@@ -78,10 +78,8 @@ public class Main extends ApplicationAdapter {
                 return true;
             }
         });
-        crtShader = new ShaderProgram(Gdx.files.internal("assets/shaders/crt-vertex.glsl"), Gdx.files.internal("assets/shaders/crt-fragment.glsl"));
-        if (!crtShader.isCompiled()) {
-            System.out.println(crtShader.getLog());
-        }
+        crtShader = createShader("crt");
+        solidColorShader = createShader("solidcol");
         ShaderProgram.pedantic = false;
     }
     public void render() {
@@ -184,5 +182,13 @@ public class Main extends ApplicationAdapter {
             currentCutscene = Cutscene.cutscenes.get(id).build();
             afterCutscene = after;
         }));
+    }
+    public static ShaderProgram createShader(String name) {
+        ShaderProgram shader = new ShaderProgram(Gdx.files.internal("assets/shaders/vertex.glsl"), Gdx.files.internal("assets/shaders/" + name + "-fragment.glsl"));
+        if (!shader.isCompiled()) {
+            System.out.println(crtShader.getLog());
+            return null;
+        }
+        return shader;
     }
 }
