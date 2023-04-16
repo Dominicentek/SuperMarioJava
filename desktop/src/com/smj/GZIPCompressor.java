@@ -6,7 +6,7 @@ import java.io.*;
 
 public class GZIPCompressor {
     public static void main(String[] args) throws Exception {
-        File[] files = new File("assets/assets/levels").listFiles();
+        File[] files = new File("assets/levels").listFiles();
         for (File file : files) {
             if (!file.getName().endsWith(".lvl")) continue;
             InputStream in = new FileInputStream(file);
