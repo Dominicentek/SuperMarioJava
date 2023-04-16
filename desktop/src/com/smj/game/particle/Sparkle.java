@@ -12,7 +12,7 @@ public class Sparkle extends Particle {
     public int frame = 0;
     public int timeout = 5;
     public Sparkle(int x, int y) {
-        super(TextureLoader.get(Gdx.files.internal("assets/images/particles/sparkles.png")));
+        super(TextureLoader.get("images/particles/sparkles.png"));
         this.x = x;
         this.y = y;
     }

@@ -1,11 +1,13 @@
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.main.resources.srcDirs = ["../assets"]
+sourceSets.main.resources.srcDirs = ["../jar"]
 
 project.ext.mainClassName = "com.smj.Launcher"
-project.ext.assetsDir = new File("../assets")
+project.ext.assetsDir = new File("../jar")
 
 import org.gradle.internal.os.OperatingSystem
+
+import java.util.zip.GZIPOutputStream
 
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
@@ -39,6 +41,59 @@ task dist(type: Jar) {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     with jar
+}
+
+task compileAssets() {
+    System.out.println("Compiling assets...")
+    File assetsDir = new File("../assets")
+    HashMap<String, byte[]> data = new HashMap<>()
+    for (File file : assetsDir.listFiles()) {
+        parseFile(file, assetsDir, data)
+    }
+    OutputStream output = new FileOutputStream("../jar/assets.bin")
+    GZIPOutputStream gzip = new GZIPOutputStream(output)
+    int fileCount = data.size()
+    gzip.write((fileCount >> 24) & 0xFF)
+    gzip.write((fileCount >> 16) & 0xFF)
+    gzip.write((fileCount >> 8) & 0xFF)
+    gzip.write(fileCount & 0xFF)
+    for (String path : data.keySet()) {
+        int pathLength = path.length()
+        byte[] bytes = data.get(path)
+        int size = bytes.length
+        gzip.write((pathLength >> 8) & 0xFF)
+        gzip.write(pathLength & 0xFF)
+        for (char character : path.toCharArray()) {
+            gzip.write((int)character)
+        }
+        gzip.write((size >> 24) & 0xFF)
+        gzip.write((size >> 16) & 0xFF)
+        gzip.write((size >> 8) & 0xFF)
+        gzip.write(size & 0xFF)
+        gzip.write(bytes)
+    }
+    gzip.close()
+    output.close()
+}
+
+void parseFile(File file, File assetsRoot, HashMap<String, byte[]> data) {
+    if (file.isDirectory()) {
+        for (File f : file.listFiles()) {
+            parseFile(f, assetsRoot, data)
+        }
+    }
+    else {
+        String path = file.getAbsolutePath().substring(assetsRoot.getAbsolutePath().length() + 1).replaceAll("\\\\", "/").replaceAll("/{2,}", "/")
+        InputStream input = new FileInputStream(file)
+        byte[] bytes = new byte[input.available()]
+        input.read(bytes)
+        input.close()
+        data.put(path, bytes)
+    }
+}
+
+compileJava {
+    dependsOn compileAssets
 }
 
 

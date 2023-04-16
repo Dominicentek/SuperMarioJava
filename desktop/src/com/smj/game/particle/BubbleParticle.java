@@ -16,7 +16,7 @@ public class BubbleParticle extends Particle {
     public double speedX;
     public double speedY;
     public BubbleParticle(int x, int y, double speedX, double speedY) {
-        super(TextureLoader.get(Gdx.files.internal("assets/images/particles/bubble.png")));
+        super(TextureLoader.get("images/particles/bubble.png"));
         this.x = x;
         this.y = y;
         this.speedX = speedX;

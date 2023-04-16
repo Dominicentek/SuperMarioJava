@@ -6,9 +6,9 @@ import com.smj.util.bjson.BJSONInputOutput;
 import com.smj.util.bjson.ObjectElement;
 
 public interface Readable {
-    static <T extends Readable> T read(FileHandle file, Class<T> type) {
+    static <T extends Readable> T read(byte[] data, Class<T> type) {
         try {
-            return read(BJSONFile.read(file.readBytes()), type);
+            return read(BJSONFile.read(data), type);
         }
         catch (Exception e) {
             e.printStackTrace();

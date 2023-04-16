@@ -17,13 +17,13 @@ public class SMJMusic {
     private Ogg.Music intro;
     private Ogg.Music loop;
     public static float volume = 1f;
-    public SMJMusic(FileHandle file) {
+    public SMJMusic(byte[] data, String path) {
         allMusic.add(this);
-        ByteArray array = new ByteArray(file.readBytes());
+        ByteArray array = new ByteArray(data);
         byte[] introData = array.readArray(array.readInt());
         byte[] loopData = array.readArray(array.readInt());
-        intro = new Ogg.Music((OpenALLwjgl3Audio)Gdx.audio, new BinaryFileHandle(introData));
-        loop = new Ogg.Music((OpenALLwjgl3Audio)Gdx.audio, new BinaryFileHandle(loopData));
+        intro = new Ogg.Music((OpenALLwjgl3Audio)Gdx.audio, new BinaryFileHandle(introData, path));
+        loop = new Ogg.Music((OpenALLwjgl3Audio)Gdx.audio, new BinaryFileHandle(loopData, path));
         intro.setOnCompletionListener((music) -> {
             loop.play();
         });

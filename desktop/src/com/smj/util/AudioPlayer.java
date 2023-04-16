@@ -12,58 +12,58 @@ import com.smj.game.entity.GameEntity;
 import com.smj.jmario.entity.Entity;
 
 public class AudioPlayer {
-    public static final AudioPlayer BEEP = new AudioPlayer(Gdx.files.internal("assets/sounds/beep.wav"), false);
-    public static final AudioPlayer TIMEOUT = new AudioPlayer(Gdx.files.internal("assets/sounds/timeout.wav"));
-    public static final AudioPlayer DEATH = new AudioPlayer(Gdx.files.internal("assets/sounds/death.wav"));
-    public static final AudioPlayer GAME_OVER = new AudioPlayer(Gdx.files.internal("assets/sounds/gameover.wav"));
-    public static final AudioPlayer JUMP = new AudioPlayer(Gdx.files.internal("assets/sounds/jump.wav"));
-    public static final AudioPlayer POWERUP = new AudioPlayer(Gdx.files.internal("assets/sounds/powerup.wav"));
-    public static final AudioPlayer WARP = new AudioPlayer(Gdx.files.internal("assets/sounds/warp.wav"));
-    public static final AudioPlayer KICK = new AudioPlayer(Gdx.files.internal("assets/sounds/kick.wav"));
-    public static final AudioPlayer STOMP = new AudioPlayer(Gdx.files.internal("assets/sounds/stomp.wav"));
-    public static final AudioPlayer BUMP = new AudioPlayer(Gdx.files.internal("assets/sounds/bump.wav"));
-    public static final AudioPlayer LIFE = new AudioPlayer(Gdx.files.internal("assets/sounds/life.wav"));
-    public static final AudioPlayer FIREBALL = new AudioPlayer(Gdx.files.internal("assets/sounds/fireball.wav"));
-    public static final AudioPlayer COIN = new AudioPlayer(Gdx.files.internal("assets/sounds/coin.wav"));
-    public static final AudioPlayer KEY_COIN = new AudioPlayer(Gdx.files.internal("assets/sounds/keycoin.wav"));
-    public static final AudioPlayer ALL_KEY_COINS = new AudioPlayer(Gdx.files.internal("assets/sounds/allkeycoins.wav"));
-    public static final AudioPlayer QUESTION_BLOCK = new AudioPlayer(Gdx.files.internal("assets/sounds/questionblock.wav"));
-    public static final AudioPlayer BRICK = new AudioPlayer(Gdx.files.internal("assets/sounds/brick.wav"));
-    public static final AudioPlayer BIG_COIN = new AudioPlayer(Gdx.files.internal("assets/sounds/bigcoin.wav"));
-    public static final AudioPlayer SWITCH = new AudioPlayer(Gdx.files.internal("assets/sounds/switch.wav"));
-    public static final AudioPlayer CHECKPOINT = new AudioPlayer(Gdx.files.internal("assets/sounds/checkpoint.wav"));
-    public static final AudioPlayer FINISH = new AudioPlayer(Gdx.files.internal("assets/sounds/finish.wav"));
-    public static final AudioPlayer EXPLOSION = new AudioPlayer(Gdx.files.internal("assets/sounds/explosion.wav"));
-    public static final AudioPlayer BURNER = new AudioPlayer(Gdx.files.internal("assets/sounds/burner.wav"));
-    public static final AudioPlayer PAUSE = new AudioPlayer(Gdx.files.internal("assets/sounds/pause.wav"));
-    public static final AudioPlayer ICICLE_FALL = new AudioPlayer(Gdx.files.internal("assets/sounds/iciclefall.wav"));
-    public static final AudioPlayer ICICLE_BREAK = new AudioPlayer(Gdx.files.internal("assets/sounds/iciclebreak.wav"));
+    public static final AudioPlayer BEEP = FileLoader.read("sounds/beep.wav").asSound().noTimeout();
+    public static final AudioPlayer TIMEOUT = FileLoader.read("sounds/timeout.wav").asSound();
+    public static final AudioPlayer DEATH = FileLoader.read("sounds/death.wav").asSound();
+    public static final AudioPlayer GAME_OVER = FileLoader.read("sounds/gameover.wav").asSound();
+    public static final AudioPlayer JUMP = FileLoader.read("sounds/jump.wav").asSound();
+    public static final AudioPlayer POWERUP = FileLoader.read("sounds/powerup.wav").asSound();
+    public static final AudioPlayer WARP = FileLoader.read("sounds/warp.wav").asSound();
+    public static final AudioPlayer KICK = FileLoader.read("sounds/kick.wav").asSound();
+    public static final AudioPlayer STOMP = FileLoader.read("sounds/stomp.wav").asSound();
+    public static final AudioPlayer BUMP = FileLoader.read("sounds/bump.wav").asSound();
+    public static final AudioPlayer LIFE = FileLoader.read("sounds/life.wav").asSound();
+    public static final AudioPlayer FIREBALL = FileLoader.read("sounds/fireball.wav").asSound();
+    public static final AudioPlayer COIN = FileLoader.read("sounds/coin.wav").asSound();
+    public static final AudioPlayer KEY_COIN = FileLoader.read("sounds/keycoin.wav").asSound();
+    public static final AudioPlayer ALL_KEY_COINS = FileLoader.read("sounds/allkeycoins.wav").asSound();
+    public static final AudioPlayer QUESTION_BLOCK = FileLoader.read("sounds/questionblock.wav").asSound();
+    public static final AudioPlayer BRICK = FileLoader.read("sounds/brick.wav").asSound();
+    public static final AudioPlayer BIG_COIN = FileLoader.read("sounds/bigcoin.wav").asSound();
+    public static final AudioPlayer SWITCH = FileLoader.read("sounds/switch.wav").asSound();
+    public static final AudioPlayer CHECKPOINT = FileLoader.read("sounds/checkpoint.wav").asSound();
+    public static final AudioPlayer FINISH = FileLoader.read("sounds/finish.wav").asSound();
+    public static final AudioPlayer EXPLOSION = FileLoader.read("sounds/explosion.wav").asSound();
+    public static final AudioPlayer BURNER = FileLoader.read("sounds/burner.wav").asSound();
+    public static final AudioPlayer PAUSE = FileLoader.read("sounds/pause.wav").asSound();
+    public static final AudioPlayer ICICLE_FALL = FileLoader.read("sounds/iciclefall.wav").asSound();
+    public static final AudioPlayer ICICLE_BREAK = FileLoader.read("sounds/iciclebreak.wav").asSound();
     public static final SMJMusic[] MUSIC = {
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/ground.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/underground.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/desert.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/snow.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/underwater.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/forest.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/sky.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/lava.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/castle.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/bonus.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/enemy.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/superstar.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/boss.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/title.smjaud")),
-        new SMJMusic(Gdx.files.internal("assets/sounds/music/ending.smjaud"))
+        FileLoader.read("sounds/music/ground.smjaud").asMusic(),
+        FileLoader.read("sounds/music/underground.smjaud").asMusic(),
+        FileLoader.read("sounds/music/desert.smjaud").asMusic(),
+        FileLoader.read("sounds/music/snow.smjaud").asMusic(),
+        FileLoader.read("sounds/music/underwater.smjaud").asMusic(),
+        FileLoader.read("sounds/music/forest.smjaud").asMusic(),
+        FileLoader.read("sounds/music/sky.smjaud").asMusic(),
+        FileLoader.read("sounds/music/lava.smjaud").asMusic(),
+        FileLoader.read("sounds/music/castle.smjaud").asMusic(),
+        FileLoader.read("sounds/music/bonus.smjaud").asMusic(),
+        FileLoader.read("sounds/music/enemy.smjaud").asMusic(),
+        FileLoader.read("sounds/music/superstar.smjaud").asMusic(),
+        FileLoader.read("sounds/music/boss.smjaud").asMusic(),
+        FileLoader.read("sounds/music/title.smjaud").asMusic(),
+        FileLoader.read("sounds/music/ending.smjaud").asMusic()
     };
     private final Sound sound;
     private long time = System.currentTimeMillis();
-    private boolean hasTimeout;
-    public AudioPlayer(FileHandle file) {
-        this(file, true);
+    private boolean hasTimeout = true;
+    public AudioPlayer(FileHandle handle) {
+        sound = Gdx.audio.newSound(handle);
     }
-    public AudioPlayer(FileHandle file, boolean hasTimeout) {
-        sound = Gdx.audio.newSound(file);
-        this.hasTimeout = hasTimeout;
+    public AudioPlayer noTimeout() {
+        hasTimeout = false;
+        return this;
     }
     public void play() {
         sound.play(Main.options.soundVolume);

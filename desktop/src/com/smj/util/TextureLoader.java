@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class TextureLoader {
     private static final HashMap<String, Texture> textures = new HashMap<>();
     public static Texture getPlainTexture(int width, int height, int color) {
-        String encoded = "w=" + width + ";h=" + height + ";c=" + color;
+        String encoded = "w=" + width + ";h=" + height + ";c=" + color ;
         Texture texture = textures.get(encoded);
         if (texture == null) {
             Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
@@ -21,18 +21,18 @@ public class TextureLoader {
         }
         return texture;
     }
-    public static Texture get(FileHandle file) {
+    public static Texture get(String path) {
         try {
-            Texture texture = textures.get(file.path());
+            Texture texture = textures.get(path);
             if (texture == null) {
-                texture = new Texture(file);
-                textures.put(file.path(), texture);
+                texture = FileLoader.read(path).asTexture();
+                textures.put(path, texture);
             }
             return texture;
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        return new Texture(file);
+        return FileLoader.read(path).asTexture();
     }
 }

@@ -10,9 +10,9 @@ public class GZIP {
     public static byte[] compress(byte[] data) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            GZIPOutputStream in = new GZIPOutputStream(baos);
-            in.write(data);
-            in.close();
+            GZIPOutputStream out = new GZIPOutputStream(baos);
+            out.write(data);
+            out.close();
             baos.close();
             return baos.toByteArray();
         }

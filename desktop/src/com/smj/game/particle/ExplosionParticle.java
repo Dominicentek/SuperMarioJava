@@ -13,7 +13,7 @@ public class ExplosionParticle extends Particle {
     public int x;
     public int y;
     public ExplosionParticle(int x, int y) {
-        super(TextureLoader.get(Gdx.files.internal("assets/images/particles/explosion.png")));
+        super(TextureLoader.get("images/particles/explosion.png"));
         this.x = x;
         this.y = y;
     }

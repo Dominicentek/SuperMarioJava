@@ -115,7 +115,7 @@ public class Game {
         renderer.resetTranslation();
         if (currentLevel.gimmick == GameLevel.Gimmick.SPOTLIGHT) Main.renderMask();
         if ((!Main.options.hiddenHUD && !title) || Menu.currentMenu == Menus.HUD_LAYOUT) HUDLayout.renderAll(renderer);
-        if (Menu.currentMenu == Menus.MAIN) renderer.draw(TextureLoader.get(Gdx.files.internal("assets/images/logo.png")), Main.WIDTH / 2 - 168 / 2, 24);
+        if (Menu.currentMenu == Menus.MAIN) renderer.draw(TextureLoader.get("images/logo.png"), Main.WIDTH / 2 - 168 / 2, 24);
         if (consoleOpen) {
             renderer.setColor(0x0000007F);
             renderer.rect(4, 4, Main.WIDTH - 8, Main.HEIGHT - 20 - Font.getHeight());
@@ -433,19 +433,19 @@ public class Game {
     }
     public static void loadThemes() {
         for (int i = 0; i < THEMES.length; i++) {
-            LevelBackground background = new LevelBackground(new Color(0.5f, 0.5f, 0.5f, 1), TextureLoader.get(Gdx.files.internal("assets/images/themes/" + i + "/background.png")));
+            LevelBackground background = new LevelBackground(new Color(0.5f, 0.5f, 0.5f, 1), TextureLoader.get("images/themes/" + i + "/background.png"));
             Decorations decorations = new Decorations();
-            decorations.add(new Decoration(TextureLoader.get(Gdx.files.internal("assets/images/themes/" + i + "/decor_short.png")), DecorationType.SHORT));
-            decorations.add(new Decoration(TextureLoader.get(Gdx.files.internal("assets/images/themes/" + i + "/decor_normal.png")), DecorationType.NORMAL));
-            decorations.add(new Decoration(TextureLoader.get(Gdx.files.internal("assets/images/themes/" + i + "/decor_tall.png")), DecorationType.TALL));
-            decorations.add(new Decoration(TextureLoader.get(Gdx.files.internal("assets/images/themes/" + i + "/decor_wide.png")), DecorationType.WIDE));
+            decorations.add(new Decoration(TextureLoader.get("images/themes/" + i + "/decor_short.png"), DecorationType.SHORT));
+            decorations.add(new Decoration(TextureLoader.get("images/themes/" + i + "/decor_normal.png"), DecorationType.NORMAL));
+            decorations.add(new Decoration(TextureLoader.get("images/themes/" + i + "/decor_tall.png"), DecorationType.TALL));
+            decorations.add(new Decoration(TextureLoader.get("images/themes/" + i + "/decor_wide.png"), DecorationType.WIDE));
             background.setDecorations(decorations);
-            THEMES[i] = new Theme(TextureLoader.get(Gdx.files.internal("assets/images/themes/" + i + "/tileset.png")), background);
+            THEMES[i] = new Theme(TextureLoader.get("images/themes/" + i + "/tileset.png"), background);
         }
     }
     public static void loadSavefile() {
         FileHandle save = Gdx.files.local("save.sav");
-        if (save.exists()) savefile = Readable.read(save, SaveFile.class);
+        if (save.exists()) savefile = Readable.read(save.readBytes(), SaveFile.class);
         else savefile = new SaveFile();
         Saveable.save(savefile, save);
     }
@@ -465,7 +465,7 @@ public class Game {
         dead = false;
         particles.clear();
         snowCache.clear();
-        GameLevel level = Readable.read(Gdx.files.internal("assets/levels/level" + id + ".lvl"), GameLevel.class);
+        GameLevel level = Readable.read(FileLoader.read("levels/level" + id + ".lvl").asBytes(), GameLevel.class);
         if (Game.title) level.music = 13;
         if (currentLevel == null || currentLevel.music != level.music || !SMJMusic.isPlaying()) AudioPlayer.MUSIC[level.music].play();
         currentLevel = level;

@@ -22,7 +22,7 @@ public class MarioDeathParticle extends Particle {
     private int gameOverTimeout = 0;
     public static boolean played = false;
     public MarioDeathParticle(GameEntity entity) {
-        super(TextureLoader.get(Gdx.files.internal("assets/images/entities/mario.png")));
+        super(TextureLoader.get("images/entities/mario.png"));
         entity.invisible = true;
         this.x = (int)((entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2.0) / 100 * 16);
         this.y = (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2.0) / 100 * 16;

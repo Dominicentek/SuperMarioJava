@@ -55,7 +55,7 @@ public class Options implements Saveable {
     public static Options load() {
         Options options;
         FileHandle file = Gdx.files.local("options.dat");
-        if (file.exists()) options = Readable.read(file, Options.class);
+        if (file.exists()) options = Readable.read(file.readBytes(), Options.class);
         else options = new Options();
         Saveable.save(options, file);
         return options;

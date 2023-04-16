@@ -102,9 +102,9 @@ public class Cutscene {
         if (chars >= linelen) renderer.drawString(currentDialog.text.substring(linelen, Math.min(chars, linelen * 2)).trim(), x + 32, y + 16);
     }
     static {
-        Actor mario = new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/icons/mario.png")));
+        Actor mario = new Actor(0, 0, TextureLoader.get("images/icons/mario.png"));
         cutscenes.put("test", new CutsceneBuilder()
-            .addActor(new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/themes/0/background.png"))))
+            .addActor(new Actor(0, 0, TextureLoader.get("images/themes/0/background.png")))
             .addActor(mario)
             .addKeyframe(new ActorKeyframe(120, KeyframeType.SMOOTH, mario, 0, 0))
             .addKeyframe(new ActorKeyframe(240, KeyframeType.LINEAR, mario, 100, 150))
@@ -123,11 +123,11 @@ public class Cutscene {
             .addEvent(new RemoveDialogEvent(600))
             .addEvent(new EndEvent(600, 0.5))
         );
-        Actor bowser = new Actor(680, -32, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/bowser.png")));
-        Actor peach = new Actor(726, 140, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/peach.png")));
+        Actor bowser = new Actor(680, -32, TextureLoader.get("images/cutscene/bowser.png"));
+        Actor peach = new Actor(726, 140, TextureLoader.get("images/cutscene/peach.png"));
         cutscenes.put("beginning", new CutsceneBuilder()
-            .addActor(new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/beginning_bg.png"))))
-            .addActor(new Actor(392, 176, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/mario.png"))))
+            .addActor(new Actor(0, 0, TextureLoader.get("images/cutscene/beginning_bg.png")))
+            .addActor(new Actor(392, 176, TextureLoader.get("images/cutscene/mario.png")))
             .addActor(peach)
             .addActor(bowser)
             .addKeyframe(new CameraKeyframe(0, KeyframeType.WAIT, 0, 0))
@@ -153,11 +153,11 @@ public class Cutscene {
             .addEvent(new EndEvent(1320, 0.5))
         );
         for (int i = 1; i <= 7; i++) {
-            Actor castleMario = new Actor(-16, 176, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/mario.png")));
+            Actor castleMario = new Actor(-16, 176, TextureLoader.get("images/cutscene/mario.png"));
             cutscenes.put("in_another_castle_" + i, new CutsceneBuilder()
-                .addActor(new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/castleend.png"))))
-                .addActor(new Actor(290, 115, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/toad.png"))))
-                .addActor(new Actor(285, 16, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/cage.png"))))
+                .addActor(new Actor(0, 0, TextureLoader.get("images/cutscene/castleend.png")))
+                .addActor(new Actor(290, 115, TextureLoader.get("images/cutscene/toad.png")))
+                .addActor(new Actor(285, 16, TextureLoader.get("images/cutscene/cage.png")))
                 .addActor(castleMario)
                 .addKeyframe(new ActorKeyframe(0, KeyframeType.SMOOTH, castleMario, -16, 176))
                 .addKeyframe(new ActorKeyframe(120, KeyframeType.LINEAR, castleMario, 200, 176))
@@ -168,17 +168,17 @@ public class Cutscene {
                 .addEvent(new EndEvent(540, 0.5))
             );
         }
-        Actor castleMario = new Actor(-16, 176, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/mario.png")));
-        Actor ground = new Actor(272, 256, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/ground.png")));
-        Actor cage = new Actor(285, 16, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/cage.png")));
-        Actor castlePeach = new Actor(290, 115, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/peach.png")));
+        Actor castleMario = new Actor(-16, 176, TextureLoader.get("images/cutscene/mario.png"));
+        Actor ground = new Actor(272, 256, TextureLoader.get("images/cutscene/ground.png"));
+        Actor cage = new Actor(285, 16, TextureLoader.get("images/cutscene/cage.png"));
+        Actor castlePeach = new Actor(290, 115, TextureLoader.get("images/cutscene/peach.png"));
         cutscenes.put("peach_saved", new CutsceneBuilder()
-            .addActor(new Actor(0, 0, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/castleend.png"))))
+            .addActor(new Actor(0, 0, TextureLoader.get("images/cutscene/castleend.png")))
             .addActor(castlePeach)
             .addActor(cage)
             .addActor(ground)
             .addActor(castleMario)
-            .addActor(new Actor(272, -48, TextureLoader.get(Gdx.files.internal("assets/images/cutscene/ground.png"))))
+            .addActor(new Actor(272, -48, TextureLoader.get("images/cutscene/ground.png")))
             .addKeyframe(new ActorKeyframe(0, KeyframeType.SMOOTH, castleMario, -16, 176))
             .addKeyframe(new ActorKeyframe(120, KeyframeType.LINEAR, castleMario, 200, 176))
             .addKeyframe(new ActorKeyframe(1200, KeyframeType.SMOOTH, ground, 272, 256))
@@ -198,7 +198,7 @@ public class Cutscene {
             .addEvent(new RemoveDialogEvent(1200))
             .addEvent(new StartCutsceneEvent(1500, "credits"))
         );
-        String[] credits = Gdx.files.internal("assets/strings/credits.txt").readString().split("\n");
+        String[] credits = FileLoader.read("strings/credits.txt").asString().split("\n");
         CutsceneBuilder creditsCutscene = new CutsceneBuilder();
         Texture[] creditsTextures = new Texture[credits.length];
         for (int i = 0; i < credits.length; i++) {

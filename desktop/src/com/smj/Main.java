@@ -48,6 +48,7 @@ public class Main extends ApplicationAdapter {
     public static ShaderProgram crtShader;
     public static ShaderProgram solidColorShader;
     public void create() {
+        FileLoader.load();
         renderer = new Renderer(HEIGHT);
         viewer = new Renderer(windowHeight);
         buffer = new FrameBuffer(Pixmap.Format.RGBA8888, WIDTH, HEIGHT, false);
@@ -57,7 +58,7 @@ public class Main extends ApplicationAdapter {
         viewCamera = new OrthographicCamera(windowWidth, windowHeight);
         viewCamera.position.set(windowWidth / 2f, windowHeight / 2f, 0f);
         options = Options.load();
-        Font.loadFromBinaryData(Gdx.files.internal("assets/strings/font.fnt").readBytes());
+        Font.loadFromBinaryData(FileLoader.read("strings/font.fnt").asBytes());
         SMJMusic.setVolumeAll(Main.options.musicVolume);
         Dialog.parse();
         Command.loadCommands();
@@ -184,7 +185,7 @@ public class Main extends ApplicationAdapter {
         }));
     }
     public static ShaderProgram createShader(String name) {
-        ShaderProgram shader = new ShaderProgram(Gdx.files.internal("assets/shaders/vertex.glsl"), Gdx.files.internal("assets/shaders/" + name + "-fragment.glsl"));
+        ShaderProgram shader = new ShaderProgram(FileLoader.read("shaders/vertex.glsl").asString(), FileLoader.read("shaders/" + name + "-fragment.glsl").asString());
         if (!shader.isCompiled()) {
             System.out.println(crtShader.getLog());
             return null;

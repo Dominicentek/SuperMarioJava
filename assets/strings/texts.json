@@ -1,0 +1,94 @@
+{
+  "global": {
+    "world_prefix": "World",
+    "game_over": "Game Over",
+    "time_up": "Time Up",
+    "legal_notice": [
+      "Super Mario Java is a free, open-source,",
+      "non-profit Mario fan-game that uses graphics",
+      "and audio that are subject to copyright by",
+      "Nintendo Company Ltd. This game is not published",
+      "nor endrosed by them. If you want to play much",
+      "better Mario games than this one, go support",
+      "Nintendo and buy their consoles and games."
+    ]
+  },
+  "menu": {
+    "main": {
+      "title": "",
+      "options": [
+        "Continue",
+        "New Game",
+        "Options",
+        "Exit Game"
+      ]
+    },
+    "pause": {
+      "title": "Game Paused",
+      "options": [
+        "Continue",
+        "Options",
+        "Save",
+        "Main Menu"
+      ]
+    },
+    "options": {
+      "title": "Options",
+      "options": [
+        "Back",
+        "HUD Layout",
+        "Controls",
+        "Stereo Sound",
+        "Sound Volume",
+        "Music Volume",
+        "Clipboard Screenshot",
+        "File Screenshot",
+        "Speedrun Timer",
+        "CRT Shader"
+      ]
+    },
+    "hud_layout": {
+      "title": "HUD Layout",
+      "options": [
+        "Back",
+        "Coin Counter X",
+        "Coin Counter Y",
+        "Life Counter X",
+        "Life Counter Y",
+        "Star Timer X",
+        "Star Timer Y",
+        "Key Coin Counter X",
+        "Key Coin Counter Y",
+        "Score Counter X",
+        "Score Counter Y",
+        "Timer X",
+        "Timer Y",
+        "World Text X",
+        "World Text Y",
+        "Speedrun Timer X",
+        "Speedrun Timer Y"
+      ]
+    },
+    "controls": {
+      "title": "Controls",
+      "options": [
+        "Back",
+        "Up",
+        "Left",
+        "Down",
+        "Right",
+        "Look Up",
+        "Look Left",
+        "Look Down",
+        "Look Right",
+        "Jump/OK",
+        "Run/Back",
+        "Pause",
+        "Fullscreen",
+        "Toggle HUD",
+        "Screenshot",
+        "Toggle Console"
+      ]
+    }
+  }
+}

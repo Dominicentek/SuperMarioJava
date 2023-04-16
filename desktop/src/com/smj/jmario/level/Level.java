@@ -209,7 +209,7 @@ public class Level {
                             }
                             Game.snowCache.put(point, exposedToAir);
                         }
-                        if (exposedToAir) renderer.draw(TextureLoader.get(Gdx.files.internal("assets/images/themes/3/snow.png")), x * unitWidth, y * unitHeight, unitWidth, unitHeight);
+                        if (exposedToAir) renderer.draw(TextureLoader.get("images/themes/3/snow.png"), x * unitWidth, y * unitHeight, unitWidth, unitHeight);
                     }
                 }
             }
@@ -229,8 +229,8 @@ public class Level {
             int offset = (int)(System.currentTimeMillis() % 800 / 100);
             int x = (int)cameraX / 8 * 8;
             int y = fluid.movement.getFluidLevel();
-            Texture overlay = TextureLoader.get(Gdx.files.internal("assets/images/fluid/overlay.png"));
-            Texture mask = TextureLoader.get(Gdx.files.internal("assets/images/fluid/mask.png"));
+            Texture overlay = TextureLoader.get("images/fluid/overlay.png");
+            Texture mask = TextureLoader.get("images/fluid/mask.png");
             renderer.setColor(fluid.type.color);
             renderer.draw(mask, x - offset, y);
             renderer.rect(x - offset, y + 8, Main.WIDTH + 16, Main.HEIGHT);

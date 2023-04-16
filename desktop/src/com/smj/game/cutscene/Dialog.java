@@ -2,6 +2,7 @@ package com.smj.game.cutscene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.smj.util.FileLoader;
 import com.smj.util.TextureLoader;
 import com.smj.util.bjson.JSONParser;
 import com.smj.util.bjson.ListElement;
@@ -23,7 +24,7 @@ public class Dialog {
     public static void parse() {
         if (parsed) return;
         parsed = true;
-        ObjectElement element = JSONParser.parse(Gdx.files.internal("assets/strings/cutscenedialog.json").readString());
+        ObjectElement element = JSONParser.parse(FileLoader.read("strings/cutscenedialog.json").asString());
         for (String key : element.keys()) {
             ListElement dialogsList = element.getList(key);
             Dialog[] dialogs = new Dialog[dialogsList.size()];
@@ -39,9 +40,9 @@ public class Dialog {
         return new Dialog(icon, text);
     }
     static {
-        icons.put("mario", TextureLoader.get(Gdx.files.internal("assets/images/icons/mario.png")));
-        icons.put("peach", TextureLoader.get(Gdx.files.internal("assets/images/icons/peach.png")));
-        icons.put("bowser", TextureLoader.get(Gdx.files.internal("assets/images/icons/bowser.png")));
-        icons.put("toad", TextureLoader.get(Gdx.files.internal("assets/images/icons/toad.png")));
+        icons.put("mario", TextureLoader.get("images/icons/mario.png"));
+        icons.put("peach", TextureLoader.get("images/icons/peach.png"));
+        icons.put("bowser", TextureLoader.get("images/icons/bowser.png"));
+        icons.put("toad", TextureLoader.get("images/icons/toad.png"));
     }
 }

@@ -12,7 +12,7 @@ public class SmokeParticle extends Particle {
     public int x;
     public int y;
     public SmokeParticle(int x, int y) {
-        super(TextureLoader.get(Gdx.files.internal("assets/images/particles/smoke.png")));
+        super(TextureLoader.get("images/particles/smoke.png"));
         this.x = x;
         this.y = y;
     }

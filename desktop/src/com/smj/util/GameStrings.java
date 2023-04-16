@@ -17,7 +17,7 @@ public class GameStrings {
         return menus.get(key);
     }
     public static void parse() {
-        ObjectElement element = JSONParser.parse(Gdx.files.internal("assets/strings/texts.json").readString());
+        ObjectElement element = JSONParser.parse(FileLoader.read("strings/texts.json").asString());
         ObjectElement globals = element.getObject("global");
         for (String key : globals.keys()) {
             if (globals.isString(key)) {
