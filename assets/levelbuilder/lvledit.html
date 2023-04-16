@@ -2,6 +2,10 @@
 <html>
     <head>
         <script>
+            window.addEventListener("beforeunload", function (e) {
+                e.preventDefault();
+                e.returnValue = "Are you sure you want to leave? The level may not be saved.";
+            });
             var erase = false
             var editing = false
             var currentTile = 1
