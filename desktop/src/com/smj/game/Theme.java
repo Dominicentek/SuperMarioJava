@@ -20,6 +20,7 @@ public class Theme {
         addTile(Tiles.GROUND, new GameTile().setSolid(true).setDecorable(true), tileset, 0x01);
         addTile(Tiles.BARRIER, new GameTile().setSolid(true), tileset, 0x00);
         addTile(Tiles.STONE_BLOCK, new GameTile().setSolid(true), tileset, 0x02);
+        addTile(Tiles.UNDECORABLE_GROUND, new GameTile().setSolid(true), tileset, 0x01);
         addTile(Tiles.ICE, new MeltableTile(Tiles.AIR).setSolid(true).setAccelerationFactor(0.75f), tileset, 0x04);
         addTile(Tiles.SPIKE, new HarmfulTile().setSolid(true), tileset, 0x05);
         addTile(Tiles.EMPTY_BLOCK, new GameTile().setSolid(true), tileset, 0x06);

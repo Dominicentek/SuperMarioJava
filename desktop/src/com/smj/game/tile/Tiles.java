@@ -4,6 +4,7 @@ public class Tiles {
     public static final int AIR = 0x00;
     public static final int GROUND = 0x01;
     public static final int BARRIER = 0x02;
+    public static final int UNDECORABLE_GROUND = 0x03;
     public static final int STONE_BLOCK = 0x10;
     public static final int ICE = 0x11;
     public static final int SPIKE = 0x12;
