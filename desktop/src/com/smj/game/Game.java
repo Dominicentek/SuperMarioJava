@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.smj.Main;
 import com.smj.game.entity.EntityType;
 import com.smj.game.entity.GameEntity;
+import com.smj.game.entity.behavior.WarperBehavior;
 import com.smj.game.fluid.FluidType;
 import com.smj.game.options.Controls;
 import com.smj.game.tile.Tiles;
@@ -370,6 +371,7 @@ public class Game {
                 }
             }
         }
+        if (WarperBehavior.warperTimeout > 0) WarperBehavior.warperTimeout--;
         if (invincibilityTimeout % 2 == 1) {
             spawnSparklesHitbox(hitbox, 1);
         }
