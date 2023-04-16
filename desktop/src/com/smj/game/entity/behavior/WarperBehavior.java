@@ -12,9 +12,9 @@ public class WarperBehavior implements EntityBehavior {
     }
     public void onEntityCollide(GameEntity entity, GameLevel level, GameEntity collider) {
         if (collider.entityType == EntityType.PLAYER) {
-            Game.currentLevel.camera.targetX -= 768;
-            Game.currentLevel.camera.x -= 768;
-            collider.getPhysics().getHitbox().x -= 3200;
+            Game.currentLevel.camera.targetX -= 48;
+            Game.currentLevel.camera.x -= 48;
+            collider.getPhysics().getHitbox().x -= 4800;
         }
     }
 }
