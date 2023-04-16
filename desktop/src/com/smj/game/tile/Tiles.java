@@ -121,4 +121,5 @@ public class Tiles {
     public static final int LEFT_STREAM = 0xF3;
     public static final int DOWNWARDS_STREAM = 0xF4;
     public static final int RIGHT_STREAM = 0xF5;
+    public static final int WARPER = 0xF6;
 }
