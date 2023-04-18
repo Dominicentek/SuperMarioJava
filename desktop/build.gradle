@@ -50,7 +50,9 @@ task compileAssets() {
     for (File file : assetsDir.listFiles()) {
         parseFile(file, assetsDir, data)
     }
-    OutputStream output = new FileOutputStream("../jar/assets.bin")
+    File assetsFile = new File("../jar/assets.bin")
+    assetsFile.getParentFile().mkdirs()
+    OutputStream output = new FileOutputStream(assetsFile)
     GZIPOutputStream gzip = new GZIPOutputStream(output)
     int fileCount = data.size()
     gzip.write((fileCount >> 24) & 0xFF)
