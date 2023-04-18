@@ -1,6 +1,8 @@
 package com.smj;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -47,6 +49,14 @@ public class Main extends ApplicationAdapter {
     public static Runnable afterCutscene = null;
     public static ShaderProgram crtShader;
     public static ShaderProgram solidColorShader;
+    public static void main(String[] args) throws Exception {
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.setForegroundFPS(60);
+        config.setWindowedMode(windowWidth, windowHeight);
+        config.setTitle("Super Mario Java");
+        config.useVsync(false);
+        new Lwjgl3Application(new Main(), config);
+    }
     public void create() {
         FileLoader.load();
         renderer = new Renderer(HEIGHT);
