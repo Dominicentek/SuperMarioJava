@@ -41,6 +41,19 @@ Like this: `./gradlew dist`
 * F2 - Screenshot
 * F3 - Open Console
 
+## Level Editor
+
+You can find the level editor here: https://dominicentek.github.io/SuperMarioJava, or you can find it offline in the `<project_root>/assets/levelbuilder/lvledit.html`
+
+The exported .lvl file has to be compressed using the GZIP algorithm.
+
+#### How to compress the .lvl file
+
+1. Place the .lvl file inside `<project_root>/assets/levels/` directory with the name `levelX.lvl` with `X` being a positive number.
+2. Run the Super Mario Java JAR file with `java -cp SuperMarioJava.jar com.smj.GZIPCompress`
+3. The level should be compressed and good to go.
+4. You can uncompress levels by running `java -cp SuperMarioJava.jar com.smj.GZIPUncompress` instead.
+
 ## Console Commands
 | Name        | Aliases         | Syntax               | Description                                        |
 |-------------|-----------------|----------------------|----------------------------------------------------|
@@ -244,16 +257,3 @@ Here is the list of tiles in the game:
 * `downwards_stream`
 * `right_stream`
 * `warper`
-
-## Level Editor
-
-You can find the level editor here: https://dominicentek.github.io/SuperMarioJava, or you can find it offline in the `<project_root>/assets/levelbuilder/lvledit.html`
-
-The exported .lvl file has to be compressed using the GZIP algorithm.
-
-#### How to compress the .lvl file
-
-1. Place the .lvl file inside `<project_root>/assets/levels/` directory with the name `levelX.lvl` with `X` being a positive number.
-2. Run the Super Mario Java JAR file with `java -cp SuperMarioJava.jar com.smj.GZIPCompress`
-3. The level should be compressed and good to go.
-4. You can uncompress levels by running `java -cp SuperMarioJava.jar com.smj.GZIPUncompress` instead.
