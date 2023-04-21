@@ -57,7 +57,7 @@ public class ShellBehavior extends WalkingBehavior {
                     Physics physics = collider.getPhysics();
                     physics.setSpeedY(-level.getPhysicsConfig().jumpingSpeed);
                     Game.awardScore(collider.score, Location.entity(collider));
-                    Game.awardScore(StaticScore.SHELL_KICK);
+                    AudioPlayer.KICK.play(Location.entity(entity));
                 }
                 else Game.damagePlayer();
             }
