@@ -287,13 +287,13 @@ public class Game {
         if (spedUpMusicTimeout > 0) {
             spedUpMusicTimeout--;
             if (spedUpMusicTimeout == 0) {
-                AudioPlayer.MUSIC[currentLevel.music].play(1.5f);
+                AudioPlayer.MUSIC[currentLevel.music].play(true);
             }
         }
         if (invincibilityTimeout > 0) {
             invincibilityTimeout--;
             if (invincibilityTimeout == 0) {
-                AudioPlayer.MUSIC[currentLevel.music].play(timeRunningOut ? 1.5f : 1f);
+                AudioPlayer.MUSIC[currentLevel.music].play(timeRunningOut);
             }
         }
         particles = new ArrayList<>(Game.particles);
@@ -322,7 +322,7 @@ public class Game {
             currentLevel.camera.locked = true;
             currentLevel.camera.targetX = currentLevel.getLevelBoundaries().width - Main.WIDTH / 32.0 + 0.065;
             currentLevel.music = 12;
-            AudioPlayer.MUSIC[12].play(timeRunningOut ? 1.5f : 1f);
+            AudioPlayer.MUSIC[12].play(timeRunningOut);
             bossFightBegan = true;
             playCastleCutscene = true;
             bossFightTilesTimeout = 300;
@@ -484,7 +484,7 @@ public class Game {
         else {
             if (timeRunningOut || spedUpMusicTimeout > 0) {
                 AudioPlayer.MUSIC[level.music].stop();
-                AudioPlayer.MUSIC[level.music].play(1.5f);
+                AudioPlayer.MUSIC[level.music].play(true);
             }
         }
         if (level.gimmick == GameLevel.Gimmick.ENEMY) {
@@ -651,7 +651,7 @@ public class Game {
         awardScore(StaticScore.POWERUP);
         AudioPlayer.POWERUP.play();
         invincibilityTimeout = seconds * 60;
-        AudioPlayer.MUSIC[11].play();
+        AudioPlayer.MUSIC[11].play(timeRunningOut);
     }
     public static void spawnSparkles(Rectangle bounds, int amount) {
         for (int i = 0; i < amount; i++) {

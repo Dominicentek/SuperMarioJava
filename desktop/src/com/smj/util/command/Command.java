@@ -5,17 +5,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.smj.Main;
 import com.smj.game.cutscene.Cutscene;
 import com.smj.game.tile.GameTile;
-import com.smj.util.command.arguments.CommandArgument;
-import com.smj.util.command.arguments.IntegerArgument;
-import com.smj.util.command.arguments.ListArgument;
+import com.smj.util.*;
+import com.smj.util.command.arguments.*;
 import com.smj.game.Game;
 import com.smj.game.entity.EntityType;
 import com.smj.game.score.StaticScore;
 import com.smj.game.tile.Tiles;
-import com.smj.util.AccessCounter;
-import com.smj.util.ArrayStringifier;
-import com.smj.util.Saveable;
-import com.smj.util.command.arguments.PositionArgument;
 import com.smj.util.command.console.Console;
 import com.smj.util.command.console.StdoutConsole;
 
@@ -276,6 +271,34 @@ public class Command {
                 Point pos = context.get("pos");
                 GameTile.bump(Game.currentLevel, pos.x, pos.y);
                 console.log("Bumped a tile at pos " + pos.x + " " + pos.y);
+            }
+        ).get());
+        commands.addPath("music", new CommandBuilder().addNode(
+            new ListArgument("music", ArrayStringifier.modify(value -> {
+                return value.name;
+            }, AudioPlayer.MUSIC))
+        ).addNode(
+            (CommandExecution)context -> {
+                int id = context.get("music");
+                if (id < 0 || id >= AudioPlayer.MUSIC.length) {
+                    console.err("Invalid music name or ID");
+                    return;
+                }
+                AudioPlayer.MUSIC[id].play();
+                console.log("Playing " + AudioPlayer.MUSIC[id].name);
+            }
+        ).addNode(
+            new BooleanArgument("faster")
+        ).addNode(
+            (CommandExecution)context -> {
+                int id = context.get("music");
+                if (id < 0 || id >= AudioPlayer.MUSIC.length) {
+                    console.err("Invalid music name or ID");
+                    return;
+                }
+                boolean faster = context.get("faster");
+                AudioPlayer.MUSIC[id].play(faster);
+                console.log("Playing " + (faster ? "a fast version of " : "") + AudioPlayer.MUSIC[id].name);
             }
         ).get());
     }

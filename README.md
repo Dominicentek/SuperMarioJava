@@ -55,23 +55,24 @@ The exported .lvl file has to be compressed using the GZIP algorithm.
 4. You can uncompress levels by running `java -cp SuperMarioJava.jar com.smj.GZIPUncompress` instead.
 
 ## Console Commands
-| Name        | Aliases         | Syntax               | Description                                        |
-|-------------|-----------------|----------------------|----------------------------------------------------|
-| `life`      |                 | `<set,add> <amount>` | Manages the amount of lives                        |
-| `coin`      |                 | `<set,add> <amount>` | Manages the amount of coins                        |
-| `time`      |                 | `<set,add> <amount>` | Manages the time remaining                         |
-| `score`     |                 | `<set,add> <amount>` | Manages the score                                  |
-| `powerup`   |                 | `<state>`            | Sets the powerup state for the player              |
-| `superstar` | `star`          | `<seconds>`          | Adds an amount of seconds to player's star powerup |
-| `entity`    |                 | `<type> <position>`  | Spawns an entity                                   |
-| `tile`      |                 | `<type> <position>`  | Sets a tile to a position                          |
-| `position`  | `teleport` `tp` | `<position>`         | Teleport player to position                        |
-| `die`       |                 |                      | Makes Mario die                                    |
-| `finish`    |                 |                      | Finishes the level                                 |
-| `save`      |                 |                      | Saves the game                                     |
-| `clear`     |                 |                      | Clears the console                                 |
-| `cutscene`  |                 | `<cutscene>`         | Plays a cutscene                                   |
-| `bump`      |                 | `<position>`         | Bumps a tile at a certain position                 |
+| Name        | Aliases         | Syntax                      | Description                                        |
+|-------------|-----------------|-----------------------------|----------------------------------------------------|
+| `life`      |                 | `<set,add> <amount>`        | Manages the amount of lives                        |
+| `coin`      |                 | `<set,add> <amount>`        | Manages the amount of coins                        |
+| `time`      |                 | `<set,add> <amount>`        | Manages the time remaining                         |
+| `score`     |                 | `<set,add> <amount>`        | Manages the score                                  |
+| `powerup`   |                 | `<state>`                   | Sets the powerup state for the player              |
+| `superstar` | `star`          | `<seconds>`                 | Adds an amount of seconds to player's star powerup |
+| `entity`    |                 | `<type> <position>`         | Spawns an entity                                   |
+| `tile`      |                 | `<type> <position>`         | Sets a tile to a position                          |
+| `position`  | `teleport` `tp` | `<position>`                | Teleport player to position                        |
+| `die`       |                 |                             | Makes Mario die                                    |
+| `finish`    |                 |                             | Finishes the level                                 |
+| `save`      |                 |                             | Saves the game                                     |
+| `clear`     |                 |                             | Clears the console                                 |
+| `cutscene`  |                 | `<cutscene>`                | Plays a cutscene                                   |
+| `bump`      |                 | `<position>`                | Bumps a tile at a certain position                 |
+| `music`     |                 | `<id> [faster: true,false]` | Plays music                                        |
 
 The position argument is a set of 2 numeric values.
 Those value are the X and Y coordinates of the position.
@@ -257,3 +258,22 @@ Here is the list of tiles in the game:
 * `downwards_stream`
 * `right_stream`
 * `warper`
+
+### Music IDs
+
+Here is the list of music in the game:
+* `ground`
+* `underground`
+* `desert`
+* `snow`
+* `underwater`
+* `forest`
+* `sky`
+* `lava`
+* `castle`
+* `bonus`
+* `enemy`
+* `superstar`
+* `boss`
+* `title`
+* `ending`
