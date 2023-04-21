@@ -40,7 +40,7 @@ public class ShellBehavior extends WalkingBehavior {
                 Game.particles.add(new FallingEnemyParticle(entity));
                 AudioPlayer.KICK.play(Location.entity(entity));
             }
-            else {
+            else if (cooldown == 0) {
                 if (speedFactor == 0) {
                     entity.score.reset();
                     int colliderHitboxCenter = collider.getPhysics().getHitbox().x + collider.getPhysics().getHitbox().width / 2;
@@ -57,8 +57,9 @@ public class ShellBehavior extends WalkingBehavior {
                     Physics physics = collider.getPhysics();
                     physics.setSpeedY(-level.getPhysicsConfig().jumpingSpeed);
                     Game.awardScore(collider.score, Location.entity(collider));
+                    Game.awardScore(StaticScore.SHELL_KICK);
                 }
-                else if (cooldown == 0) Game.damagePlayer();
+                else Game.damagePlayer();
             }
         }
     }
