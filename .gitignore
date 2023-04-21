@@ -114,6 +114,7 @@ Thumbs.db
 /ios/IOSLauncher.app
 /ios/IOSLauncher.app.dSYM
 
+# smj stuff
 /smj_screenshots
 /jar/assets.bin
 /options.dat
