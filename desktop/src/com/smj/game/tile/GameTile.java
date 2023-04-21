@@ -57,9 +57,13 @@ public class GameTile extends LevelTile {
         return textureLocations.get(currentLocationIndex);
     }
     public static void bump(GameLevel level, int x, int y) {
+        bump(level, x, y, () -> {});
+    }
+    public static void bump(GameLevel level, int x, int y, Runnable after) {
         int tileID = level.getTileAt(x, y);
         GameEntity entity = EntityType.BUMP_TILE.spawn(level, x * 100, y * 100);
         entity.getBehavior(BumpTileBehavior.class).tile = tileID;
+        entity.getBehavior(BumpTileBehavior.class).after = after;
         entity.updateTexture();
     }
 }

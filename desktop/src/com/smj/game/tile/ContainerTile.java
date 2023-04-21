@@ -17,11 +17,12 @@ public class ContainerTile extends GameTile {
     public void onTouchBottom(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
         if (entity.getPhysics().getSpeedY() > 0) return;
-        AudioPlayer.QUESTION_BLOCK.play();
-        EntityType type = getEntity();
-        type.spawn(level, x * 100 + 50 - type.getHitbox().width / 2, y * 100 + 50 - type.getHitbox().height / 2);
-        level.setTileAt(Tiles.EMPTY_BLOCK, x, y);
-        GameTile.bump(level, x, y);
+        GameTile.bump(level, x, y, () -> {
+            EntityType type = getEntity();
+            type.spawn(level, x * 100 + 50 - type.getHitbox().width / 2, y * 100 + 50 - type.getHitbox().height / 2);
+            level.setTileAt(Tiles.EMPTY_BLOCK, x, y);
+            AudioPlayer.QUESTION_BLOCK.play();
+        });
     }
     public EntityType getEntity() {
         return progressive && Game.savefile.powerupState == 0 ? EntityType.MUSHROOM : entity;
