@@ -179,11 +179,19 @@ public class Level {
             if (!entity.getProperties().drawInBG || ((GameEntity)entity).invisible || (((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityFrames % 2 == 1 && Game.powerupTimeout == 0) || Game.title || entity.getProperties().texture == null) continue;
             double[] origin = entity.getTextureOrigin(unitWidth, unitHeight);
             if (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height <= 0) {
+                if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(null);
                 renderer.setColor(0x000000AF);
                 renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), 0, ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
                 renderer.setColor(0xFFFFFFFF);
+                if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
             }
-            else renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), (int)(origin[1] * unitHeight), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
+            else {
+                if (((GameLevel)this).gimmick != GameLevel.Gimmick.FOG && ((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityTimeout > 0) renderer.setShader(Main.hueshiftShader);
+                Main.hueshiftShader.setUniformf("hueshift", System.currentTimeMillis() % 1000 / 1000f);
+                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), (int)(origin[1] * unitHeight), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
+                if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
+                else renderer.setShader(null);
+            }
         }
         for (int x = (int)Math.max(0, (cameraX / (double)unitWidth) - 1); x < Math.min(tilemap.length, (cameraX + width) / (double)unitWidth + 1); x++) {
             for (int y = (int)Math.max(0, (-cameraY / (double)unitHeight) - 1); y < Math.min(tilemap[0].length, (-cameraY + height) / (double)unitHeight + 1); y++) {
@@ -218,11 +226,19 @@ public class Level {
             if (entity.getProperties().drawInBG || ((GameEntity)entity).invisible || (((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityFrames % 2 == 1 && Game.powerupTimeout == 0) || Game.title || entity.getProperties().texture == null) continue;
             double[] origin = entity.getTextureOrigin(unitWidth, unitHeight);
             if (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height <= 0) {
+                if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(null);
                 renderer.setColor(0x000000AF);
                 renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), 0, ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
                 renderer.setColor(0xFFFFFFFF);
+                if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
             }
-            else renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), (int)(origin[1] * unitHeight), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
+            else {
+                if (((GameLevel)this).gimmick != GameLevel.Gimmick.FOG && ((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityTimeout > 0) renderer.setShader(Main.hueshiftShader);
+                Main.hueshiftShader.setUniformf("hueshift", System.currentTimeMillis() % 1000 / 1000f);
+                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), (int)(origin[1] * unitHeight), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
+                if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
+                else renderer.setShader(null);
+            }
         }
         Fluid fluid = ((GameLevel)this).fluid;
         if (fluid != null) {

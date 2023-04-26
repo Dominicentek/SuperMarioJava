@@ -50,6 +50,7 @@ public class Main extends ApplicationAdapter {
     public static Runnable afterCutscene = null;
     public static ShaderProgram crtShader;
     public static ShaderProgram solidColorShader;
+    public static ShaderProgram hueshiftShader;
     public static void main(String[] args) throws Exception {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setForegroundFPS(60);
@@ -92,6 +93,7 @@ public class Main extends ApplicationAdapter {
         });
         crtShader = createShader("crt");
         solidColorShader = createShader("solidcol");
+        hueshiftShader = createShader("hueshift");
         ShaderProgram.pedantic = false;
     }
     public void render() {
