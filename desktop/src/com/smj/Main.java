@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.smj.game.cutscene.Cutscene;
 import com.smj.game.cutscene.Dialog;
@@ -118,7 +119,8 @@ public class Main extends ApplicationAdapter {
         renderer.end();
         buffer.end();
         viewer.begin();
-        crtShader.setUniformf("flicker", RNG.range(0f, 1f));
+        crtShader.setUniformf("rngValue", RNG.range(0f, 1f));
+        crtShader.setUniformf("screenSize", new Vector2(windowWidth, windowHeight));
         viewer.setShader(options.crtShader ? crtShader : null);
         viewer.setProjectionMatrix(viewCamera.combined);
         Texture texture = buffer.getColorBufferTexture();
@@ -197,7 +199,7 @@ public class Main extends ApplicationAdapter {
     public static ShaderProgram createShader(String name) {
         ShaderProgram shader = new ShaderProgram(FileLoader.read("shaders/vertex.glsl").asString(), FileLoader.read("shaders/" + name + "-fragment.glsl").asString());
         if (!shader.isCompiled()) {
-            System.out.println(crtShader.getLog());
+            System.out.println(shader.getLog());
             return null;
         }
         return shader;
