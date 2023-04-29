@@ -31,7 +31,7 @@ task debug(dependsOn: classes, type: JavaExec) {
     debug = true
 }
 
-task dist(type: Jar) {
+task dist(dependsOn: build, type: Jar) {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
         attributes 'Main-Class': project.mainClassName
@@ -45,12 +45,12 @@ task dist(type: Jar) {
 
 task compileAssets() {
     System.out.println("Compiling assets...")
-    File assetsDir = new File("../assets")
+    File assetsDir = new File(rootProject.projectDir, "assets")
     HashMap<String, byte[]> data = new HashMap<>()
     for (File file : assetsDir.listFiles()) {
         parseFile(file, assetsDir, data)
     }
-    File assetsFile = new File("../jar/assets.bin")
+    File assetsFile = new File(rootProject.projectDir, "jar/assets.bin")
     assetsFile.getParentFile().mkdirs()
     OutputStream output = new FileOutputStream(assetsFile)
     GZIPOutputStream gzip = new GZIPOutputStream(output)
