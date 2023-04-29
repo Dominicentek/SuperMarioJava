@@ -6,8 +6,8 @@ import com.smj.game.entity.EntityType;
 import com.smj.game.entity.GameEntity;
 
 public class MushroomContainerTile extends ContainerTile {
-    public MushroomContainerTile() {
-        super(EntityType.MUSHROOM, false);
+    public MushroomContainerTile(boolean setEmptyBlockBeforeBump) {
+        super(EntityType.MUSHROOM, false, setEmptyBlockBeforeBump);
     }
     public EntityType getEntity() {
         if (Game.savefile.powerupState == 0) return EntityType.MUSHROOM;

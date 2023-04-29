@@ -10,13 +10,16 @@ import com.smj.util.AudioPlayer;
 public class ContainerTile extends GameTile {
     private EntityType entity;
     private boolean progressive;
-    public ContainerTile(EntityType entity, boolean progressive) {
+    private boolean setEmptyBlockBeforeBump;
+    public ContainerTile(EntityType entity, boolean progressive, boolean setEmptyBlockBeforeBump) {
         this.entity = entity;
         this.progressive = progressive;
+        this.setEmptyBlockBeforeBump = setEmptyBlockBeforeBump;
     }
     public void onTouchBottom(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
         if (entity.getPhysics().getSpeedY() > 0) return;
+        if (setEmptyBlockBeforeBump) level.setTileAt(Tiles.EMPTY_BLOCK, x, y);
         GameTile.bump(level, x, y, () -> {
             EntityType type = getEntity();
             type.spawn(level, x * 100 + 50 - type.getHitbox().width / 2, y * 100 + 50 - type.getHitbox().height / 2);
