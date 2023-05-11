@@ -76,6 +76,8 @@ public class Game {
     public static boolean consoleOpen = false;
     public static TextConsole console = new TextConsole();
     public static String cmd = "";
+    public static Recording recording = null;
+    public static boolean recordNextLevel = false;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -268,6 +270,11 @@ public class Game {
             consoleOpen = !consoleOpen;
         }
         if (paused) return;
+        Controls.playbackInput = true;
+        if (Controls.playback != null) {
+            Controls.playback.next();
+            if (Controls.playback.done()) Controls.playback = null;
+        }
         currentLevel.update();
         timeTimeout--;
         if (timeTimeout == 0) {
@@ -432,6 +439,8 @@ public class Game {
         spotlightCircle.y = (hitbox.y + hitbox.height / 2) * 16 / 100 - (int)(cameraY * 16);
         Collections.shuffle(currentLevel.getEntityManager().entities);
         if (Controls.TOGGLE_HUD.isJustPressed()) Main.options.hiddenHUD = !Main.options.hiddenHUD;
+        Controls.playbackInput = false;
+        if (recording != null) recording.recordFrame();
     }
     public static void loadThemes() {
         for (int i = 0; i < THEMES.length; i++) {
@@ -480,6 +489,11 @@ public class Game {
             timeTimeout = 60;
             spedUpMusicTimeout = -1;
             HUDLayout.SCORE.set(savefile.score);
+            if (recording != null) {
+                Saveable.save(recording, Gdx.files.local(Saveable.ensureNotExists(Gdx.files.local("smj_recordings/" + Saveable.getTimestamp() + ".smjrec"))));
+                recording = null;
+            }
+            Controls.playback = null;
         }
         else {
             if (timeRunningOut || spedUpMusicTimeout > 0) {
@@ -540,6 +554,10 @@ public class Game {
         Main.mask.clear();
         if (level.gimmick == GameLevel.Gimmick.SPOTLIGHT) {
             Main.mask.add(spotlightCircle);
+        }
+        if (recordNextLevel && newLevel) {
+            recordNextLevel = false;
+            recording = new Recording(id);
         }
         GameLevel.onOffTreatment = true;
     }
@@ -694,5 +712,10 @@ public class Game {
         player.getProperties().drawInBG = true;
         Game.warp = warp;
         AudioPlayer.WARP.play();
+    }
+    public static void playbackRecording(Recording recording) {
+        recording.seek(0);
+        loadLevel(recording.level, true);
+        Controls.playback = recording;
     }
 }

@@ -26,7 +26,7 @@ public class Screenshot implements ClipboardOwner {
         BufferedImage image = getImage();
         new Thread(() -> {
             if (Main.options.saveFileScreenshot) {
-                String path = ensureNotExists(Gdx.files.local("smj_screenshots/" + getTimestamp() + ".png"));
+                String path = Saveable.ensureNotExists(Gdx.files.local("smj_screenshots/" + Saveable.getTimestamp() + ".png"));
                 try {
                     File file = new File(path);
                     file.getParentFile().mkdirs();
@@ -52,27 +52,6 @@ public class Screenshot implements ClipboardOwner {
         }
         pixmap.dispose();
         return image;
-    }
-    private static String getTimestamp() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        return calendar.get(Calendar.YEAR) + "-" +
-            String.format("%1$2s", "" + calendar.get(Calendar.MONTH)).replaceAll(" ", "0") + "-" +
-            String.format("%1$2s", "" + calendar.get(Calendar.DAY_OF_MONTH)).replaceAll(" ", "0") + "_" +
-            String.format("%1$2s", "" + calendar.get(Calendar.HOUR_OF_DAY)).replaceAll(" ", "0") + "." +
-            String.format("%1$2s", "" + calendar.get(Calendar.MINUTE)).replaceAll(" ", "0") + "." +
-            String.format("%1$2s", "" + calendar.get(Calendar.SECOND)).replaceAll(" ", "0");
-    }
-    private static String ensureNotExists(FileHandle handle) {
-        int n = 0;
-        String name = handle.nameWithoutExtension();
-        String extension = (handle.extension().isEmpty() ? "" : "." + handle.extension());
-        String currentName = handle.name();
-        while (handle.sibling(currentName).exists()) {
-            n++;
-            currentName = name + "-" + n + extension;
-        }
-        return handle.sibling(currentName).path();
     }
     public void lostOwnership(Clipboard clipboard, Transferable contents) {}
     public static class TransferableImage implements Transferable {

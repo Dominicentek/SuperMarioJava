@@ -1,11 +1,13 @@
 package com.smj.util.command;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
 import com.smj.Main;
 import com.smj.game.cutscene.Cutscene;
 import com.smj.game.tile.GameTile;
 import com.smj.util.*;
+import com.smj.util.Readable;
 import com.smj.util.command.arguments.*;
 import com.smj.game.Game;
 import com.smj.game.entity.EntityType;
@@ -300,6 +302,26 @@ public class Command {
                 AudioPlayer.MUSIC[id].play(faster);
                 console.log("Playing " + (faster ? "a fast version of " : "") + AudioPlayer.MUSIC[id].name);
             }
+        ).get());
+        commands.addPath("record", new CommandBuilder().addNode(
+            new CommandLiteral().addPath("begin", new CommandBuilder().addNode(
+                (CommandExecution)context -> {
+                    console.log("Next level's movement will be recorded.");
+                    Game.recordNextLevel = true;
+                }
+            ).get()).addPath("playback", new CommandBuilder().addNode(
+                new StringArgument("filename")
+            ).addNode(
+                (CommandExecution)context -> {
+                    FileHandle recFile = Gdx.files.local("smj_recordings/" + context.get("filename") + ".smjrec");
+                    if (!recFile.exists()) {
+                        console.err("File " + context.get("filename") + " doesn't exist");
+                        return;
+                    }
+                    console.log("Playing " + context.get("filename"));
+                    Game.playbackRecording(Readable.read(recFile.readBytes(), Recording.class));
+                }
+            ).get())
         ).get());
     }
 }

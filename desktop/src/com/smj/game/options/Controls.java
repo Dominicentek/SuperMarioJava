@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.smj.Main;
 import com.smj.gui.menu.MenuControlsItem;
+import com.smj.util.Recording;
 
 public enum Controls {
     UP(Input.Keys.W),
@@ -21,14 +22,34 @@ public enum Controls {
     TOGGLE_HUD(Input.Keys.F1),
     SCREENSHOT(Input.Keys.F2),
     CONSOLE(Input.Keys.F3);
+    public static Recording playback;
+    public static boolean playbackInput;
     public int keybind;
     Controls(int keybind) {
         this.keybind = keybind;
     }
     public boolean isJustPressed() {
+        if (playback != null && playbackInput) {
+            Recording.RecordingFrame justPressed = playback.justPressed();
+            if (this == UP) return justPressed.up;
+            if (this == LEFT) return justPressed.left;
+            if (this == DOWN) return justPressed.down;
+            if (this == RIGHT) return justPressed.right;
+            if (this == JUMP) return justPressed.jump;
+            if (this == RUN) return justPressed.run;
+        }
         return Gdx.input.isKeyJustPressed(keybind);
     }
     public boolean isPressed() {
+        if (playback != null && playbackInput) {
+            Recording.RecordingFrame justPressed = playback.pressed();
+            if (this == UP) return justPressed.up;
+            if (this == LEFT) return justPressed.left;
+            if (this == DOWN) return justPressed.down;
+            if (this == RIGHT) return justPressed.right;
+            if (this == JUMP) return justPressed.jump;
+            if (this == RUN) return justPressed.run;
+        }
         return Gdx.input.isKeyPressed(keybind);
     }
     public String toString() {
