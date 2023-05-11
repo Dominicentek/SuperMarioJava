@@ -60,7 +60,6 @@ public class Main extends ApplicationAdapter {
         new Lwjgl3Application(new Main(), config);
     }
     public void create() {
-        FileLoader.load();
         renderer = new Renderer(HEIGHT);
         viewer = new Renderer(windowHeight);
         buffer = new FrameBuffer(Pixmap.Format.RGBA8888, WIDTH, HEIGHT, false);
