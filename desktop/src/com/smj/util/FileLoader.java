@@ -17,7 +17,7 @@ public class FileLoader {
         return new FileLoader(path);
     }
     public byte[] asBytes() {
-        FileHandle handle = Gdx.files.internal(path);
+        FileHandle handle = Gdx.files.internal("assets/" + path);
         if (!handle.exists()) throw new RuntimeException("File not found: " + path);
         return handle.readBytes();
     }
