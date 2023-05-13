@@ -15,7 +15,6 @@ import com.smj.game.score.StaticScore;
 import com.smj.game.tile.Tiles;
 import com.smj.util.command.console.Console;
 import com.smj.util.command.console.StdoutConsole;
-import sun.util.locale.provider.JRELocaleConstants;
 
 import java.awt.Point;
 import java.awt.Rectangle;
