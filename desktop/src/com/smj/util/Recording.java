@@ -8,7 +8,11 @@ import java.util.ArrayList;
 
 public class Recording implements Saveable {
     public static final Recording[] DEMOS = {
-        Readable.read(FileLoader.read("assets/demos/1.smjrec").asBytes(), Recording.class)
+        Readable.read(FileLoader.read("assets/demos/1.smjrec").asBytes(), Recording.class),
+        Readable.read(FileLoader.read("assets/demos/2.smjrec").asBytes(), Recording.class),
+        Readable.read(FileLoader.read("assets/demos/3.smjrec").asBytes(), Recording.class),
+        Readable.read(FileLoader.read("assets/demos/4.smjrec").asBytes(), Recording.class),
+        Readable.read(FileLoader.read("assets/demos/5.smjrec").asBytes(), Recording.class),
     };
     public final int level;
     public ArrayList<RecordingFrame> frames = new ArrayList<>();
