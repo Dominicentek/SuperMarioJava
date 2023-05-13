@@ -26,11 +26,12 @@ public class PlayerTextureProvider extends TextureProvider {
     private static final int STATE_SWIMMING_UP_2 = 10;
     private static final int STATE_SWIMMING_UP_3 = 11;
     private static final int STATE_SWIMMING_UP_4 = 12;
-    private int prevX;
+    private Integer prevX = null;
     public PlayerTextureProvider(Texture texture) {
         super(texture);
     }
     public Rectangle getTextureRegion(GameEntity entity) {
+        if (prevX == null) prevX = entity.getPhysics().getHitbox().x;
         int speedX = prevX - entity.getPhysics().getHitbox().x;
         prevX = entity.getPhysics().getHitbox().x;
         int powerup = Game.powerupTimeout == 0 ? Game.savefile.powerupState : (Game.powerupTimeout / 10 % 2 == 1 ? Game.savefile.powerupState : Game.prevState);

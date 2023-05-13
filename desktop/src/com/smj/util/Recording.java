@@ -7,6 +7,9 @@ import com.smj.util.bjson.ObjectElement;
 import java.util.ArrayList;
 
 public class Recording implements Saveable {
+    public static final Recording[] DEMOS = {
+        Readable.read(FileLoader.read("assets/demos/1.smjrec").asBytes(), Recording.class)
+    };
     public final int level;
     public ArrayList<RecordingFrame> frames = new ArrayList<>();
     public int length = 0;

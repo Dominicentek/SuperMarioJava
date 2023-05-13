@@ -115,6 +115,7 @@ public class Menus {
             Main.setTransition(new Transition(0.5, () -> {
                 Game.pauseMenuOpen = false;
                 Game.title = false;
+                Game.playback = null;
                 Menu.loadMenu(null);
                 Game.loadLevel(Game.savefile.levelsCompleted, true);
             }));
@@ -123,6 +124,7 @@ public class Menus {
             Main.startCutscene("beginning", () -> {
                 Game.pauseMenuOpen = false;
                 Game.title = false;
+                Game.playback = null;
                 Menu.loadMenu(null);
                 Game.savefile = new SaveFile();
                 Saveable.save(Game.savefile, Gdx.files.local("save.sav"));

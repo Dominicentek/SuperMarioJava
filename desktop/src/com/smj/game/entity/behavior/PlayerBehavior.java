@@ -11,32 +11,40 @@ import com.smj.game.options.Controls;
 import com.smj.game.particle.BubbleParticle;
 import com.smj.gui.hud.HUDLayout;
 import com.smj.util.AudioPlayer;
+import com.smj.util.Recording;
 
 public class PlayerBehavior implements EntityBehavior {
     public boolean facingLeft = false;
     public int jumpTimer = -1;
     public int bubbleTimeout = 60;
     public void update(GameEntity entity, GameLevel level) {
-        if (Game.consoleOpen) {
+        if (Game.consoleOpen && Game.playback == null) {
             entity.getPhysics().getMovement().setWalkingLeft(false);
             entity.getPhysics().getMovement().setWalkingRight(false);
             entity.getPhysics().getMovement().setJumping(false);
             entity.getPhysics().getMovement().setRunning(false);
             return;
         }
-        if (Controls.LEFT.isPressed()) facingLeft = true;
-        if (Controls.RIGHT.isPressed()) facingLeft = false;
-        entity.getPhysics().getMovement().setWalkingLeft(Controls.LEFT.isPressed());
-        entity.getPhysics().getMovement().setWalkingRight(Controls.RIGHT.isPressed());
-        entity.getPhysics().getMovement().setJumping(Controls.JUMP.isPressed());
-        entity.getPhysics().getMovement().setRunning(Controls.RUN.isPressed());
+        Recording.RecordingFrame pressed = Game.playback == null ? null : Game.playback.pressed();
+        Recording.RecordingFrame justPressed = Game.playback == null ? null : Game.playback.justPressed();
+        boolean left = pressed == null ? Controls.LEFT.isPressed() : pressed.left;
+        boolean right = pressed == null ? Controls.RIGHT.isPressed() : pressed.right;
+        boolean jump = pressed == null ? Controls.JUMP.isPressed() : pressed.jump;
+        boolean run = pressed == null ? Controls.RUN.isPressed() : pressed.run;
+        boolean justRun = justPressed == null ? Controls.RUN.isJustPressed() : justPressed.run;
+        if (left) facingLeft = true;
+        if (right) facingLeft = false;
+        entity.getPhysics().getMovement().setWalkingLeft(left);
+        entity.getPhysics().getMovement().setWalkingRight(right);
+        entity.getPhysics().getMovement().setJumping(jump);
+        entity.getPhysics().getMovement().setRunning(run);
         if (Game.isCrouching && !entity.getPhysics().isInAir()) {
             entity.getPhysics().getMovement().setWalkingLeft(false);
             entity.getPhysics().getMovement().setWalkingRight(false);
         }
         if (!entity.getPhysics().isInAir() && Game.invincibilityTimeout == 0) entity.score.reset();
         if (entity.getPhysics().getHitbox().y >= entity.getLevel().getLevelBoundaries().height * 100 + 50) Game.die();
-        if (Controls.RUN.isJustPressed()) {
+        if (justRun) {
             if (Game.savefile.powerupState == 2) {
                 GameEntity fireball = EntityType.FIREBALL.spawn(level, entity.getPhysics().getHitbox().x + (facingLeft ? -entity.getPhysics().getHitbox().width + 50 : entity.getPhysics().getHitbox().width), entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2);
                 if (!facingLeft) fireball.getBehavior(WalkingBehavior.class).speedFactor = 0.5f;

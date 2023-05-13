@@ -72,25 +72,6 @@ public class GameLevel extends Level implements Readable {
         HUDLayout.KEY_COIN_COUNTER.visible = keycoinAmount > 0;
         assignBackground(theme.background);
     }
-    public void update() {
-        for (Entity entity : Arrays.asList(getEntityManager().array())) {
-            entity.update(this);
-            Physics physics = entity.getPhysics();
-            if (!physics.begun()) physics.begin(this);
-            physics.advance();
-        }
-        tileAnimationTimeout--;
-        if (tileAnimationTimeout == 0) {
-            tileAnimationTimeout = 10;
-            for (LevelTile tile : getTileList()) {
-                if (tile instanceof GameTile) {
-                    GameTile t = (GameTile)tile;
-                    t.cycleTexture();
-                }
-            }
-        }
-        if (fluid != null) fluid.movement.update();
-    }
     public PhysicsConfig getPhysicsConfig() {
         return gimmick == Gimmick.UNDERWATER ? PHYSICS_UNDERWATER : gimmick == Gimmick.LOW_GRAVITY ? PHYSICS_LOW_GRAVITY : PHYSICS_GROUND;
     }

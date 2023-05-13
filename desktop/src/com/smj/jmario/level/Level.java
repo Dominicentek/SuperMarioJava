@@ -176,7 +176,7 @@ public class Level {
         if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
         Main.solidColorShader.setUniformf("color", 1, 1, 1, 1);
         for (Entity entity : entities) {
-            if (!entity.getProperties().drawInBG || ((GameEntity)entity).invisible || (((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityFrames % 2 == 1 && Game.powerupTimeout == 0) || Game.title || entity.getProperties().texture == null) continue;
+            if (!entity.getProperties().drawInBG || ((GameEntity)entity).invisible || (((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityFrames % 2 == 1 && Game.powerupTimeout == 0) || entity.getProperties().texture == null) continue;
             double[] origin = entity.getTextureOrigin(unitWidth, unitHeight);
             if (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height <= 0) {
                 if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(null);
@@ -223,7 +223,7 @@ public class Level {
             }
         }
         for (Entity entity : entities) {
-            if (entity.getProperties().drawInBG || ((GameEntity)entity).invisible || (((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityFrames % 2 == 1 && Game.powerupTimeout == 0) || Game.title || entity.getProperties().texture == null) continue;
+            if (entity.getProperties().drawInBG || ((GameEntity)entity).invisible || (((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityFrames % 2 == 1 && Game.powerupTimeout == 0) || entity.getProperties().texture == null) continue;
             double[] origin = entity.getTextureOrigin(unitWidth, unitHeight);
             if (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height <= 0) {
                 if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(null);

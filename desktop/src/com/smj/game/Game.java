@@ -11,6 +11,7 @@ import com.smj.game.entity.GameEntity;
 import com.smj.game.entity.behavior.WarperBehavior;
 import com.smj.game.fluid.FluidType;
 import com.smj.game.options.Controls;
+import com.smj.game.tile.GameTile;
 import com.smj.game.tile.Tiles;
 import com.smj.gui.hud.HUDLayout;
 import com.smj.game.particle.*;
@@ -25,6 +26,7 @@ import com.smj.jmario.level.LevelBackground;
 import com.smj.jmario.level.decoration.Decoration;
 import com.smj.jmario.level.decoration.DecorationType;
 import com.smj.jmario.level.decoration.Decorations;
+import com.smj.jmario.tile.level.LevelTile;
 import com.smj.util.command.Command;
 import com.smj.util.command.console.TextConsole;
 import com.smj.util.mask.Circle;
@@ -78,6 +80,10 @@ public class Game {
     public static String cmd = "";
     public static Recording recording = null;
     public static boolean recordNextLevel = false;
+    public static int demoTimeout = 600;
+    public static int displayLevelID = 0;
+    public static Recording playback;
+    public static boolean playbackInput;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -97,6 +103,7 @@ public class Game {
             }
             return;
         }
+        if (currentLevel == null) return;
         if (currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN) renderer.setTransformMatrix(renderer.getTransformMatrix().scale(1, -1, 1).translate(0, -Main.HEIGHT, 0));
         currentLevel.draw(renderer, 16, 16, Game.player);
         double cameraX = currentLevel.camera.x * 16 - Main.WIDTH / 2.0;
@@ -175,11 +182,9 @@ public class Game {
     }
     public static void update() {
         if (Menu.currentMenu != null) Menu.currentMenu.update();
-        HUDLayout.WORLD_TEXT.text = GameStrings.get("world_prefix") + " " + (savefile.levelsCompleted / 5 + 1) + "-" + (savefile.levelsCompleted % 5 + 1);
-        if (title) {
-            HUDLayout.SPEEDRUN_TIMER.finish();
-            return;
-        }
+        HUDLayout.WORLD_TEXT.text = GameStrings.get("world_prefix") + " " + (displayLevelID / 5 + 1) + "-" + (displayLevelID % 5 + 1);
+        if (title) HUDLayout.SPEEDRUN_TIMER.finish();
+        if (legalNoticeTimeout > 0) return;
         HUDLayout.COIN_COUNTER.attachment.target = Math.min(savefile.coins, 100);
         HUDLayout.LIFE_COUNTER.attachment.target = savefile.lives;
         savefile.lives = Math.min(99, savefile.lives);
@@ -269,13 +274,29 @@ public class Game {
         if (Controls.CONSOLE.isJustPressed()) {
             consoleOpen = !consoleOpen;
         }
-        if (paused) return;
-        Controls.playbackInput = true;
-        if (Controls.playback != null) {
-            Controls.playback.next();
-            if (Controls.playback.done()) Controls.playback = null;
+        if (currentLevel == null) return;
+        currentLevel.tileAnimationTimeout--;
+        if (currentLevel.tileAnimationTimeout == 0) {
+            currentLevel.tileAnimationTimeout = 10;
+            for (LevelTile tile : currentLevel.getTileList()) {
+                if (tile instanceof GameTile) {
+                    GameTile t = (GameTile)tile;
+                    t.cycleTexture();
+                }
+            }
         }
-        currentLevel.update();
+        if (paused || (title && playback == null)) return;
+        if (playback != null) {
+            playback.next();
+            if (playback.done()) playback = null;
+        }
+        for (Entity entity : Arrays.asList(currentLevel.getEntityManager().array())) {
+            entity.update(currentLevel);
+            Physics physics = entity.getPhysics();
+            if (!physics.begun()) physics.begin(currentLevel);
+            physics.advance();
+        }
+        if (currentLevel.fluid != null) currentLevel.fluid.movement.update();
         timeTimeout--;
         if (timeTimeout == 0) {
             time--;
@@ -392,7 +413,8 @@ public class Game {
             physics.setSpeedX(0);
         }
         if (savefile.powerupState > 0 && !physics.isInAir()) {
-            isCrouching = currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN ? Controls.UP.isPressed() : Controls.DOWN.isPressed();
+            Recording.RecordingFrame pressed = playback == null ? null : playback.pressed();
+            isCrouching = currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN ? (pressed == null ? Controls.UP.isPressed() : pressed.up) : (pressed == null ? Controls.DOWN.isPressed() : pressed.down);
             if (hitbox.height > 100 && isCrouching) {
                 hitbox.height -= 100;
                 hitbox.y += 100;
@@ -439,7 +461,6 @@ public class Game {
         spotlightCircle.y = (hitbox.y + hitbox.height / 2) * 16 / 100 - (int)(cameraY * 16);
         Collections.shuffle(currentLevel.getEntityManager().entities);
         if (Controls.TOGGLE_HUD.isJustPressed()) Main.options.hiddenHUD = !Main.options.hiddenHUD;
-        Controls.playbackInput = false;
         if (recording != null) recording.recordFrame();
     }
     public static void loadThemes() {
@@ -493,7 +514,9 @@ public class Game {
                 Saveable.save(recording, Gdx.files.local(Saveable.ensureNotExists(Gdx.files.local("smj_recordings/" + Saveable.getTimestamp() + ".smjrec"))));
                 recording = null;
             }
-            Controls.playback = null;
+            playback = null;
+            savefile = Readable.read(Gdx.files.local("save.sav").readBytes(), SaveFile.class);
+            displayLevelID = id;
         }
         else {
             if (timeRunningOut || spedUpMusicTimeout > 0) {
@@ -549,7 +572,7 @@ public class Game {
             player.getPhysics().getConfig().gravity = 0;
             player.getPhysics().getConfig().underwaterGravity = 0;
             player.getPhysics().getHitbox().x += 50;
-            player.getPhysics().getHitbox().y += warp.goDown ? -100 : 200;
+            player.getPhysics().getHitbox().y += warp.goDown ? -200 : 200;
         }
         Main.mask.clear();
         if (level.gimmick == GameLevel.Gimmick.SPOTLIGHT) {
@@ -715,7 +738,10 @@ public class Game {
     }
     public static void playbackRecording(Recording recording) {
         recording.seek(0);
-        loadLevel(recording.level, true);
-        Controls.playback = recording;
+        Main.setTransition(new Transition(0.5, () -> {
+            loadLevel(recording.level, true);
+            savefile = new SaveFile();
+            playback = recording;
+        }));
     }
 }

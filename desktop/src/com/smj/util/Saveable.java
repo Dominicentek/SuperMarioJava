@@ -10,7 +10,11 @@ import java.util.Date;
 
 public interface Saveable extends Readable {
     ObjectElement save();
+    default boolean canSave() {
+        return true;
+    }
     static void save(Saveable saveable, FileHandle file) {
+        if (!saveable.canSave()) return;
         BJSONFile.write(file.file(), saveable.save());
     }
     static String getTimestamp() {

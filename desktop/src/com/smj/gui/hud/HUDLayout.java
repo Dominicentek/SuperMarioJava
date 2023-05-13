@@ -18,7 +18,7 @@ public class HUDLayout {
     public static final HUDIconElement<HUDCounterElement> STAR_TIMER = create(2, 5, "star_timer", new HUDIconElement<>(HUDIconElement.STAR, new HUDCounterElement().digits(1).step(Integer.MAX_VALUE)));
     public static final HUDIconElement<HUDKeyCounterElement> KEY_COIN_COUNTER = create(2, 8, "key_coin_counter", new HUDIconElement<>(HUDIconElement.KEY_COIN, (HUDKeyCounterElement)new HUDKeyCounterElement().color(0xFF7F7F).digits(2).limit()));
     public static final HUDIconElement<HUDTimerElement> TIMER = create(85, 2, "timer", new HUDIconElement<>(HUDIconElement.CLOCK, (HUDTimerElement)new HUDTimerElement().digits(3).step(0)));
-    public static final HUDCounterElement SCORE = create(WIDTH - 29, 2, "score", new HUDCounterElement().digits(8).step(100).limit());
+    public static final HUDCounterElement SCORE = create(WIDTH - 29, 2, "score", new HUDCounterElement().digits(8).step(20).limit());
     public static final HUDTextElement DEATH_TEXT = create(0, HEIGHT / 2 - 1, "death_text", new HUDTextElement());
     public static final HUDTextElement WORLD_TEXT = create(76, 5, "world_text", new HUDTextElement());
     public static final HUDSpeedrunElement SPEEDRUN_TIMER = create(74, 8, "speedrun_timer", new HUDSpeedrunElement());
