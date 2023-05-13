@@ -15,6 +15,7 @@ import com.smj.game.score.StaticScore;
 import com.smj.game.tile.Tiles;
 import com.smj.util.command.console.Console;
 import com.smj.util.command.console.StdoutConsole;
+import sun.util.locale.provider.JRELocaleConstants;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -320,6 +321,27 @@ public class Command {
                     }
                     console.log("Playing " + context.get("filename"));
                     Game.playbackRecording(Readable.read(recFile.readBytes(), Recording.class));
+                }
+            ).get()).addPath("cancel", new CommandBuilder().addNode(
+                (CommandExecution)context -> {
+                    console.log("Recording cancelled");
+                    Game.recordNextLevel = false;
+                    Game.recording = null;
+                }
+            ).get()).addPath("stop", new CommandBuilder().addNode(
+                (CommandExecution)context -> {
+                    if (Game.recording == null && Game.playback == null) {
+                        console.err("Nothing to stop");
+                    }
+                    if (Game.recording != null) {
+                        console.log("Stopped recording");
+                        Saveable.save(Game.recording, Gdx.files.local(Saveable.ensureNotExists(Gdx.files.local("smj_recordings/" + Saveable.getTimestamp() + ".smjrec"))));
+                        Game.recording = null;
+                    }
+                    if (Game.playback != null) {
+                        console.log("Playback stopped");
+                        Game.playback = null;
+                    }
                 }
             ).get())
         ).get());

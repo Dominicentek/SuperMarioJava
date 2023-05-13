@@ -740,6 +740,7 @@ public class Game {
         recording.seek(0);
         Main.setTransition(new Transition(0.5, () -> {
             loadLevel(recording.level, true);
+            Game.recording = null;
             savefile = new SaveFile();
             playback = recording;
         }));
