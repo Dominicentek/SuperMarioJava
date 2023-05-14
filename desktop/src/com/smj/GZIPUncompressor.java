@@ -11,7 +11,7 @@ public class GZIPUncompressor {
         System.out.print("Which levels to uncompress? ");
         String[] levels = scanner.nextLine().split(" ");
         for (String level : levels) {
-            File file = new File("assets/levels/level" + level + ".lvl");
+            File file = new File("assets/assets/levels/level" + level + ".lvl");
             if (!file.exists()) {
                 System.out.println("File " + file.getName() + " doesn't exist");
                 continue;
