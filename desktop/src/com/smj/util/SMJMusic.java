@@ -79,6 +79,7 @@ public class SMJMusic {
     }
     public static void pause() {
         if (paused) return;
+        if (currentMusic == null) return;
         if (currentMusic.intro.isPlaying()) {
             currentMusic.intro.pause();
             introPaused = true;
