@@ -14,14 +14,16 @@ public class RedOnOffSwitchTile extends GameTile {
         if (entity.entityType != EntityType.PLAYER) return;
         Dimension bounds = level.getLevelBoundaries();
         AudioPlayer.SWITCH.play(Location.tile(x, y, level));
-        Game.onOff = false;
-        for (int X = 0; X < bounds.width; X++) {
-            for (int Y = 0; Y < bounds.height; Y++) {
-                int tile = level.getTileAt(X, Y);
-                if (tile == Tiles.ON_OFF_SWITCH_RED) level.setTileAt(Tiles.ON_OFF_SWITCH_BLUE, X, Y);
-                if (tile == Tiles.ON_OFF_BLOCK_RED_ON) level.setTileAt(Tiles.ON_OFF_BLOCK_RED_OFF, X, Y);
-                if (tile == Tiles.ON_OFF_BLOCK_BLUE_OFF) level.setTileAt(Tiles.ON_OFF_BLOCK_BLUE_ON, X, Y);
+        GameTile.bump(level, x, y, () -> {
+            Game.onOff = false;
+            for (int X = 0; X < bounds.width; X++) {
+                for (int Y = 0; Y < bounds.height; Y++) {
+                    int tile = level.getTileAt(X, Y);
+                    if (tile == Tiles.ON_OFF_SWITCH_RED) level.setTileAt(Tiles.ON_OFF_SWITCH_BLUE, X, Y);
+                    if (tile == Tiles.ON_OFF_BLOCK_RED_ON) level.setTileAt(Tiles.ON_OFF_BLOCK_RED_OFF, X, Y);
+                    if (tile == Tiles.ON_OFF_BLOCK_BLUE_OFF) level.setTileAt(Tiles.ON_OFF_BLOCK_BLUE_ON, X, Y);
+                }
             }
-        }
+        });
     }
 }
