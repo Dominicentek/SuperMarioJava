@@ -726,8 +726,8 @@ public class Game {
         checkpointX = -1;
         checkpointY = -1;
         Game.checkpointTime = -1;
-        loadLevel(savefile.levelsCompleted, true);
         Saveable.save(savefile, Gdx.files.local("save.sav"));
+        loadLevel(savefile.levelsCompleted, true);
     }
     public static void warp(Warp warp) {
         warpTimeout = 64;
