@@ -183,7 +183,6 @@ public class Game {
     public static void update() {
         if (Menu.currentMenu != null) Menu.currentMenu.update();
         HUDLayout.WORLD_TEXT.text = GameStrings.get("world_prefix") + " " + (displayLevelID / 5 + 1) + "-" + (displayLevelID % 5 + 1);
-        if (title) HUDLayout.SPEEDRUN_TIMER.finish();
         if (legalNoticeTimeout > 0) return;
         HUDLayout.COIN_COUNTER.attachment.target = Math.min(savefile.coins, 100);
         HUDLayout.LIFE_COUNTER.attachment.target = savefile.lives;
@@ -286,6 +285,7 @@ public class Game {
             }
         }
         if (paused || (title && playback == null)) return;
+        HUDLayout.SPEEDRUN_TIMER.frames++;
         if (playback != null) {
             playback.next();
             if (playback.done()) playback = null;

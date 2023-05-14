@@ -56,7 +56,6 @@ public class PlayerBehavior implements EntityBehavior {
                 AudioPlayer.FIREBALL.play(Location.entity(entity));
             }
         }
-        if (!HUDLayout.SPEEDRUN_TIMER.running) HUDLayout.SPEEDRUN_TIMER.start();
         if (jumpTimer >= 0) jumpTimer--;
         bubbleTimeout--;
         if (bubbleTimeout == 0) {
