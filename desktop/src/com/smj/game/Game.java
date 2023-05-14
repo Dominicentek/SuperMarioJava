@@ -83,7 +83,6 @@ public class Game {
     public static int demoTimeout = 600;
     public static int displayLevelID = 0;
     public static Recording playback;
-    public static boolean playbackInput;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -103,27 +102,33 @@ public class Game {
             }
             return;
         }
-        if (currentLevel == null) return;
-        if (currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN) renderer.setTransformMatrix(renderer.getTransformMatrix().scale(1, -1, 1).translate(0, -Main.HEIGHT, 0));
-        currentLevel.draw(renderer, 16, 16, Game.player);
-        double cameraX = currentLevel.camera.x * 16 - Main.WIDTH / 2.0;
-        double cameraY = currentLevel.camera.y * 16 - Main.HEIGHT / 2.0;
-        if (cameraX < 0) cameraX = 0;
-        if (cameraY > 0) cameraY = 0;
-        if (cameraX > currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) cameraX = currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH;
-        if (cameraY < Main.HEIGHT - currentLevel.getLevelBoundaries().height * 16) cameraY = Main.HEIGHT - currentLevel.getLevelBoundaries().height * 16;
-        for (Particle particle : particles) {
-            renderer.setColor(0xFFFFFF00 | Math.min(255, Math.max(0, particle.getTextureAlpha())));
-            Point position = particle.getPosition();
-            Rectangle region = particle.getTextureRegion();
-            Rectangle particleBounds = new Rectangle(position.x - region.width / 2, position.y - region.height / 2, region.width, region.height);
-            Rectangle cameraBounds = new Rectangle((int)cameraX, -(int)cameraY, Main.WIDTH, Main.HEIGHT);
-            if (particleBounds.intersects(cameraBounds)) renderer.draw(particle.texture, region, position.x - region.width / 2, position.y - region.height / 2);
+        if (currentLevel != null) {
+            if (currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN) renderer.setTransformMatrix(renderer.getTransformMatrix().scale(1, -1, 1).translate(0, -Main.HEIGHT, 0));
+            currentLevel.draw(renderer, 16, 16, Game.player);
+            double cameraX = currentLevel.camera.x * 16 - Main.WIDTH / 2.0;
+            double cameraY = currentLevel.camera.y * 16 - Main.HEIGHT / 2.0;
+            if (cameraX < 0) cameraX = 0;
+            if (cameraY > 0) cameraY = 0;
+            if (cameraX > currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) cameraX = currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH;
+            if (cameraY < Main.HEIGHT - currentLevel.getLevelBoundaries().height * 16) cameraY = Main.HEIGHT - currentLevel.getLevelBoundaries().height * 16;
+            for (Particle particle : particles) {
+                renderer.setColor(0xFFFFFF00 | Math.min(255, Math.max(0, particle.getTextureAlpha())));
+                Point position = particle.getPosition();
+                Rectangle region = particle.getTextureRegion();
+                Rectangle particleBounds = new Rectangle(position.x - region.width / 2, position.y - region.height / 2, region.width, region.height);
+                Rectangle cameraBounds = new Rectangle((int)cameraX, -(int)cameraY, Main.WIDTH, Main.HEIGHT);
+                if (particleBounds.intersects(cameraBounds)) renderer.draw(particle.texture, region, position.x - region.width / 2, position.y - region.height / 2);
+            }
+            renderer.setColor(0xFFFFFFFF);
+            if (currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN) renderer.setTransformMatrix(renderer.getTransformMatrix().translate(0, Main.HEIGHT, 0).scale(1, -1, 1));
+            renderer.resetTranslation();
+            if (currentLevel.gimmick == GameLevel.Gimmick.SPOTLIGHT) Main.renderMask();
         }
-        renderer.setColor(0xFFFFFFFF);
-        if (currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN) renderer.setTransformMatrix(renderer.getTransformMatrix().translate(0, Main.HEIGHT, 0).scale(1, -1, 1));
-        renderer.resetTranslation();
-        if (currentLevel.gimmick == GameLevel.Gimmick.SPOTLIGHT) Main.renderMask();
+        else {
+            String error = GameStrings.get("level_not_loaded");
+            renderer.setColor(0xFFFFFFFF);
+            renderer.drawString(error, Main.WIDTH / 2 - Font.stringWidth(error) / 2, Main.HEIGHT / 2 - Font.getHeight() / 2);
+        }
         if ((!Main.options.hiddenHUD && !title) || Menu.currentMenu == Menus.HUD_LAYOUT) HUDLayout.renderAll(renderer);
         if (Menu.currentMenu == Menus.MAIN) renderer.draw(TextureLoader.get("images/logo.png"), Main.WIDTH / 2 - 168 / 2, 24);
         if (consoleOpen) {
@@ -497,7 +502,17 @@ public class Game {
         dead = false;
         particles.clear();
         snowCache.clear();
-        GameLevel level = Readable.read(FileLoader.read("levels/level" + id + ".lvl").asBytes(), GameLevel.class);
+        GameLevel level;
+        try {
+            level = Readable.read(FileLoader.read("levels/level" + id + ".lvl").asBytes(), GameLevel.class);
+        }
+        catch (Exception e) {
+            currentLevel = null;
+            System.out.println("Failed to load level " + id);
+            if (Game.title) AudioPlayer.MUSIC[13].play();
+            else SMJMusic.stopMusic();
+            return;
+        }
         if (Game.title) level.music = 13;
         if (currentLevel == null || currentLevel.music != level.music || !SMJMusic.isPlaying()) AudioPlayer.MUSIC[level.music].play();
         currentLevel = level;
