@@ -196,6 +196,7 @@ public class Cutscene {
             .addEvent(new DialogEvent(960, "peach_saved", 5))
             .addEvent(new DialogEvent(1080, "peach_saved", 6))
             .addEvent(new RemoveDialogEvent(1200))
+            .addEvent(new EndEvent(1500, 0.5))
         );
     }
 }
