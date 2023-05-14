@@ -198,28 +198,5 @@ public class Cutscene {
             .addEvent(new RemoveDialogEvent(1200))
             .addEvent(new StartCutsceneEvent(1500, "credits"))
         );
-        String[] credits = FileLoader.read("strings/credits.txt").asString().split("\n");
-        CutsceneBuilder creditsCutscene = new CutsceneBuilder();
-        Texture[] creditsTextures = new Texture[credits.length];
-        for (int i = 0; i < credits.length; i++) {
-            String creditsLine = credits[i];
-            if (creditsLine.isEmpty()) creditsLine = " ";
-            creditsTextures[i] = Font.getTexture(creditsLine);
-        }
-        int creditsHeight = (creditsTextures.length - 2) * 12;
-        int targetY = -creditsHeight;
-        int length = Math.abs(targetY - Main.HEIGHT);
-        length *= 12;
-        creditsCutscene.addActor(new Actor(0, 0, TextureLoader.getPlainTexture(Main.WIDTH, Main.HEIGHT, 0x56AFFF)));
-        for (int i = 0; i < creditsTextures.length; i++) {
-            Actor actor = new Actor(8, Main.HEIGHT + i * 12, creditsTextures[i]);
-            creditsCutscene
-                .addActor(actor)
-                .addKeyframe(new ActorKeyframe(0, KeyframeType.LINEAR, actor, 8, Main.HEIGHT + i * 12))
-                .addKeyframe(new ActorKeyframe(length, KeyframeType.LINEAR, actor, 8, targetY + i * 12));
-        }
-        cutscenes.put("credits", creditsCutscene
-            .addEvent(new EndEvent(length + 180, 3))
-        );
     }
 }
