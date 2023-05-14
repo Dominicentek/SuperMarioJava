@@ -26,7 +26,7 @@ public class StompableBehavior implements EntityBehavior {
                 AudioPlayer.KICK.play(Location.entity(entity));
             }
             else {
-                if (collider.getPhysics().getSpeedY() > (level.getPhysicsConfig().underwater ? level.getPhysicsConfig().underwaterGravity : level.getPhysicsConfig().gravity) * 1.5) {
+                if (collider.getPhysics().getSpeedY() > (level.getPhysicsConfig().underwater ? level.getPhysicsConfig().underwaterGravity : level.getPhysicsConfig().gravity) * 1.5 || entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2 <= collider.getPhysics().getHitbox().y + collider.getPhysics().getHitbox().height) {
                     Game.awardScore(collider.score, Location.entity(collider));
                     level.getEntityManager().unloadEntity(entity);
                     Point center = new Point(entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2, entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height);
