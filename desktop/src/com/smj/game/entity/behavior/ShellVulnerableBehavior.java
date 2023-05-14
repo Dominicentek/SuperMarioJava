@@ -17,7 +17,7 @@ public class ShellVulnerableBehavior implements EntityBehavior {
                 Game.particles.add(new FallingEnemyParticle(entity));
                 AudioPlayer.KICK.play(Location.entity(entity));
             }
-            if (isShell(entity.entityType)) {
+            if (isShell(entity.entityType) && entity.getBehavior(ShellBehavior.class).speedFactor != 0) {
                 Game.awardScore(entity.score, Location.entity(entity));
                 level.getEntityManager().unloadEntity(collider);
                 Game.particles.add(new FallingEnemyParticle(collider));
