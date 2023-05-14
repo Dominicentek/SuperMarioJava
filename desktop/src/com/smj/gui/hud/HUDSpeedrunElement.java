@@ -11,7 +11,7 @@ public class HUDSpeedrunElement extends HUDElement {
         renderer.drawString(getText(), 0, 0);
     }
     public String getText() {
-        int hundreds = (int)(frames / 60.0 * 1000);
+        int hundreds = (int)(frames / 60.0 * 100) % 100;
         int seconds = frames / 60;
         int minutes = seconds / 60;
         int hours = minutes / 60;
