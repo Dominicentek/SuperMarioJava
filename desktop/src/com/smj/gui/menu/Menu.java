@@ -54,7 +54,7 @@ public class Menu {
             if (Controls.UP.isJustPressed() && selectedIndex != 0) selectedIndex--;
         }
         items[selectedIndex].overrideInput(false);
-        if (currentMenu == Menus.MAIN && Game.playback == null) {
+        if (Game.title && Game.playback == null) {
             Game.demoTimeout--;
             if (Game.demoTimeout == 0) {
                 Game.playbackRecording(RNG.choose(Recording.DEMOS));
