@@ -509,6 +509,9 @@ public class Game {
         catch (Exception e) {
             currentLevel = null;
             System.out.println("Failed to load level " + id);
+            time = 999;
+            HUDLayout.KEY_COIN_COUNTER.visible = false;
+            if (newLevel) displayLevelID = id;
             if (Game.title) AudioPlayer.MUSIC[13].play();
             else SMJMusic.stopMusic();
             return;
