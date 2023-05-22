@@ -51,7 +51,7 @@ public class ShellBehavior extends WalkingBehavior {
                     AudioPlayer.KICK.play(Location.entity(entity));
                     Game.awardScore(StaticScore.SHELL_KICK);
                 }
-                else if (collider.getPhysics().getSpeedY() > (level.getPhysicsConfig().underwater ? level.getPhysicsConfig().underwaterGravity : level.getPhysicsConfig().gravity) * 1.5 || entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2 <= collider.getPhysics().getHitbox().y + collider.getPhysics().getHitbox().height) {
+                else if (collider.getPhysics().getSpeedY() > (level.getPhysicsConfig().underwater ? level.getPhysicsConfig().underwaterGravity : level.getPhysicsConfig().gravity) * 1.5 || entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2 >= collider.getPhysics().getHitbox().y + collider.getPhysics().getHitbox().height) {
                     speedFactor = 0;
                     cooldown = 10;
                     Physics physics = collider.getPhysics();
