@@ -57,7 +57,7 @@ public final class Physics {
         visuallyInAir = true;
         Rectangle expandedHitbox = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height + 5);
         if (config.collisionEnabled) {
-            hitbox.y += speedY * delta;
+            hitbox.y += speedY * delta + 1;
             int tileX = (hitbox.x + hitbox.width / 2) / 100;
             int tileY = (hitbox.y + hitbox.height / 2) / 100;
             for (int x = tileX - hitbox.width / 200 - 1; x <= tileX + hitbox.width / 200 + 1; x++) {
