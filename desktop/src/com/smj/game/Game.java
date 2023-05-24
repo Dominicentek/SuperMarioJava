@@ -760,6 +760,8 @@ public class Game {
             loadLevel(recording.level, true);
             Game.recording = null;
             savefile = new SaveFile();
+            Rectangle hitbox = player.getPhysics().getHitbox();
+            if (hitbox.height > 100) player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y + 100, hitbox.width, hitbox.height - 100));
             playback = recording;
         }));
     }
