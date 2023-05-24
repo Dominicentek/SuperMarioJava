@@ -110,6 +110,20 @@ public class Menus {
             Main.options.crtShader = item.value != 0;
         }, Main.options.crtShader)
     ).text("options");
+    public static final Menu JUKEBOX = new Menu(
+        Stream.concat(Arrays.stream(new MenuItem[]{
+                new MenuButtonItem((menu, index, item) -> {
+                    Menu.goBack();
+                }),
+                new MenuButtonItem((menu, index, item) -> {
+                    if (SMJMusic.jukebox == null) return;
+                    SMJMusic.jukebox = null;
+                    SMJMusic.shouldPlay.play(SMJMusic.shouldPlayFast);
+                })
+            }),
+            Arrays.stream(SMJMusic.getJukeboxMenuItems())
+        ).toArray(MenuItem[]::new)
+    ).text("jukebox");
     public static final Menu MAIN = new Menu(
         new MenuButtonItem((menu, index, item) -> {
             Main.setTransition(new Transition(0.5, () -> {
@@ -136,6 +150,9 @@ public class Menus {
             Menu.loadMenu(OPTIONS);
         }),
         new MenuButtonItem((menu, index, item) -> {
+            Menu.loadMenu(JUKEBOX);
+        }),
+        new MenuButtonItem((menu, index, item) -> {
             System.exit(0);
         })
     ).text("main").offset(0, 24);
@@ -160,6 +177,9 @@ public class Menus {
                 Menu.loadMenu(null);
                 Menu.loadMenu(MAIN);
             }));
+        }),
+        new MenuButtonItem((menu, index, item) -> {
+            Menu.loadMenu(JUKEBOX);
         })
     ).text("pause");
 }

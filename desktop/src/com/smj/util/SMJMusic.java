@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.audio.Ogg;
 import com.badlogic.gdx.backends.lwjgl3.audio.OpenALLwjgl3Audio;
 import com.badlogic.gdx.files.FileHandle;
+import com.smj.gui.menu.MenuButtonItem;
+import com.smj.gui.menu.MenuItem;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.EXTEfx;
 
@@ -23,6 +25,9 @@ public class SMJMusic {
     private Ogg.Music loopFaster;
     public static float volume = 1f;
     public final String name;
+    public static SMJMusic jukebox = null;
+    public static SMJMusic shouldPlay = null;
+    public static boolean shouldPlayFast = false;
     public SMJMusic(byte[] data, String path) {
         allMusic.add(this);
         ByteArray array = new ByteArray(data);
@@ -50,6 +55,12 @@ public class SMJMusic {
         name = Gdx.files.internal(path).nameWithoutExtension();
     }
     public void play(boolean faster) {
+        if (jukebox != null && jukebox != this) {
+            shouldPlay = this;
+            shouldPlayFast = faster;
+            if (!SMJMusic.isPlaying()) jukebox.play(faster);
+            return;
+        }
         if (currentMusic != null) currentMusic.stop();
         currentMusic = this;
         intro.reset();
@@ -78,7 +89,7 @@ public class SMJMusic {
         currentMusic = null;
     }
     public static void pause() {
-        if (paused) return;
+        if (paused || jukebox != null) return;
         if (currentMusic == null) return;
         if (currentMusic.intro.isPlaying()) {
             currentMusic.intro.pause();
@@ -103,7 +114,7 @@ public class SMJMusic {
         paused = true;
     }
     public static void resume() {
-        if (!paused) return;
+        if (!paused || jukebox != null) return;
         if (introPaused) currentMusic.intro.play();
         if (loopPaused) currentMusic.loop.play();
         if (introFasterPaused) currentMusic.introFaster.play();
@@ -124,5 +135,15 @@ public class SMJMusic {
         loop.setVolume(0.5f * volume);
         introFaster.setVolume(0.5f * volume);
         loopFaster.setVolume(0.5f * volume);
+    }
+    public static MenuItem[] getJukeboxMenuItems() {
+        MenuItem[] items = new MenuItem[AudioPlayer.MUSIC.length];
+        for (int i = 0; i < AudioPlayer.MUSIC.length; i++) {
+            items[i] = new MenuButtonItem((menu, index, item) -> {
+                SMJMusic.jukebox = AudioPlayer.MUSIC[index - 2];
+                SMJMusic.jukebox.play();
+            });
+        }
+        return items;
     }
 }

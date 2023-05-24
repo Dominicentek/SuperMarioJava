@@ -21,6 +21,7 @@
         "Continue",
         "New Game",
         "Options",
+        "Jukebox",
         "Exit Game"
       ]
     },
@@ -30,7 +31,8 @@
         "Continue",
         "Options",
         "Save",
-        "Main Menu"
+        "Main Menu",
+        "Jukebox"
       ]
     },
     "options": {
@@ -89,6 +91,28 @@
         "Toggle HUD",
         "Screenshot",
         "Toggle Console"
+      ]
+    },
+    "jukebox": {
+      "title": "Jukebox",
+      "options": [
+        "Back",
+        "Stop",
+        "Ground",
+        "Underground",
+        "Desert",
+        "Snow",
+        "Underwater",
+        "Forest",
+        "Sky",
+        "Lava",
+        "Castle",
+        "Bonus",
+        "Enemy",
+        "Superstar",
+        "Boss",
+        "Title",
+        "Ending"
       ]
     }
   }
