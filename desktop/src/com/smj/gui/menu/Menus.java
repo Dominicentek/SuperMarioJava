@@ -105,10 +105,7 @@ public class Menus {
         }, Main.options.saveFileScreenshot),
         new MenuToggleItem((menu, index, item) -> {
             Main.options.speedrunTimer = item.value != 0;
-        }, Main.options.speedrunTimer),
-        new MenuToggleItem((menu, index, item) -> {
-            Main.options.crtShader = item.value != 0;
-        }, Main.options.crtShader)
+        }, Main.options.speedrunTimer)
     ).text("options");
     public static final Menu JUKEBOX = new Menu(
         Stream.concat(Arrays.stream(new MenuItem[]{

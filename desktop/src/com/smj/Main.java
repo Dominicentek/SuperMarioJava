@@ -48,7 +48,6 @@ public class Main extends ApplicationAdapter {
     public static Menu menu;
     public static Cutscene currentCutscene = null;
     public static Runnable afterCutscene = null;
-    public static ShaderProgram crtShader;
     public static ShaderProgram solidColorShader;
     public static ShaderProgram hueshiftShader;
     public static void main(String[] args) throws Exception {
@@ -90,7 +89,6 @@ public class Main extends ApplicationAdapter {
                 return true;
             }
         });
-        crtShader = createShader("crt");
         solidColorShader = createShader("solidcol");
         hueshiftShader = createShader("hueshift");
         ShaderProgram.pedantic = false;
@@ -120,9 +118,6 @@ public class Main extends ApplicationAdapter {
         renderer.end();
         buffer.end();
         viewer.begin();
-        crtShader.setUniformf("rngValue", RNG.range(0f, 1f));
-        crtShader.setUniformf("screenSize", new Vector2(windowWidth, windowHeight));
-        viewer.setShader(options.crtShader ? crtShader : null);
         viewer.setProjectionMatrix(viewCamera.combined);
         Texture texture = buffer.getColorBufferTexture();
         texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);

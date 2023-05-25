@@ -46,8 +46,7 @@
         "Music Volume",
         "Clipboard Screenshot",
         "File Screenshot",
-        "Speedrun Timer",
-        "CRT Shader"
+        "Speedrun Timer"
       ]
     },
     "hud_layout": {
