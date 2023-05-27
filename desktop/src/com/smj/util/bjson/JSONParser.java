@@ -149,21 +149,21 @@ public class JSONParser {
                     else throw new JSONSyntaxException("Invalid escape character: '" + character + "'", lineNumber, columnNumber - 1);
                 }
                 else {
-                    if (character == '"') {
-                        if (word != null) {
-                            Token token = new Token();
-                            token.lineNumber = stringLineNumber;
-                            token.columnNumber = stringColumnNumber;
-                            if (word.equals("null")) token.tokenType = TokenType.NULL;
-                            else if (word.equals("true")) token.tokenType = TokenType.TRUE;
-                            else if (word.equals("false")) token.tokenType = TokenType.FALSE;
-                            else {
-                                token.tokenType = TokenType.NUMBER;
-                                token.tokenValue = Double.parseDouble(word);
-                            }
-                            tokens.add(token);
-                            word = null;
+                    if (!(isAlphanumeric(character) || character == '.' || character == '+' || character == '-') && word != null) {
+                        Token token = new Token();
+                        token.lineNumber = stringLineNumber;
+                        token.columnNumber = stringColumnNumber;
+                        if (word.equals("null")) token.tokenType = TokenType.NULL;
+                        else if (word.equals("true")) token.tokenType = TokenType.TRUE;
+                        else if (word.equals("false")) token.tokenType = TokenType.FALSE;
+                        else {
+                            token.tokenType = TokenType.NUMBER;
+                            token.tokenValue = Double.parseDouble(word);
                         }
+                        tokens.add(token);
+                        word = null;
+                    }
+                    if (character == '"') {
                         if (string == null) string = "";
                         else {
                             Token token = new Token();
@@ -231,22 +231,6 @@ public class JSONParser {
                     }
                     else if (isSymbol(character)) {
                         throw new JSONSyntaxException("Invalid symbol: '" + character + "'", lineNumber, columnNumber);
-                    }
-                    else {
-                        if (word != null) {
-                            Token token = new Token();
-                            token.lineNumber = stringLineNumber;
-                            token.columnNumber = stringColumnNumber;
-                            if (word.equals("null")) token.tokenType = TokenType.NULL;
-                            else if (word.equals("true")) token.tokenType = TokenType.TRUE;
-                            else if (word.equals("false")) token.tokenType = TokenType.FALSE;
-                            else {
-                                token.tokenType = TokenType.NUMBER;
-                                token.tokenValue = Double.parseDouble(word);
-                            }
-                            tokens.add(token);
-                            word = null;
-                        }
                     }
                 }
             }
