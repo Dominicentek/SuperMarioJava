@@ -9,11 +9,17 @@ import com.smj.jmario.entity.Entity;
 import com.smj.jmario.entity.physics.Physics;
 import com.smj.jmario.entity.physics.PhysicsConfig;
 import com.smj.jmario.level.Level;
+import com.smj.jmario.level.decoration.Decoration;
+import com.smj.jmario.level.decoration.DecorationType;
 import com.smj.jmario.tile.level.LevelTile;
+import com.smj.util.FileLoader;
+import com.smj.util.Pair;
 import com.smj.util.Readable;
+import com.smj.util.TextureLoader;
 import com.smj.util.bjson.ListElement;
 import com.smj.util.bjson.ObjectElement;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,6 +39,7 @@ public class GameLevel extends Level implements Readable {
     public boolean[][] loaded;
     public Fluid fluid = null;
     public ArrayList<Warp> warps = new ArrayList<>();
+    public static final Decoration SKY_CASTLE_BG_TILE_DECOR = new Decoration(TextureLoader.get("images/themes/10/bgtile.png"), DecorationType.SHORT);
     public GameLevel(ObjectElement element) {
         super(Short.toUnsignedInt(element.getShort("width")), Short.toUnsignedInt(element.getShort("height")));
         music = Byte.toUnsignedInt(element.getByte("music"));
@@ -70,6 +77,16 @@ public class GameLevel extends Level implements Readable {
         }
         HUDLayout.KEY_COIN_COUNTER.attachment.max = keycoinAmount;
         HUDLayout.KEY_COIN_COUNTER.visible = keycoinAmount > 0;
+        if (this.theme == 10) {
+            boolean[] bgtiles = FileLoader.read("skycastle_bgtiles.dat").asBits();
+            int width = getLevelBoundaries().width;
+            for (int i = 0; i < bgtiles.length; i++) {
+                if (!bgtiles[i]) continue;
+                int x = i % width;
+                int y = i / width;
+                decorations.add(new Pair<>(new Point(x, y), SKY_CASTLE_BG_TILE_DECOR));
+            }
+        }
         assignBackground(theme.background);
     }
     public PhysicsConfig getPhysicsConfig() {

@@ -33,4 +33,14 @@ public class FileLoader {
     public AudioPlayer asSound() {
         return new AudioPlayer(new BinaryFileHandle(asBytes(), path));
     }
+    public boolean[] asBits() {
+        byte[] bytes = asBytes();
+        boolean[] bits = new boolean[bytes.length * 8];
+        for (int i = 0; i < bytes.length; i++) {
+            for (int j = 0; j < 8; j++) {
+                bits[i * 8 + j] = ((bytes[i] & (1 << (7 - j))) >> (7 - j) & 1) == 1;
+            }
+        }
+        return bits;
+    }
 }

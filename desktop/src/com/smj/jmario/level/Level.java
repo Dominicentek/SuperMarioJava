@@ -18,6 +18,7 @@ import com.smj.jmario.level.decoration.Decoration;
 import com.smj.jmario.level.decoration.Decorations;
 import com.smj.jmario.tile.level.LevelTile;
 import com.smj.jmario.tile.level.LevelTileList;
+import com.smj.util.Pair;
 import com.smj.util.RNG;
 import com.smj.util.Renderer;
 import com.smj.util.TextureLoader;
@@ -32,7 +33,7 @@ public class Level {
     private LevelTileList tileList = new LevelTileList();
     private EntityManager entities = new EntityManager(this);
     private LevelBackground bg = new LevelBackground(new Color(0xAFAFFFFF), new Texture(1, 1, Pixmap.Format.RGBA8888));
-    private HashMap<Point, Decoration> decorations = new HashMap<>();
+    public ArrayList<Pair<Point, Decoration>> decorations = new ArrayList<>();
     public LevelCamera camera = new LevelCamera();
     public Level(int width, int height) {
         tilemap = new int[width][height];
@@ -71,7 +72,6 @@ public class Level {
         return bg;
     }
     public void populate(Decorations decorations) {
-        this.decorations.clear();
         int decorationsToSpawn = 0;
         ArrayList<Point> availableSpots = new ArrayList<>();
         for (int x = 0; x < tilemap.length; x++) {
@@ -119,7 +119,7 @@ public class Level {
             }
             if (validSpots.size() == 0) continue;
             Point spot = RNG.choose(validSpots);
-            this.decorations.put(new Point(spot.x, spot.y - decoration.getType().getHeight() + 1), decoration);
+            this.decorations.add(new Pair<>(new Point(spot.x, spot.y - decoration.getType().getHeight() + 1), decoration));
             for (int x = 0; x < decoration.getType().getWidth(); x++) {
                 availableSpots.remove(new Point(spot.x + x, spot.y));
             }
@@ -170,8 +170,8 @@ public class Level {
         Main.solidColorShader.setUniformf("color", 0.5f, 0.5f, 0.5f, 1);
         renderer.resetTranslation();
         renderer.translate(-(int)cameraX, (int)cameraY);
-        for (Map.Entry<Point, Decoration> decoration : decorations.entrySet()) {
-            renderer.draw(decoration.getValue().getTexture(), decoration.getKey().x * unitWidth, decoration.getKey().y * unitHeight);
+        for (Pair<Point, Decoration> decoration : decorations) {
+            renderer.draw(decoration.b.getTexture(), decoration.a.x * unitWidth, decoration.a.y * unitHeight);
         }
         if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
         Main.solidColorShader.setUniformf("color", 1, 1, 1, 1);

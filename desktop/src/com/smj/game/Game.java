@@ -38,7 +38,7 @@ import java.awt.Rectangle;
 import java.util.*;
 
 public class Game {
-    public static final Theme[] THEMES = new Theme[10];
+    public static final Theme[] THEMES = new Theme[11];
     public static GameLevel currentLevel;
     public static boolean dead = false;
     public static GameEntity player;
