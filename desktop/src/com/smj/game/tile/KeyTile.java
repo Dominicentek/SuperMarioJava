@@ -10,9 +10,14 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class KeyTile extends GameTile {
+    private GameEntity spotlight;
+    public void init(GameLevel level, int x, int y) {
+        spotlight = spotlight(level, x, y, 24, 160);
+    }
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
         level.setTileAt(Tiles.AIR, x, y);
+        level.getEntityManager().unloadEntity(spotlight);
         ArrayList<Point> starLocations = new ArrayList<>();
         for (int X = 0; X < level.getLevelBoundaries().width; X++) {
             for (int Y = 0; Y < level.getLevelBoundaries().height; Y++) {

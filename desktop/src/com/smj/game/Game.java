@@ -68,7 +68,6 @@ public class Game {
     public static int warpExitTimeout = -1;
     public static Warp warp = null;
     public static int keycoinsCollected = 0;
-    public static Circle spotlightCircle = new Circle(0, 0, 48);
     public static boolean onOff = true;
     public static boolean pauseMenuOpen = false;
     public static boolean title = true;
@@ -456,14 +455,6 @@ public class Game {
                 currentLevel.getEntityManager().unloadEntity(entity);
             }
         }
-        double cameraX = currentLevel.camera.x - Main.WIDTH / 2.0 / 16;
-        double cameraY = currentLevel.camera.y - Main.HEIGHT / 2.0 / 16;
-        if (cameraX < 0) cameraX = 0;
-        if (cameraY < 0) cameraY = 0;
-        if (cameraX > (currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) / 16.0) cameraX = (currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) / 16.0;
-        if (cameraY > (currentLevel.getLevelBoundaries().height * 16 - Main.HEIGHT) / 16.0) cameraY = (currentLevel.getLevelBoundaries().height * 16 - Main.HEIGHT) / 16.0;
-        spotlightCircle.x = (hitbox.x + hitbox.width / 2) * 16 / 100 - (int)(cameraX * 16);
-        spotlightCircle.y = (hitbox.y + hitbox.height / 2) * 16 / 100 - (int)(cameraY * 16);
         Collections.shuffle(currentLevel.getEntityManager().entities);
         if (Controls.TOGGLE_HUD.isJustPressed()) Main.options.hiddenHUD = !Main.options.hiddenHUD;
         if (recording != null) recording.recordFrame();
@@ -548,7 +539,9 @@ public class Game {
         }
         int x = spawnX == null ? checkpointX == -1 ? level.spawnX : checkpointX : spawnX;
         int y = spawnY == null ? checkpointY == -1 ? level.spawnY : checkpointY : spawnY;
+        Main.mask.clear();
         player = EntityType.PLAYER.spawn(level, x * 100 + 50 - EntityType.PLAYER.getHitbox().width / 2, y * 100 + 100 - EntityType.PLAYER.getHitbox().height);
+        player.onLoad(currentLevel);
         Rectangle hitbox = player.getPhysics().getHitbox();
         double cameraX = currentLevel.camera.x - Main.WIDTH / 2.0 / 16;
         double cameraY = currentLevel.camera.y - Main.HEIGHT / 2.0 / 16;
@@ -558,10 +551,6 @@ public class Game {
         if (cameraY > (currentLevel.getLevelBoundaries().height * 16 - Main.HEIGHT) / (double)16) cameraY = (currentLevel.getLevelBoundaries().height * 16 - Main.HEIGHT) / (double)16;
         currentLevel.camera.setTarget(cameraX, cameraY);
         currentLevel.camera.snap();
-        if (currentLevel.gimmick == GameLevel.Gimmick.SPOTLIGHT) {
-            spotlightCircle.x = (hitbox.x + hitbox.width / 2) * 16 / 100 - (int)(cameraX * 16);
-            spotlightCircle.y = (hitbox.y + hitbox.height / 2) * 16 / 100 - (int)(cameraY * 16);
-        }
         if (savefile.powerupState != 0) player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y - 100, hitbox.width, hitbox.height + 100));
         if (currentLevel.gimmick == GameLevel.Gimmick.CASTLE) EntityType.BOWSER.spawn(level, currentLevel.getLevelBoundaries().width * 100 - 300, 0);
         if (currentLevel.gimmick == GameLevel.Gimmick.WIND) {
@@ -591,10 +580,6 @@ public class Game {
             player.getPhysics().getConfig().underwaterGravity = 0;
             player.getPhysics().getHitbox().x += 50;
             player.getPhysics().getHitbox().y += warp.goDown ? -200 : 200;
-        }
-        Main.mask.clear();
-        if (level.gimmick == GameLevel.Gimmick.SPOTLIGHT) {
-            Main.mask.add(spotlightCircle);
         }
         if (recordNextLevel && newLevel) {
             recordNextLevel = false;

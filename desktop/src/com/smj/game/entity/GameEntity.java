@@ -1,6 +1,7 @@
 package com.smj.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.smj.Main;
 import com.smj.game.GameLevel;
 import com.smj.game.entity.behavior.EntityBehavior;
 import com.smj.game.entity.behavior.WalkingBehavior;
@@ -10,6 +11,7 @@ import com.smj.jmario.entity.Entity;
 import com.smj.jmario.entity.EntityProperties;
 import com.smj.jmario.entity.physics.PhysicsConfig;
 import com.smj.jmario.level.Level;
+import com.smj.util.mask.Circle;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class GameEntity extends Entity {
     public boolean requiredToNotExistInEnemyFight = false;
     public int spawnOffsetX = 0;
     public int spawnOffsetY = 0;
+    public Circle spotlight = null;
     public GameEntity(PhysicsConfig physicsConfig, EntityProperties properties, TextureProvider provider, EntityType type, EntityBehavior... behaviors) {
         super(physicsConfig, properties);
         this.provider = provider;
@@ -45,16 +48,31 @@ public class GameEntity extends Entity {
         for (EntityBehavior behavior : behaviors) {
             behavior.update(this, (GameLevel)level);
         }
+        if (spotlight != null) {
+            Rectangle hitbox = getPhysics().getHitbox();
+            GameLevel currentLevel = (GameLevel)level;
+            double cameraX = currentLevel.camera.x - Main.WIDTH / 2.0 / 16;
+            double cameraY = currentLevel.camera.y - Main.HEIGHT / 2.0 / 16;
+            if (cameraX < 0) cameraX = 0;
+            if (cameraY < 0) cameraY = 0;
+            if (cameraX > (currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) / 16.0) cameraX = (currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) / 16.0;
+            if (cameraY > (currentLevel.getLevelBoundaries().height * 16 - Main.HEIGHT) / 16.0) cameraY = (currentLevel.getLevelBoundaries().height * 16 - Main.HEIGHT) / 16.0;
+            spotlight.x = (hitbox.x + hitbox.width / 2) * 16 / 100 - (int)(cameraX * 16);
+            spotlight.y = (hitbox.y + hitbox.height / 2) * 16 / 100 - (int)(cameraY * 16);
+        }
     }
     public void onLoad(Level level) {
         for (EntityBehavior behavior : behaviors) {
             behavior.onLoad(this, (GameLevel)level);
         }
+        if (((GameLevel)level).gimmick != GameLevel.Gimmick.SPOTLIGHT) spotlight = null;
+        if (spotlight != null) Main.mask.add(spotlight);
     }
     public void onUnload(Level level) {
         for (EntityBehavior behavior : behaviors) {
             behavior.onUnload(this, (GameLevel)level);
         }
+        Main.mask.remove(spotlight);
     }
     public void onTileTouchUp(Level level, int x, int y) {
         for (EntityBehavior behavior : behaviors) {

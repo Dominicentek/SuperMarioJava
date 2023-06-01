@@ -12,14 +12,17 @@ public class Mask extends ArrayList<Circle> {
     private static ShapeRenderer renderer = new ShapeRenderer();
     public void render() {
         if (size() == 0) return;
+        this.sort((Circle a, Circle b) -> {
+            return (int)((a.a - b.a) * 255);
+        });
         renderer.begin();
         renderer.setColor(0, 0, 0, 1);
         renderer.set(ShapeRenderer.ShapeType.Filled);
         renderer.rect(0, 0, Main.WIDTH, Main.HEIGHT);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFuncSeparate(GL20.GL_ZERO, GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE_MINUS_DST_ALPHA);
-        renderer.setColor(0, 0, 0, 0);
         for (Circle circle : this) {
+            renderer.setColor(0, 0, 0, 1 - circle.a);
             renderer.circle(circle.x, circle.y, circle.r);
         }
         Gdx.gl.glDisable(GL20.GL_BLEND);

@@ -8,6 +8,7 @@ import com.smj.game.entity.behavior.BumpTileBehavior;
 import com.smj.jmario.entity.Entity;
 import com.smj.jmario.level.Level;
 import com.smj.jmario.tile.level.LevelTile;
+import com.smj.util.mask.Circle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,5 +66,14 @@ public class GameTile extends LevelTile {
         entity.getBehavior(BumpTileBehavior.class).tile = tileID;
         entity.getBehavior(BumpTileBehavior.class).after = after;
         entity.updateTexture();
+    }
+    public static GameEntity spotlight(GameLevel level, int x, int y, int radius, int strength) {
+        return spotlight(level, x, y, 0, 0, radius, strength);
+    }
+    public static GameEntity spotlight(GameLevel level, int x, int y, int offsetX, int offsetY, int radius, int strength) {
+        GameEntity entity = EntityType.DUMMY.spawn(level, x * 100 + offsetX, y * 100 + offsetY);
+        entity.spotlight = new Circle(radius, strength);
+        entity.onLoad(level);
+        return entity;
     }
 }

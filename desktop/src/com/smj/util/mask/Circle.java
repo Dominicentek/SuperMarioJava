@@ -4,9 +4,9 @@ public class Circle {
     public int x;
     public int y;
     public int r;
-    public Circle(int x, int y, int r) {
-        this.x = x;
-        this.y = y;
+    public float a;
+    public Circle(int r, int a) {
         this.r = r;
+        this.a = a / 255f;
     }
 }
