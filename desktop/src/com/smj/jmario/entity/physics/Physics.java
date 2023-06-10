@@ -239,7 +239,7 @@ public final class Physics {
                 }
             }
         }
-        float jumpFactor = ((GameEntity)entity).entityType == EntityType.PLAYER && Game.savefile.powerupState == 4 ? 1.5f : 1f;
+        float jumpFactor = ((GameEntity)entity).entityType == EntityType.PLAYER && Game.savefile.powerupState == 4 ? 2f : 1f;
         if (movement.isJumping() && !jumping) {
             jump(true);
             jumping = true;
