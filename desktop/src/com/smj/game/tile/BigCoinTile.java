@@ -16,6 +16,7 @@ public class BigCoinTile extends GameTile {
         this.amount = amount;
         this.score = score;
         this.corner = corner;
+        if (corner == Corner.TOP_LEFT) spotlight(8, 8, 48, 192);
     }
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;

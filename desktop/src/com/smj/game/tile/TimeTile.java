@@ -13,13 +13,11 @@ public class TimeTile extends GameTile {
     public TimeTile(int amount) {
         this.amount = amount;
     }
-    private GameEntity spotlight;
     public void init(GameLevel level, int x, int y) {
-        spotlight = spotlight(level, x, y, 24, 160);
+        spotlight(x, y, 24, 160);
     }
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
-        level.getEntityManager().unloadEntity(spotlight);
         Game.time += amount;
         AudioPlayer.KEY_COIN.play(Location.entity(entity));
         Game.awardScore(StaticScore.COIN, Location.tile(x, y, level));

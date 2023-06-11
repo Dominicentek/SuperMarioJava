@@ -44,6 +44,7 @@ public class Level {
     }
     public Level setTileAt(int tile, int x, int y) {
         if (x < 0 || y < 0 || x >= getLevelBoundaries().width || y >= getLevelBoundaries().height) return this;
+        Main.mask.remove(GameTile.spotlightLocations.get(new Point(x, y)));
         tilemap[x][y] = tile;
         for (Entity entity : entities) {
             entity.getPhysics().updateCollisionMap();
@@ -147,19 +148,19 @@ public class Level {
         if (Controls.LOOK_DOWN.isPressed()) camera.targetY -= Main.HEIGHT / 32.0 - 2;
         if (Controls.LOOK_RIGHT.isPressed()) camera.targetX += Main.WIDTH / 32.0 - 2;
         camera.update();
-        double cameraX = camera.x * unitWidth - width / 2.0;
-        double cameraY = camera.y * unitHeight - height / 2.0;
-        if (cameraX < 0) cameraX = 0;
-        if (cameraY > 0) cameraY = 0;
-        if (cameraX > fullWidth - width) cameraX = fullWidth - width;
-        if (cameraY < height - fullHeight) cameraY = height - fullHeight;
+        Game.cameraX = camera.x * unitWidth - width / 2.0;
+        Game.cameraY = camera.y * unitHeight - height / 2.0;
+        if (Game.cameraX < 0) Game.cameraX = 0;
+        if (Game.cameraY > 0) Game.cameraY = 0;
+        if (Game.cameraX > fullWidth - width) Game.cameraX = fullWidth - width;
+        if (Game.cameraY < height - fullHeight) Game.cameraY = height - fullHeight;
         if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
         Main.solidColorShader.setUniformf("color", 0, 0, 0, 1);
         Texture bgImage = bg.getImage();
         int bgRepeatX = (int)Math.ceil((double)width / bgImage.getWidth()) + 1;
         int bgRepeatY = (int)Math.ceil((double)height / bgImage.getHeight()) + 1;
-        int bgX = (int)Math.abs(cameraX % (2 / ((double)width / bgImage.getWidth()) * width));
-        int bgY = (int)Math.abs(cameraY % (2 / ((double)height / bgImage.getHeight()) * width));
+        int bgX = (int)Math.abs(Game.cameraX % (2 / ((double)width / bgImage.getWidth()) * width));
+        int bgY = (int)Math.abs(Game.cameraY % (2 / ((double)height / bgImage.getHeight()) * width));
         renderer.translate(-bgX / 2, -bgY / 2);
         for (int x = 0; x < bgRepeatX; x++) {
             for (int y = 0; y < bgRepeatY; y++) {
@@ -169,7 +170,7 @@ public class Level {
         if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
         Main.solidColorShader.setUniformf("color", 0.5f, 0.5f, 0.5f, 1);
         renderer.resetTranslation();
-        renderer.translate(-(int)cameraX, (int)cameraY);
+        renderer.translate(-(int)Game.cameraX, (int)Game.cameraY);
         for (Pair<Point, Decoration> decoration : decorations) {
             renderer.draw(decoration.b.getTexture(), decoration.a.x * unitWidth, decoration.a.y * unitHeight);
         }
@@ -193,14 +194,13 @@ public class Level {
                 else renderer.setShader(null);
             }
         }
-        for (int x = (int)Math.max(0, (cameraX / (double)unitWidth) - 1); x < Math.min(tilemap.length, (cameraX + width) / (double)unitWidth + 1); x++) {
-            for (int y = (int)Math.max(0, (-cameraY / (double)unitHeight) - 1); y < Math.min(tilemap[0].length, (-cameraY + height) / (double)unitHeight + 1); y++) {
+        for (int x = (int)Math.max(0, (Game.cameraX / (double)unitWidth) - 1); x < Math.min(tilemap.length, (Game.cameraX + width) / (double)unitWidth + 1); x++) {
+            for (int y = (int)Math.max(0, (-Game.cameraY / (double)unitHeight) - 1); y < Math.min(tilemap[0].length, (-Game.cameraY + height) / (double)unitHeight + 1); y++) {
                 LevelTile tile = tileList.get(getTileAt(x, y));
                 if (!((GameLevel)this).loaded[x][y]) {
                     ((GameLevel)this).loaded[x][y] = true;
                     tile.init(this, x, y);
                 }
-                if (!Game.paused) tile.update(this, x, y);
                 if (tile instanceof GameTile) {
                     Rectangle rectangle = new Rectangle(0, 0, 16, 16);
                     int location = ((GameTile)tile).getCurrentTextureLocation();
@@ -243,7 +243,7 @@ public class Level {
         Fluid fluid = ((GameLevel)this).fluid;
         if (fluid != null) {
             int offset = (int)(System.currentTimeMillis() % 800 / 100);
-            int x = (int)cameraX / 8 * 8;
+            int x = (int)Game.cameraX / 8 * 8;
             int y = fluid.movement.getFluidLevel();
             Texture overlay = TextureLoader.get("images/fluid/overlay.png");
             Texture mask = TextureLoader.get("images/fluid/mask.png");

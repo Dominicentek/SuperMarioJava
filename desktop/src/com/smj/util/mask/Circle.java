@@ -4,9 +4,14 @@ public class Circle {
     public int x;
     public int y;
     public int r;
+    public int s;
     public float a;
-    public Circle(int r, int a) {
+    public Circle(int r, int s) {
         this.r = r;
-        this.a = a / 255f;
+        this.s = s;
+        this.a = s / 255f;
+    }
+    public Circle copy() {
+        return new Circle(r, s);
     }
 }

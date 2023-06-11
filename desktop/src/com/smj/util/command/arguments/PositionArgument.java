@@ -42,16 +42,10 @@ public class PositionArgument extends CommandArgument<Point> {
         int X = (int)(Double.parseDouble(x) * scale);
         int Y = (int)(Double.parseDouble(y) * scale);
         Rectangle hitbox = Game.player.getPhysics().getHitbox();
-        double cameraX = Game.currentLevel.camera.x * 16 - Main.WIDTH / 2.0;
-        double cameraY = Game.currentLevel.camera.y * 16 - Main.HEIGHT / 2.0;
-        if (cameraX < 0) cameraX = 0;
-        if (cameraY > 0) cameraY = 0;
-        if (cameraX > Game.currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) cameraX = Game.currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH;
-        if (cameraY < Main.HEIGHT - Game.currentLevel.getLevelBoundaries().height * 16) cameraY = Main.HEIGHT - Game.currentLevel.getLevelBoundaries().height * 16;
         if (xMod == RELATIVE) X += (hitbox.x + hitbox.width / 2) / 100.0 * scale;
         if (yMod == RELATIVE) Y += (hitbox.y + hitbox.height / 2) / 100.0 * scale;
-        if (xMod == CAMERA) X += cameraX / 16.0 * scale;
-        if (yMod == CAMERA) Y += cameraY / 16.0 * scale;
+        if (xMod == CAMERA) X += Game.cameraX / 16.0 * scale;
+        if (yMod == CAMERA) Y += Game.cameraY / 16.0 * scale;
         if (xMod == WRAPPED) X = Game.currentLevel.getLevelBoundaries().width * scale - X;
         if (yMod == WRAPPED) Y = Game.currentLevel.getLevelBoundaries().height * scale - Y;
         return new Point(X, Y);

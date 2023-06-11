@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.smj.Main;
+import com.smj.game.Game;
 import org.lwjgl.opengl.GL20;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Mask extends ArrayList<Circle> {
         Gdx.gl.glBlendFuncSeparate(GL20.GL_ZERO, GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE_MINUS_DST_ALPHA);
         for (Circle circle : this) {
             renderer.setColor(0, 0, 0, 1 - circle.a);
-            renderer.circle(circle.x, circle.y, circle.r);
+            renderer.circle(circle.x - (float)Game.cameraX, circle.y - (float)Game.cameraY, circle.r);
         }
         Gdx.gl.glDisable(GL20.GL_BLEND);
         renderer.end();

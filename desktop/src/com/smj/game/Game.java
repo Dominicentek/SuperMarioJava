@@ -82,6 +82,8 @@ public class Game {
     public static int demoTimeout = 600;
     public static int displayLevelID = 0;
     public static Recording playback;
+    public static double cameraX = 0;
+    public static double cameraY = 0;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -104,12 +106,6 @@ public class Game {
         if (currentLevel != null) {
             if (currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN) renderer.setTransformMatrix(renderer.getTransformMatrix().scale(1, -1, 1).translate(0, -Main.HEIGHT, 0));
             currentLevel.draw(renderer, 16, 16, Game.player);
-            double cameraX = currentLevel.camera.x * 16 - Main.WIDTH / 2.0;
-            double cameraY = currentLevel.camera.y * 16 - Main.HEIGHT / 2.0;
-            if (cameraX < 0) cameraX = 0;
-            if (cameraY > 0) cameraY = 0;
-            if (cameraX > currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) cameraX = currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH;
-            if (cameraY < Main.HEIGHT - currentLevel.getLevelBoundaries().height * 16) cameraY = Main.HEIGHT - currentLevel.getLevelBoundaries().height * 16;
             for (Particle particle : particles) {
                 renderer.setColor(0xFFFFFF00 | Math.min(255, Math.max(0, particle.getTextureAlpha())));
                 Point position = particle.getPosition();
@@ -543,14 +539,6 @@ public class Game {
         player = EntityType.PLAYER.spawn(level, x * 100 + 50 - EntityType.PLAYER.getHitbox().width / 2, y * 100 + 100 - EntityType.PLAYER.getHitbox().height);
         player.onLoad(currentLevel);
         Rectangle hitbox = player.getPhysics().getHitbox();
-        double cameraX = currentLevel.camera.x - Main.WIDTH / 2.0 / 16;
-        double cameraY = currentLevel.camera.y - Main.HEIGHT / 2.0 / 16;
-        if (cameraX < 0) cameraX = 0;
-        if (cameraY < 0) cameraY = 0;
-        if (cameraX > (currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) / (double)16) cameraX = (currentLevel.getLevelBoundaries().width * 16 - Main.WIDTH) / (double)16;
-        if (cameraY > (currentLevel.getLevelBoundaries().height * 16 - Main.HEIGHT) / (double)16) cameraY = (currentLevel.getLevelBoundaries().height * 16 - Main.HEIGHT) / (double)16;
-        currentLevel.camera.setTarget(cameraX, cameraY);
-        currentLevel.camera.snap();
         if (savefile.powerupState != 0) player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y - 100, hitbox.width, hitbox.height + 100));
         if (currentLevel.gimmick == GameLevel.Gimmick.CASTLE) EntityType.BOWSER.spawn(level, currentLevel.getLevelBoundaries().width * 100 - 300, 0);
         if (currentLevel.gimmick == GameLevel.Gimmick.WIND) {

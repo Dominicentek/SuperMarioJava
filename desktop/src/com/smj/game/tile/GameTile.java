@@ -1,5 +1,6 @@
 package com.smj.game.tile;
 
+import com.smj.Main;
 import com.smj.game.Game;
 import com.smj.game.GameLevel;
 import com.smj.game.entity.EntityType;
@@ -10,10 +11,13 @@ import com.smj.jmario.level.Level;
 import com.smj.jmario.tile.level.LevelTile;
 import com.smj.util.mask.Circle;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class GameTile extends LevelTile {
+    public static HashMap<Point, Circle> spotlightLocations = new HashMap<>();
     public ArrayList<Integer> textureLocations = new ArrayList<>();
     public int currentLocationIndex = 0;
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {}
@@ -67,13 +71,14 @@ public class GameTile extends LevelTile {
         entity.getBehavior(BumpTileBehavior.class).after = after;
         entity.updateTexture();
     }
-    public static GameEntity spotlight(GameLevel level, int x, int y, int radius, int strength) {
-        return spotlight(level, x, y, 0, 0, radius, strength);
+    public static void spotlight(int x, int y, int offsetX, int offsetY, int radius, int strength) {
+        Circle circle = new Circle(radius, strength);
+        circle.x = x * 16 + 8 + offsetX;
+        circle.y = y * 16 + 8 + offsetY;
+        Main.mask.add(circle);
+        spotlightLocations.put(new Point(x, y), circle);
     }
-    public static GameEntity spotlight(GameLevel level, int x, int y, int offsetX, int offsetY, int radius, int strength) {
-        GameEntity entity = EntityType.DUMMY.spawn(level, x * 100 + offsetX, y * 100 + offsetY);
-        entity.spotlight = new Circle(radius, strength);
-        entity.onLoad(level);
-        return entity;
+    public static void spotlight(int x, int y, int radius, int strength) {
+        spotlight(x, y, 0, 0, radius, strength);
     }
 }

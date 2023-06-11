@@ -8,7 +8,7 @@ import com.smj.game.score.StaticScore;
 
 public class StarTile extends GameTile {
     public void init(GameLevel level, int x, int y) {
-        spotlight(level, x, y, 24, 255);
+        spotlight(x, y, 24, 255);
     }
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;

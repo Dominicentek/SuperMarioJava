@@ -58,8 +58,7 @@ public enum EntityType {
     RIGHT_PIPE_STREAM(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(400, 200), new InstanceBuilder<>(PipeStreamBehavior.class, 1, 0, 150, 100)),
     CRATE(new InstanceBuilder<>(StaticTextureProvider.class, get("images/entities/crate.png")), new Dimension(200, 100), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(SolidHitboxBehavior.class), new InstanceBuilder<>(CrateBehavior.class)),
     BUMP_TILE(new InstanceBuilder<>(TileTextureProvider.class), new Dimension(100, 100), new InstanceBuilder<>(BumpTileBehavior.class)),
-    WARPER(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(100, 100), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(WarperBehavior.class)),
-    DUMMY(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(100, 100), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(DummyBehavior.class)),
+    WARPER(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(100, 100), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(WarperBehavior.class))
     ;
     private final InstanceBuilder<? extends EntityBehavior>[] behaviors;
     private final EntityProperties properties;

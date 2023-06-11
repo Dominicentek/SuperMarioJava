@@ -12,6 +12,7 @@ public class CheckpointTile extends GameTile {
     private final Corner corner;
     public CheckpointTile(Corner corner) {
         this.corner = corner;
+        if (corner == Corner.TOP_LEFT) spotlight(8, 8, 64, 255);
     }
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
