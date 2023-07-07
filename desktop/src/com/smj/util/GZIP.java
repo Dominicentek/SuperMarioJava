@@ -19,7 +19,7 @@ public class GZIP {
         catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return data;
     }
     public static byte[] uncompress(byte[] data) {
         try {
@@ -28,7 +28,7 @@ public class GZIP {
         catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return data;
     }
     public static byte[] safeUncompress(byte[] data) throws IOException {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
