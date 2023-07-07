@@ -28,8 +28,6 @@ public final class Physics {
     private double speedX = 0;
     private double speedY = 0;
     public double windSpeed;
-    private Double nextSpeedX = null;
-    private Double nextSpeedY = null;
     public boolean[][] collision;
     public boolean inAir = false;
     public boolean visuallyInAir = false;
@@ -253,10 +251,6 @@ public final class Physics {
             else jumpingUpward = false;
         }
         if (inAir && !movement.isJumping()) jumpingUpward = false;
-        speedX = nextSpeedX == null ? speedX : nextSpeedX;
-        speedY = nextSpeedY == null ? speedY : nextSpeedY;
-        nextSpeedX = null;
-        nextSpeedY = null;
         return this;
     }
     public void jump(boolean playSound) {
@@ -270,12 +264,10 @@ public final class Physics {
     }
     public Physics setSpeedX(double speed) {
         speedX = speed;
-        nextSpeedX = speed;
         return this;
     }
     public Physics setSpeedY(double speed) {
         speedY = speed;
-        nextSpeedY = speed;
         return this;
     }
     public double getSpeedX() {
