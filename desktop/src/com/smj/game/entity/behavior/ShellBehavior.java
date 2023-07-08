@@ -24,7 +24,7 @@ public class ShellBehavior extends WalkingBehavior {
     }
     public void onTileTouchLeft(GameEntity entity, GameLevel level, int x, int y) {
         if (!level.getTileList().get(level.getTileAt(x, y)).isSolid()) return;
-        speedFactor = 0.5f;
+        speedFactor = 1f;
         AudioPlayer.BUMP.play(Location.entity(entity));
     }
     public void onTileTouchRight(GameEntity entity, GameLevel level, int x, int y) {
@@ -46,7 +46,7 @@ public class ShellBehavior extends WalkingBehavior {
                     int colliderHitboxCenter = collider.getPhysics().getHitbox().x + collider.getPhysics().getHitbox().width / 2;
                     int hitboxCenter = entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2;
                     if (colliderHitboxCenter > hitboxCenter) speedFactor = -1;
-                    else speedFactor = 0.5f;
+                    else speedFactor = 1f;
                     cooldown = 10;
                     AudioPlayer.KICK.play(Location.entity(entity));
                     Game.awardScore(StaticScore.SHELL_KICK);
@@ -65,7 +65,5 @@ public class ShellBehavior extends WalkingBehavior {
     }
     public void changeDirection() {
         speedFactor *= -1;
-        if (speedFactor == 1) speedFactor = 0.5f;
-        if (speedFactor == -0.5f) speedFactor = -1;
     }
 }

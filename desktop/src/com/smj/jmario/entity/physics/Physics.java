@@ -55,7 +55,7 @@ public final class Physics {
         visuallyInAir = true;
         Rectangle expandedHitbox = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height + 5);
         if (config.collisionEnabled) {
-            hitbox.y += speedY * delta + (((GameEntity)entity).entityType == EntityType.PLAYER ? 1 : 0);
+            hitbox.y += Math.round(speedY * delta + (((GameEntity)entity).entityType == EntityType.PLAYER ? 1 : 0));
             int tileX = (hitbox.x + hitbox.width / 2) / 100;
             int tileY = (hitbox.y + hitbox.height / 2) / 100;
             for (int x = tileX - hitbox.width / 200 - 1; x <= tileX + hitbox.width / 200 + 1; x++) {
@@ -129,7 +129,7 @@ public final class Physics {
                     }
                 }
             }
-            hitbox.x += (speedX + windSpeed) * delta;
+            hitbox.x += Math.round((speedX + windSpeed) * delta);
             tileX = (hitbox.x + hitbox.width / 2) / 100;
             tileY = (hitbox.y + hitbox.height / 2) / 100;
             for (int x = tileX - hitbox.width / 200 - 1; x <= tileX + hitbox.width / 200 + 1; x++) {
@@ -196,8 +196,8 @@ public final class Physics {
             accelerationFactor = isWindAndTouchingRightWall ? 7.5 : 1;
         }
         else {
-            hitbox.x += speedX * delta;
-            hitbox.y += speedY * delta;
+            hitbox.x += Math.round(speedX * delta);
+            hitbox.y += Math.round(speedY * delta);
             int x = hitbox.x / 100;
             int y = hitbox.y / 100;
             if (x >= 0 && y >= 0 && x < collision.length && y < collision[0].length) level.getTileList().get(level.getTileAt(x, y)).onTouch(entity, level, x, y);

@@ -21,6 +21,6 @@ public class WalkingBehavior implements EntityBehavior {
         speedFactor = -1;
     }
     public void update(GameEntity entity, GameLevel level) {
-        entity.getPhysics().setSpeedX(speed * speedFactor * (speedFactor > 0 ? 2 : 1));
+        entity.getPhysics().setSpeedX(speed * speedFactor);
     }
 }
