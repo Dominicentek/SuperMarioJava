@@ -35,6 +35,7 @@ public final class Physics {
     public boolean jumpingUpward = false;
     private double jumpOrigin = 0;
     private double accelerationFactor;
+    public boolean collideWithOwnType = true;
     public Physics(Entity entity, PhysicsConfig config) {
         hitbox = new Rectangle(0, 0, config.hitbox.width, config.hitbox.height);
         this.entity = entity;
@@ -78,7 +79,7 @@ public final class Physics {
                 }
             }
             for (Entity entity : new ArrayList<>(Arrays.asList(level.getEntityManager().array()))) {
-                if (this.entity == entity || !entity.getPhysics().getConfig().solidHitbox) continue;
+                if (this.entity == entity || !entity.getPhysics().getConfig().solidHitbox || (!collideWithOwnType && ((GameEntity)this.entity).entityType == ((GameEntity)entity).entityType)) continue;
                 Rectangle entityHitbox = entity.getPhysics().hitbox;
                 if (hitbox.intersects(entityHitbox)) {
                     Rectangle upCollision = new Rectangle(hitbox.x, hitbox.y - 1, hitbox.width, 1);
@@ -152,7 +153,7 @@ public final class Physics {
                 }
             }
             for (Entity entity : new ArrayList<>(Arrays.asList(level.getEntityManager().array()))) {
-                if (this.entity == entity || !entity.getPhysics().getConfig().solidHitbox) continue;
+                if (this.entity == entity || !entity.getPhysics().getConfig().solidHitbox || (!collideWithOwnType && ((GameEntity)this.entity).entityType == ((GameEntity)entity).entityType)) continue;
                 Rectangle entityHitbox = entity.getPhysics().hitbox;
                 if (hitbox.intersects(entityHitbox)) {
                     Rectangle leftCollision = new Rectangle(hitbox.x - 1, hitbox.y, 1, hitbox.height);
