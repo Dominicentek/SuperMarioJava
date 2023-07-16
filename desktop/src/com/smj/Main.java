@@ -3,6 +3,7 @@ package com.smj;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -56,6 +57,7 @@ public class Main extends ApplicationAdapter {
         config.setWindowedMode(windowWidth, windowHeight);
         config.setTitle("Super Mario Java");
         config.useVsync(false);
+        config.setWindowIcon(RNG.choose(new Lwjgl3FileHandle("assets/icons.txt", Files.FileType.Internal).readString().split("\n")));
         new Lwjgl3Application(new Main(), config);
     }
     public void create() {

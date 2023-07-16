@@ -1,0 +1,4 @@
+assets/images/icons/mario.png
+assets/images/icons/bowser.png
+assets/images/icons/toad.png
+assets/images/icons/peach.png
