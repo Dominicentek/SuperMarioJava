@@ -346,6 +346,12 @@ public class Game {
                 Game.particles.add(new SnowParticle(x, 0));
             }
         }
+        if (currentLevel.gimmick == GameLevel.Gimmick.ACID_RAIN) {
+            for (int i = 0; i < Math.max(1, currentLevel.getLevelBoundaries().width / 32); i++) {
+                int x = RNG.bound(currentLevel.getLevelBoundaries().width * 16);
+                Game.particles.add(new AcidRainParticle(x));
+            }
+        }
         if (currentLevel.gimmick == GameLevel.Gimmick.CASTLE && !currentLevel.camera.locked && hitbox.x > (currentLevel.getLevelBoundaries().width - Main.WIDTH / 16) * 100) {
             currentLevel.camera.locked = true;
             currentLevel.camera.targetX = currentLevel.getLevelBoundaries().width - Main.WIDTH / 32.0 + 0.065;
