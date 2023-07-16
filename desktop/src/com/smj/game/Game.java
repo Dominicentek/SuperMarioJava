@@ -352,6 +352,13 @@ public class Game {
                 Game.particles.add(new AcidRainParticle(x));
             }
         }
+        if (currentLevel.gimmick == GameLevel.Gimmick.METEORITES && RNG.chance(0.05f)) {
+            int minX = (player.getPhysics().getHitbox().x / 100) - 24;
+            int maxX = (player.getPhysics().getHitbox().x / 100) + 24;
+            int pos = RNG.range(minX, maxX);
+            EntityType.METEORITE.spawn(currentLevel, pos * 100, -800);
+            Game.particles.add(new MeteoriteIndicatorParticle(pos * 16 + 8));
+        }
         if (currentLevel.gimmick == GameLevel.Gimmick.CASTLE && !currentLevel.camera.locked && hitbox.x > (currentLevel.getLevelBoundaries().width - Main.WIDTH / 16) * 100) {
             currentLevel.camera.locked = true;
             currentLevel.camera.targetX = currentLevel.getLevelBoundaries().width - Main.WIDTH / 32.0 + 0.065;
