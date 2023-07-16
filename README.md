@@ -43,16 +43,25 @@ Like this: `./gradlew dist`
 
 ## Level Editor
 
-You can find the level editor here: https://dominicentek.github.io/SuperMarioJava, or you can find it offline in the `<project_root>/assets/levelbuilder/lvledit.html`
+You can find the level editor here: https://dominicentek.github.io/SuperMarioJava, or you can find it offline in the `<project_root>/assets/assets/levelbuilder/lvledit.html`
 
-The exported .lvl file has to be compressed using the GZIP algorithm.
+The game supports .lvl files which are both uncompressed and compressed using the GZIP algorithm.
+It is best practice to compress them as the game will report a non-fatal error if the level is uncompressed.
 
-#### How to compress the .lvl file
+When running any built-in tool, remember to put the JAR file
 
-1. Place the .lvl file inside `<project_root>/assets/levels/` directory with the name `levelX.lvl` with `X` being a positive number.
-2. Run the Super Mario Java JAR file with `java -cp SuperMarioJava.jar com.smj.GZIPCompress`
+### How to compress the .lvl file
+
+1. Place the .lvl file inside `<project_root>/assets/assets/levels/` directory with the name `levelX.lvl` with `X` being a positive number.
+2. Run the Super Mario Java JAR file with `java -cp SuperMarioJava.jar com.smj.tools.GZIPCompress`
 3. The level should be compressed and good to go.
-4. You can uncompress levels by running `java -cp SuperMarioJava.jar com.smj.GZIPUncompress` instead.
+4. You can uncompress levels by running `java -cp SuperMarioJava.jar com.smj.tools.GZIPUncompress` instead.
+
+### Editing sky castle background tiles
+
+1. Create a level .json file. Place ground where you want the background tile to be, air where not.
+2. Run the tool `SkycastleBGTilesGen` using `java -cp SuperMarioJava.jar com.smj.tools.SkycastleBGTilesGen`.
+3. Recompile
 
 ## Console Commands
 | Name        | Aliases         | Syntax                                     | Description                                        |
@@ -133,6 +142,7 @@ Here is the list of entities in the game:
 * `crate`
 * `bump_tile`
 * `warper`
+* `moving_block`
 
 ### Tile IDs
 
@@ -259,6 +269,7 @@ Here is the list of tiles in the game:
 * `downwards_stream`
 * `right_stream`
 * `warper`
+* `moving_block`
 
 ### Music IDs
 

@@ -1,4 +1,4 @@
-package com.smj;
+package com.smj.tools;
 
 import com.smj.util.GZIP;
 
