@@ -63,6 +63,12 @@ When running any built-in tool, remember to put the JAR file
 2. Run the tool `SkycastleBGTilesGen` using `java -cp SuperMarioJava.jar com.smj.tools.SkycastleBGTilesGen`.
 3. Recompile
 
+## Replacing Music
+
+The .smjmus file is very basic. The file is a container for 2 ogg files.
+
+First 4 bytes are the length of the intro ogg file, in big-endian, followed by the intro data. Leave 0 for no intro. After that, there are another 4 bytes. Those are the length of the loop, followed by the loop ogg file. The file ends after that.
+
 ## Console Commands
 | Name        | Aliases         | Syntax                                     | Description                                        |
 |-------------|-----------------|--------------------------------------------|----------------------------------------------------|
