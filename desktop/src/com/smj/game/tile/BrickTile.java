@@ -36,7 +36,7 @@ public class BrickTile extends GameTile {
         if (behavior.speedFactor != 0) destroy(level, x, y);
         behavior.changeDirection();
     }
-    public void destroy(GameLevel level, int x, int y) {
+    public static void destroy(GameLevel level, int x, int y) {
         level.setTileAt(Tiles.AIR, x, y);
         Game.particles.add(new SmokeParticle(x * 16 + 8, y * 16 + 8));
         AudioPlayer.BRICK.play();

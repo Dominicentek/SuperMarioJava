@@ -157,6 +157,8 @@ Here is the list of entities in the game:
 * `bump_tile`
 * `warper`
 * `moving_block`
+* `meteorite`
+* `meteorite_fragment`
 
 ### Tile IDs
 

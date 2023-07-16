@@ -60,6 +60,8 @@ public enum EntityType {
     BUMP_TILE(new InstanceBuilder<>(TileTextureProvider.class), new Dimension(100, 100), new InstanceBuilder<>(BumpTileBehavior.class)),
     WARPER(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(100, 100), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(WarperBehavior.class)),
     MOVING_BLOCK(new InstanceBuilder<>(StaticTextureProvider.class, get("images/entities/moving_block.png")), new Dimension(100, 100), new InstanceBuilder<>(MovingBlockBehavior.class, 0.17578125), new InstanceBuilder<>(SolidHitboxBehavior.class)),
+    METEORITE(new InstanceBuilder<>(RotatingTextureProvider.class, get("images/entities/meteorite.png")), new Dimension(100, 100), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(MeteoriteBehavior.class), new InstanceBuilder<>(HarmfulBehavior.class)),
+    METEORITE_FRAGMENT(new InstanceBuilder<>(BrickTextureProvider.class, get("images/entities/meteorite_fragment.png")), new Dimension(50, 50), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(BrickBehavior.class), new InstanceBuilder<>(WindBehavior.class)),
     ;
     private final InstanceBuilder<? extends EntityBehavior>[] behaviors;
     private final EntityProperties properties;
