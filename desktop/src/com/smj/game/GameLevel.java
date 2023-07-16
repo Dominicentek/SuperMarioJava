@@ -73,6 +73,7 @@ public class GameLevel extends Level implements Readable {
                 if (tile == Tiles.ON_OFF_BLOCK_RED_ON && !Game.onOff && onOffTreatment) setTileAt(Tiles.ON_OFF_BLOCK_RED_OFF, x, y);
                 if (tile == Tiles.ON_OFF_BLOCK_BLUE_OFF && !Game.onOff && onOffTreatment) setTileAt(Tiles.ON_OFF_BLOCK_BLUE_ON, x, y);
                 if (tile == Tiles.KEY_COIN) keycoinAmount++;
+                if (tile != 0 && ((GameTile)theme.tileList.get(tile)).globallyLoaded) theme.tileList.get(tile).init(this, x, y);
             }
         }
         HUDLayout.KEY_COIN_COUNTER.attachment.max = keycoinAmount;

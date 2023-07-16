@@ -20,6 +20,7 @@ public class GameTile extends LevelTile {
     public static HashMap<Point, Circle> spotlightLocations = new HashMap<>();
     public ArrayList<Integer> textureLocations = new ArrayList<>();
     public int currentLocationIndex = 0;
+    public boolean globallyLoaded = false;
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {}
     public void onTouchTop(GameEntity entity, GameLevel level, int x, int y) {}
     public void onTouchLeft(GameEntity entity, GameLevel level, int x, int y) {}
@@ -52,6 +53,10 @@ public class GameTile extends LevelTile {
         textureLocations.clear();
         currentLocationIndex = 0;
         textureLocations.addAll(Arrays.asList(locations));
+        return this;
+    }
+    public GameTile loadGlobally() {
+        globallyLoaded = true;
         return this;
     }
     public void cycleTexture() {

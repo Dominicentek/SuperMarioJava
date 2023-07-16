@@ -140,7 +140,7 @@ public class Theme {
         addTile(Tiles.DOWNWARDS_STREAM, new EntitySpawnerTile(EntityType.DOWN_PIPE_STREAM), tileset, 0x00);
         addTile(Tiles.RIGHT_STREAM, new EntitySpawnerTile(EntityType.RIGHT_PIPE_STREAM), tileset, 0x00);
         addTile(Tiles.WARPER, new EntitySpawnerTile(EntityType.WARPER), tileset, 0x00);
-        addTile(Tiles.MOVING_BLOCK, new EntitySpawnerTile(EntityType.MOVING_BLOCK), tileset, 0x00);
+        addTile(Tiles.MOVING_BLOCK, new EntitySpawnerTile(EntityType.MOVING_BLOCK).loadGlobally(), tileset, 0x00);
     }
     private void addTile(int id, LevelTile tile, Texture tileset, Integer... locations) {
         tileList.set(id, ((GameTile)tile).setTextureLocations(locations).setTexture(tileset));
