@@ -10,6 +10,7 @@ import com.smj.game.entity.GameEntity;
 import com.smj.game.options.Controls;
 import com.smj.game.particle.BubbleParticle;
 import com.smj.gui.hud.HUDLayout;
+import com.smj.jmario.entity.Entity;
 import com.smj.util.AudioPlayer;
 import com.smj.util.Recording;
 
@@ -45,15 +46,22 @@ public class PlayerBehavior implements EntityBehavior {
         if (!entity.getPhysics().isInAir() && Game.invincibilityTimeout == 0) entity.score.reset();
         if (entity.getPhysics().getHitbox().y >= entity.getLevel().getLevelBoundaries().height * 100 + 50) Game.die();
         if (justRun) {
-            if (Game.savefile.powerupState == 2) {
-                GameEntity fireball = EntityType.FIREBALL.spawn(level, entity.getPhysics().getHitbox().x + (facingLeft ? -entity.getPhysics().getHitbox().width + 50 : entity.getPhysics().getHitbox().width), entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2);
-                if (!facingLeft) fireball.getBehavior(WalkingBehavior.class).speedFactor = 0.5f;
-                AudioPlayer.FIREBALL.play(Location.entity(entity));
+            int ballCount = 0;
+            for (Entity e : level.getEntityManager()) {
+                EntityType type = ((GameEntity)e).entityType;
+                if (type == EntityType.FIREBALL || type == EntityType.ICEBALL) ballCount++;
             }
-            if (Game.savefile.powerupState == 3) {
-                GameEntity iceball = EntityType.ICEBALL.spawn(level, entity.getPhysics().getHitbox().x + (facingLeft ? -entity.getPhysics().getHitbox().width + 50 : entity.getPhysics().getHitbox().width), entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2);
-                if (!facingLeft) iceball.getBehavior(WalkingBehavior.class).speedFactor = 0.5f;
-                AudioPlayer.FIREBALL.play(Location.entity(entity));
+            if (ballCount < 2) {
+                if (Game.savefile.powerupState == 2) {
+                    GameEntity fireball = EntityType.FIREBALL.spawn(level, entity.getPhysics().getHitbox().x + (facingLeft ? -entity.getPhysics().getHitbox().width + 50 : entity.getPhysics().getHitbox().width), entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2);
+                    if (!facingLeft) fireball.getBehavior(WalkingBehavior.class).speedFactor = 0.5f;
+                    AudioPlayer.FIREBALL.play(Location.entity(entity));
+                }
+                if (Game.savefile.powerupState == 3) {
+                    GameEntity iceball = EntityType.ICEBALL.spawn(level, entity.getPhysics().getHitbox().x + (facingLeft ? -entity.getPhysics().getHitbox().width + 50 : entity.getPhysics().getHitbox().width), entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2);
+                    if (!facingLeft) iceball.getBehavior(WalkingBehavior.class).speedFactor = 0.5f;
+                    AudioPlayer.FIREBALL.play(Location.entity(entity));
+                }
             }
         }
         if (jumpTimer >= 0) jumpTimer--;
