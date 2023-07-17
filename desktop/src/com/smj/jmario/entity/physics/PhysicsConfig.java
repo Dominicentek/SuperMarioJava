@@ -17,6 +17,7 @@ public class PhysicsConfig {
         this.gravity = config.gravity;
         this.underwaterGravity = config.underwaterGravity;
         this.terminalVelocity = config.terminalVelocity;
+        this.maxJumpHeight = config.maxJumpHeight;
         this.jumpingSpeed = config.jumpingSpeed;
         this.underwaterSwimSpeed = config.underwaterSwimSpeed;
     }
