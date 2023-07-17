@@ -126,13 +126,6 @@ public class Level {
             }
         }
     }
-    public void update() {
-        for (int x = 0; x < tilemap.length; x++) {
-            for (int y = 0; y < tilemap[0].length; y++) {
-                tileList.get(tilemap[x][y]).update(this, x, y);
-            }
-        }
-    }
     public void draw(Renderer renderer, int unitWidth, int unitHeight, Entity focusEntity) {
         int width = Main.WIDTH;
         int height = Main.HEIGHT;
@@ -201,6 +194,7 @@ public class Level {
                     ((GameLevel)this).loaded[x][y] = true;
                     tile.init(this, x, y);
                 }
+                tile.update(this, x, y);
                 if (tile instanceof GameTile) {
                     Rectangle rectangle = new Rectangle(0, 0, 16, 16);
                     int location = ((GameTile)tile).getCurrentTextureLocation();
