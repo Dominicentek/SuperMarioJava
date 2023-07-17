@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GameLevel extends Level implements Readable {
-    public static final PhysicsConfig PHYSICS_GROUND = new PhysicsConfig().maxJumpHeight(250);
+    public static final PhysicsConfig PHYSICS_GROUND = new PhysicsConfig();
     public static final PhysicsConfig PHYSICS_UNDERWATER = new PhysicsConfig(PHYSICS_GROUND).underwater(true);
     public static final PhysicsConfig PHYSICS_LOW_GRAVITY = new PhysicsConfig(PHYSICS_GROUND).terminalVelocity(PHYSICS_GROUND.terminalVelocity * 0.25).gravity(PHYSICS_GROUND.gravity * 0.25).underwaterGravity(PHYSICS_GROUND.underwaterGravity * 0.25).maxJumpHeight(PHYSICS_GROUND.maxJumpHeight * 3).underwaterSwimSpeed(PHYSICS_GROUND.underwaterSwimSpeed * 3);
     public static boolean onOffTreatment = true;
