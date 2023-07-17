@@ -8,6 +8,7 @@ import com.smj.game.cutscene.keyframe.ActorKeyframe;
 import com.smj.game.cutscene.keyframe.CameraKeyframe;
 import com.smj.game.cutscene.keyframe.Keyframe;
 import com.smj.game.cutscene.keyframe.KeyframeType;
+import com.smj.game.options.Controls;
 import com.smj.gui.font.Font;
 import com.smj.util.*;
 
@@ -69,6 +70,9 @@ public class Cutscene {
                 currentDialog.progress++;
                 if (currentDialog.progress % DIAGSPD_INVERTED == 0 && !Character.isWhitespace(currentDialog.text.charAt(Math.min(currentDialog.progress / DIAGSPD_INVERTED, currentDialog.text.length() - 1)))) AudioPlayer.BEEP.play();
             }
+        }
+        if (Controls.JUMP.isJustPressed()) {
+            new EndEvent(0, 0.5).run(this);
         }
         currentFrame++;
     }
