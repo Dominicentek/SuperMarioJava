@@ -1,6 +1,5 @@
 package com.smj.util;
 
-import com.badlogic.gdx.Gdx;
 import com.smj.util.bjson.JSONParser;
 import com.smj.util.bjson.ListElement;
 import com.smj.util.bjson.ObjectElement;
@@ -8,20 +7,20 @@ import com.smj.util.bjson.ObjectElement;
 import java.util.HashMap;
 
 public class GameStrings {
-    private static final HashMap<String, String> globalTexts = new HashMap<>();
+    private static final HashMap<String, String> globalStrings = new HashMap<>();
     private static final HashMap<String, MenuText> menus = new HashMap<>();
     public static String get(String key) {
-        return globalTexts.getOrDefault(key, key);
+        return globalStrings.getOrDefault(key, key);
     }
     public static MenuText getMenu(String key) {
         return menus.get(key);
     }
     public static void parse() {
-        ObjectElement element = JSONParser.parse(FileLoader.read("strings/texts.json").asString());
+        ObjectElement element = JSONParser.parse(FileLoader.read("strings/strings.json").asString());
         ObjectElement globals = element.getObject("global");
         for (String key : globals.keys()) {
             if (globals.isString(key)) {
-                globalTexts.put(key, globals.getString(key));
+                globalStrings.put(key, globals.getString(key));
             }
             if (globals.isList(key)) {
                 String text = "";
@@ -29,7 +28,7 @@ public class GameStrings {
                 for (int i = 0; i < list.size(); i++) {
                     text += "\n" + list.getString(i);
                 }
-                globalTexts.put(key, text.substring(1));
+                globalStrings.put(key, text.substring(1));
             }
         }
         ObjectElement menus = element.getObject("menu");
