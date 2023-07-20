@@ -73,8 +73,9 @@ public class Main extends ApplicationAdapter {
         Font.loadFromBinaryData(FileLoader.read("strings/font.fnt").asBytes());
         SMJMusic.setVolumeAll(Main.options.musicVolume);
         Dialog.parse();
-        Command.loadCommands();
         GameStrings.parse();
+        Cutscene.loadCutscenes();
+        Command.loadCommands();
         Game.loadThemes();
         Game.loadSavefile();
         transition.stage = 1;

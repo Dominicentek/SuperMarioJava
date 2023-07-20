@@ -9,6 +9,7 @@ public class CutsceneBuilder {
     public ArrayList<Keyframe> keyframes = new ArrayList<>();
     public ArrayList<CutsceneEvent> events = new ArrayList<>();
     public ArrayList<Actor> actors = new ArrayList<>();
+    public boolean skippable = true;
     public CutsceneBuilder addActor(Actor actor) {
         actors.add(actor);
         return this;
@@ -21,8 +22,13 @@ public class CutsceneBuilder {
         events.add(event);
         return this;
     }
+    public CutsceneBuilder unskippable() {
+        skippable = false;
+        return this;
+    }
     public Cutscene build() {
         Cutscene cutscene = new Cutscene();
+        cutscene.skippable = skippable;
         cutscene.keyframes.addAll(keyframes);
         cutscene.events.addAll(events);
         for (Actor actor : actors) {

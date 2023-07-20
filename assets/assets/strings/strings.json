@@ -12,7 +12,9 @@
       "better Mario games than this one, go support",
       "Nintendo and buy their consoles and games."
     ],
-    "level_not_loaded": "$cFF3F3FNo level is loaded"
+    "level_not_loaded": "$cFF3F3FNo level is loaded",
+    "ending1": "The End",
+    "ending2": "Thanks for Playing!"
   },
   "menu": {
     "main": {

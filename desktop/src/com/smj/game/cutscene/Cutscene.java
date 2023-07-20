@@ -27,6 +27,7 @@ public class Cutscene {
     public int cameraX = 0;
     public int cameraY = 0;
     public Dialog currentDialog = null;
+    public boolean skippable = true;
     public void update() {
         for (CutsceneEvent event : events) {
             if (event.frame == currentFrame) event.run(this);
@@ -71,7 +72,7 @@ public class Cutscene {
                 if (currentDialog.progress % DIAGSPD_INVERTED == 0 && !Character.isWhitespace(currentDialog.text.charAt(Math.min(currentDialog.progress / DIAGSPD_INVERTED, currentDialog.text.length() - 1)))) AudioPlayer.BEEP.play();
             }
         }
-        if (Controls.JUMP.isJustPressed()) {
+        if (Controls.JUMP.isJustPressed() && skippable) {
             new EndEvent(0, 0.5).run(this);
         }
         currentFrame++;
@@ -105,7 +106,7 @@ public class Cutscene {
         renderer.drawString(currentDialog.text.substring(0, Math.min(chars, linelen)).trim(), x + 32, y + 8);
         if (chars >= linelen) renderer.drawString(currentDialog.text.substring(linelen, Math.min(chars, linelen * 2)).trim(), x + 32, y + 16);
     }
-    static {
+    public static void loadCutscenes() {
         Actor mario = new Actor(0, 0, TextureLoader.get("images/icons/mario.png"));
         cutscenes.put("test", new CutsceneBuilder()
             .addActor(new Actor(0, 0, TextureLoader.get("images/themes/0/background.png")))
@@ -176,12 +177,18 @@ public class Cutscene {
         Actor ground = new Actor(272, 256, TextureLoader.get("images/cutscene/ground.png"));
         Actor cage = new Actor(285, 16, TextureLoader.get("images/cutscene/cage.png"));
         Actor castlePeach = new Actor(290, 115, TextureLoader.get("images/cutscene/peach.png"));
+        String theEndText = GameStrings.get("ending1");
+        String thanksForPlayingText = GameStrings.get("ending2");
+        Actor text1 = new Actor(192 - Font.stringWidth(theEndText) / 2, -20, Font.getTexture(theEndText));
+        Actor text2 = new Actor(192 - Font.stringWidth(thanksForPlayingText) / 2, -8, Font.getTexture(thanksForPlayingText));
         cutscenes.put("peach_saved", new CutsceneBuilder()
             .addActor(new Actor(0, 0, TextureLoader.get("images/cutscene/castleend.png")))
             .addActor(castlePeach)
             .addActor(cage)
             .addActor(ground)
             .addActor(castleMario)
+            .addActor(text1)
+            .addActor(text2)
             .addActor(new Actor(272, -48, TextureLoader.get("images/cutscene/ground.png")))
             .addKeyframe(new ActorKeyframe(0, KeyframeType.SMOOTH, castleMario, -16, 176))
             .addKeyframe(new ActorKeyframe(120, KeyframeType.LINEAR, castleMario, 200, 176))
@@ -191,6 +198,10 @@ public class Cutscene {
             .addKeyframe(new ActorKeyframe(1440, KeyframeType.SMOOTH, cage, 285, -110))
             .addKeyframe(new ActorKeyframe(1320, KeyframeType.LINEAR, castlePeach, 290, 115))
             .addKeyframe(new ActorKeyframe(1440, KeyframeType.LINEAR, castlePeach, 290, 168))
+            .addKeyframe(new ActorKeyframe(1500, KeyframeType.SMOOTH, text1, text1.x, text1.y))
+            .addKeyframe(new ActorKeyframe(1500, KeyframeType.SMOOTH, text2, text2.x, text2.y))
+            .addKeyframe(new ActorKeyframe(1680, KeyframeType.SMOOTH, text1, text1.x, 118))
+            .addKeyframe(new ActorKeyframe(1680, KeyframeType.SMOOTH, text2, text2.x, 130))
             .addEvent(new MusicEvent(0, AudioPlayer.MUSIC[14]))
             .addEvent(new DialogEvent(120, "peach_saved", 0))
             .addEvent(new DialogEvent(360, "peach_saved", 1))
@@ -200,7 +211,7 @@ public class Cutscene {
             .addEvent(new DialogEvent(960, "peach_saved", 5))
             .addEvent(new DialogEvent(1080, "peach_saved", 6))
             .addEvent(new RemoveDialogEvent(1200))
-            .addEvent(new EndEvent(1500, 0.5))
+            .unskippable()
         );
     }
 }
