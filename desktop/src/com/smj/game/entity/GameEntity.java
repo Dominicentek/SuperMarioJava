@@ -30,6 +30,7 @@ public class GameEntity extends Entity {
     public int spawnOffsetX = 0;
     public int spawnOffsetY = 0;
     public Circle spotlight = null;
+    public int priority = 0;
     public GameEntity(PhysicsConfig physicsConfig, EntityProperties properties, TextureProvider provider, EntityType type, EntityBehavior... behaviors) {
         super(physicsConfig, properties);
         this.provider = provider;
