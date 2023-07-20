@@ -103,8 +103,18 @@ public class Cutscene {
         if (currentDialog.icon != null) renderer.draw(currentDialog.icon, x + 8, y + 8);
         int linelen = (Main.WIDTH - 40) / 8;
         int chars = currentDialog.progress / DIAGSPD_INVERTED;
-        renderer.drawString(currentDialog.text.substring(0, Math.min(chars, linelen)).trim(), x + 32, y + 8);
-        if (chars >= linelen) renderer.drawString(currentDialog.text.substring(linelen, Math.min(chars, linelen * 2)).trim(), x + 32, y + 16);
+        int lastSpace = 0;
+        int wordWrap = linelen;
+        for (int i = 0; i < currentDialog.text.length(); i++) {
+            if (currentDialog.text.charAt(i) == ' ') lastSpace = i;
+            if (i == linelen) {
+                wordWrap = lastSpace == 0 ? linelen : lastSpace;
+                break;
+            }
+        }
+        renderer.drawString(currentDialog.text.substring(0, Math.min(chars, wordWrap)).trim(), x + 32, y + 8);
+        wordWrap++;
+        if (chars >= wordWrap) renderer.drawString(currentDialog.text.substring(wordWrap, chars).trim(), x + 32, y + 16);
     }
     public static void loadCutscenes() {
         Actor mario = new Actor(0, 0, TextureLoader.get("images/icons/mario.png"));
