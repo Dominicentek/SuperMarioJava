@@ -1,13 +1,8 @@
 package com.smj.game.cutscene;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.smj.Main;
 import com.smj.game.cutscene.event.*;
-import com.smj.game.cutscene.keyframe.ActorKeyframe;
-import com.smj.game.cutscene.keyframe.CameraKeyframe;
-import com.smj.game.cutscene.keyframe.Keyframe;
-import com.smj.game.cutscene.keyframe.KeyframeType;
+import com.smj.game.cutscene.event.MoveType;
 import com.smj.game.options.Controls;
 import com.smj.gui.font.Font;
 import com.smj.util.*;
@@ -19,7 +14,6 @@ public class Cutscene {
     public static final HashMap<String, CutsceneBuilder> cutscenes = new HashMap<>();
     public static final float DIALOG_SPEED = 0.25f;
     private static final int DIAGSPD_INVERTED = (int)(1 / DIALOG_SPEED);
-    public ArrayList<Keyframe> keyframes = new ArrayList<>();
     public ArrayList<CutsceneEvent> events = new ArrayList<>();
     public ArrayList<Actor> actors = new ArrayList<>();
     public ArrayList<Movement> movements = new ArrayList<>();
@@ -32,39 +26,12 @@ public class Cutscene {
         for (CutsceneEvent event : events) {
             if (event.frame == currentFrame) event.run(this);
         }
-        for (int i = 0; i < keyframes.size(); i++) {
-            Keyframe keyframe = keyframes.get(i);
-            if (keyframe.frame == currentFrame) {
-                HashMap<FieldInstance, Integer> fields = keyframe.run(this);
-                Keyframe nextKeyframe = null;
-                for (int j = i + 1; j < keyframes.size(); j++) {
-                    if (keyframes.get(j).isNextKeyframeFor(keyframe)) {
-                        nextKeyframe = keyframes.get(j);
-                        break;
-                    }
-                }
-                for (FieldInstance field : fields.keySet()) {
-                    field.set(fields.get(field));
-                }
-                if (nextKeyframe != null) {
-                    HashMap<FieldInstance, Integer> nextFields = nextKeyframe.run(this);
-                    for (FieldInstance field : fields.keySet()) {
-                        Integer value = null;
-                        for (FieldInstance f : nextFields.keySet()) {
-                            if (field.equals(f)) {
-                                value = nextFields.get(f);
-                                break;
-                            }
-                        }
-                        if (value == null) continue;
-                        movements.add(new Movement(field, fields.get(field), value, nextKeyframe.frame - keyframe.frame, keyframe.type));
-                    }
-                }
-            }
-        }
         for (Movement movement : new ArrayList<>(movements)) {
             movement.update();
-            if (movement.finished()) movements.remove(movement);
+            if (movement.finished()) {
+                movements.remove(movement);
+                movement.instance.set(movement.to);
+            }
         }
         if (currentDialog != null) {
             if (currentDialog.progress < currentDialog.text.length() * DIAGSPD_INVERTED) {
@@ -121,22 +88,20 @@ public class Cutscene {
         cutscenes.put("test", new CutsceneBuilder()
             .addActor(new Actor(0, 0, TextureLoader.get("images/themes/0/background.png")))
             .addActor(mario)
-            .addKeyframe(new ActorKeyframe(120, KeyframeType.SMOOTH, mario, 0, 0))
-            .addKeyframe(new ActorKeyframe(240, KeyframeType.LINEAR, mario, 100, 150))
-            .addKeyframe(new ActorKeyframe(360, KeyframeType.WAIT, mario, 150, 50))
-            .addKeyframe(new ActorKeyframe(480, KeyframeType.SMOOTH, mario, 50, 100))
-            .addKeyframe(new CameraKeyframe(120, KeyframeType.SMOOTH, 0, 0))
-            .addKeyframe(new CameraKeyframe(240, KeyframeType.LINEAR, Main.WIDTH / 2, Main.HEIGHT / 2))
-            .addKeyframe(new CameraKeyframe(360, KeyframeType.WAIT, -Main.WIDTH / 2, -Main.HEIGHT / 2))
-            .addKeyframe(new CameraKeyframe(480, KeyframeType.SMOOTH, 0, 0))
-            .addEvent(new MusicEvent(0, null))
-            .addEvent(new DialogEvent(0, "test", 0))
-            .addEvent(new DialogEvent(120, "test", 1))
-            .addEvent(new DialogEvent(240, "test", 2))
-            .addEvent(new DialogEvent(360, "test", 3))
-            .addEvent(new DialogEvent(480, "test", 4))
-            .addEvent(new RemoveDialogEvent(600))
-            .addEvent(new EndEvent(600, 0.5))
+            .addEvent(new MoveActorEvent(CutsceneEvent.beginning(120), mario, 100, 150, 120, MoveType.LINEAR))
+            .addEvent(new MoveActorEvent(CutsceneEvent.after(), mario, 150, 50, 120, MoveType.WAIT))
+            .addEvent(new MoveActorEvent(CutsceneEvent.after(), mario, 50, 100, 120, MoveType.SMOOTH))
+            .addEvent(new MoveCameraEvent(CutsceneEvent.beginning(120), Main.WIDTH / 2, Main.HEIGHT / 2, 120, MoveType.LINEAR))
+            .addEvent(new MoveCameraEvent(CutsceneEvent.after(), -Main.WIDTH / 2, -Main.HEIGHT / 2, 120, MoveType.WAIT))
+            .addEvent(new MoveCameraEvent(CutsceneEvent.after(), 0, 0, 120, MoveType.SMOOTH))
+            .addEvent(new MusicEvent(CutsceneEvent.beginning(), null))
+            .addEvent(new DialogEvent(CutsceneEvent.simultaneously(), "test", 0))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "test", 1))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "test", 2))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "test", 3))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "test", 4))
+            .addEvent(new RemoveDialogEvent(CutsceneEvent.after(30)))
+            .addEvent(new EndEvent(CutsceneEvent.simultaneously(), 0.5))
         );
         Actor bowser = new Actor(680, -32, TextureLoader.get("images/cutscene/bowser.png"));
         Actor peach = new Actor(726, 140, TextureLoader.get("images/cutscene/peach.png"));
@@ -145,27 +110,22 @@ public class Cutscene {
             .addActor(new Actor(392, 176, TextureLoader.get("images/cutscene/mario.png")))
             .addActor(peach)
             .addActor(bowser)
-            .addKeyframe(new CameraKeyframe(0, KeyframeType.WAIT, 0, 0))
-            .addKeyframe(new CameraKeyframe(180, KeyframeType.WAIT, 384, 0))
-            .addKeyframe(new ActorKeyframe(600, KeyframeType.LINEAR, bowser, 680, -32))
-            .addKeyframe(new ActorKeyframe(610, KeyframeType.WAIT, bowser, 680, 144))
-            .addKeyframe(new ActorKeyframe(1000, KeyframeType.LINEAR, bowser, 680, 144))
-            .addKeyframe(new ActorKeyframe(1060, KeyframeType.LINEAR, bowser, 768, 144))
-            .addKeyframe(new ActorKeyframe(0, KeyframeType.WAIT, peach, 726, 140))
-            .addKeyframe(new ActorKeyframe(1030, KeyframeType.LINEAR, peach, 726, 140))
-            .addKeyframe(new ActorKeyframe(1060, KeyframeType.LINEAR, peach, 792, 140))
-            .addEvent(new MusicEvent(0, AudioPlayer.MUSIC[6]))
-            .addEvent(new DialogEvent(60, "beginning", 0))
-            .addEvent(new RemoveDialogEvent(180))
-            .addEvent(new DialogEvent(240, "beginning", 1))
-            .addEvent(new DialogEvent(360, "beginning", 2))
-            .addEvent(new MusicEvent(610, AudioPlayer.MUSIC[8]))
-            .addEvent(new SFXEvent(610, AudioPlayer.EXPLOSION))
-            .addEvent(new DialogEvent(660, "beginning", 3))
-            .addEvent(new DialogEvent(900, "beginning", 4))
-            .addEvent(new DialogEvent(1020, "beginning", 5))
-            .addEvent(new DialogEvent(1140, "beginning", 6))
-            .addEvent(new EndEvent(1320, 0.5))
+            .addEvent(new MusicEvent(CutsceneEvent.beginning(), AudioPlayer.MUSIC[6]))
+            .addEvent(new MoveCameraEvent(CutsceneEvent.simultaneously(), 384, 0, 180, MoveType.WAIT))
+            .addEvent(new DialogEvent(CutsceneEvent.simultaneously(), "beginning", 0))
+            .addEvent(new RemoveDialogEvent(CutsceneEvent.simultaneously(180)))
+            .addEvent(new DialogEvent(CutsceneEvent.after(60), "beginning", 1))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "beginning", 2))
+            .addEvent(new MoveActorEvent(CutsceneEvent.after(60), bowser, 680, 144, 10, MoveType.LINEAR))
+            .addEvent(new MusicEvent(CutsceneEvent.after(), AudioPlayer.MUSIC[8]))
+            .addEvent(new SFXEvent(CutsceneEvent.simultaneously(), AudioPlayer.EXPLOSION))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "beginning", 3))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "beginning", 4))
+            .addEvent(new MoveActorEvent(CutsceneEvent.after(30), bowser, 768, 144, 60, MoveType.LINEAR))
+            .addEvent(new MoveActorEvent(CutsceneEvent.simultaneously(30), peach, 792, 140, 30, MoveType.LINEAR))
+            .addEvent(new DialogEvent(CutsceneEvent.simultaneously(), "beginning", 5))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "beginning", 6))
+            .addEvent(new EndEvent(CutsceneEvent.after(30), 0.5))
         );
         for (int i = 1; i <= 7; i++) {
             Actor castleMario = new Actor(-16, 176, TextureLoader.get("images/cutscene/mario.png"));
@@ -174,13 +134,12 @@ public class Cutscene {
                 .addActor(new Actor(290, 115, TextureLoader.get("images/cutscene/toad.png")))
                 .addActor(new Actor(285, 16, TextureLoader.get("images/cutscene/cage.png")))
                 .addActor(castleMario)
-                .addKeyframe(new ActorKeyframe(0, KeyframeType.SMOOTH, castleMario, -16, 176))
-                .addKeyframe(new ActorKeyframe(120, KeyframeType.LINEAR, castleMario, 200, 176))
-                .addEvent(new MusicEvent(0, AudioPlayer.MUSIC[8]))
-                .addEvent(new DialogEvent(120, "in_another_castle_" + i, 0))
-                .addEvent(new DialogEvent(240, "in_another_castle_" + i, 1))
-                .addEvent(new DialogEvent(420, "in_another_castle_" + i, 2))
-                .addEvent(new EndEvent(540, 0.5))
+                .addEvent(new MusicEvent(CutsceneEvent.beginning(), AudioPlayer.MUSIC[8]))
+                .addEvent(new MoveActorEvent(CutsceneEvent.simultaneously(), castleMario, 200, 176, 120, MoveType.SMOOTH))
+                .addEvent(new DialogEvent(CutsceneEvent.after(), "in_another_castle_" + i, 0))
+                .addEvent(new DialogEvent(CutsceneEvent.after(30), "in_another_castle_" + i, 1))
+                .addEvent(new DialogEvent(CutsceneEvent.after(30), "in_another_castle_" + i, 2))
+                .addEvent(new EndEvent(CutsceneEvent.after(60), 0.5))
             );
         }
         Actor castleMario = new Actor(-16, 176, TextureLoader.get("images/cutscene/mario.png"));
@@ -200,27 +159,21 @@ public class Cutscene {
             .addActor(text1)
             .addActor(text2)
             .addActor(new Actor(272, -48, TextureLoader.get("images/cutscene/ground.png")))
-            .addKeyframe(new ActorKeyframe(0, KeyframeType.SMOOTH, castleMario, -16, 176))
-            .addKeyframe(new ActorKeyframe(120, KeyframeType.LINEAR, castleMario, 200, 176))
-            .addKeyframe(new ActorKeyframe(1200, KeyframeType.SMOOTH, ground, 272, 256))
-            .addKeyframe(new ActorKeyframe(1320, KeyframeType.SMOOTH, ground, 272, 192))
-            .addKeyframe(new ActorKeyframe(1320, KeyframeType.SMOOTH, cage, 285, 16))
-            .addKeyframe(new ActorKeyframe(1440, KeyframeType.SMOOTH, cage, 285, -110))
-            .addKeyframe(new ActorKeyframe(1320, KeyframeType.LINEAR, castlePeach, 290, 115))
-            .addKeyframe(new ActorKeyframe(1440, KeyframeType.LINEAR, castlePeach, 290, 168))
-            .addKeyframe(new ActorKeyframe(1500, KeyframeType.SMOOTH, text1, text1.x, text1.y))
-            .addKeyframe(new ActorKeyframe(1500, KeyframeType.SMOOTH, text2, text2.x, text2.y))
-            .addKeyframe(new ActorKeyframe(1680, KeyframeType.SMOOTH, text1, text1.x, 118))
-            .addKeyframe(new ActorKeyframe(1680, KeyframeType.SMOOTH, text2, text2.x, 130))
-            .addEvent(new MusicEvent(0, AudioPlayer.MUSIC[14]))
-            .addEvent(new DialogEvent(120, "peach_saved", 0))
-            .addEvent(new DialogEvent(360, "peach_saved", 1))
-            .addEvent(new DialogEvent(480, "peach_saved", 2))
-            .addEvent(new DialogEvent(720, "peach_saved", 3))
-            .addEvent(new DialogEvent(840, "peach_saved", 4))
-            .addEvent(new DialogEvent(960, "peach_saved", 5))
-            .addEvent(new DialogEvent(1080, "peach_saved", 6))
-            .addEvent(new RemoveDialogEvent(1200))
+            .addEvent(new MusicEvent(CutsceneEvent.beginning(), AudioPlayer.MUSIC[14]))
+            .addEvent(new MoveActorEvent(CutsceneEvent.simultaneously(), castleMario, 200, 176, 120, MoveType.SMOOTH))
+            .addEvent(new DialogEvent(CutsceneEvent.after(), "peach_saved", 0))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "peach_saved", 1))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "peach_saved", 2))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "peach_saved", 3))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "peach_saved", 4))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "peach_saved", 5))
+            .addEvent(new DialogEvent(CutsceneEvent.after(30), "peach_saved", 6))
+            .addEvent(new RemoveDialogEvent(CutsceneEvent.after(30)))
+            .addEvent(new MoveActorEvent(CutsceneEvent.simultaneously(), ground, 272, 192, 120, MoveType.SMOOTH))
+            .addEvent(new MoveActorEvent(CutsceneEvent.after(), cage, 285, -110, 120, MoveType.SMOOTH))
+            .addEvent(new MoveActorEvent(CutsceneEvent.simultaneously(), castlePeach, 290, 168, 120, MoveType.LINEAR))
+            .addEvent(new MoveActorEvent(CutsceneEvent.after(60), text1, text1.x, 118, 120, MoveType.SMOOTH))
+            .addEvent(new MoveActorEvent(CutsceneEvent.simultaneously(), text2, text2.x, 130, 120, MoveType.SMOOTH))
             .unskippable()
         );
     }

@@ -13,4 +13,7 @@ public class DialogEvent extends CutsceneEvent {
         dialog.progress = 0;
         cutscene.currentDialog = dialog;
     }
+    public int duration() {
+        return dialog.text.length() * (int)(1 / Cutscene.DIALOG_SPEED);
+    }
 }

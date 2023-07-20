@@ -1,6 +1,6 @@
 package com.smj.game.cutscene;
 
-import com.smj.game.cutscene.keyframe.KeyframeType;
+import com.smj.game.cutscene.event.MoveType;
 import com.smj.util.FieldInstance;
 
 public class Movement {
@@ -10,8 +10,8 @@ public class Movement {
     public int value;
     public int length;
     public int frame = 0;
-    public KeyframeType type;
-    public Movement(FieldInstance instance, int from, int to, int length, KeyframeType type) {
+    public MoveType type;
+    public Movement(FieldInstance instance, int from, int to, int length, MoveType type) {
         this.instance = instance;
         this.from = from;
         this.to = to;
@@ -20,12 +20,12 @@ public class Movement {
         value = from;
     }
     public void update() {
-        if (type == KeyframeType.LINEAR) value = (int)(frame / (double)length * (to - from));
-        else if (type == KeyframeType.WAIT) {
-            if (frame - 1 == length) value = to - from;
+        if (type == MoveType.LINEAR) value = (int)(frame / (double)length * (to - from));
+        else if (type == MoveType.WAIT) {
+            if (frame + 1 == length) value = to - from;
             else value = 0;
         }
-        else if (type == KeyframeType.SMOOTH) {
+        else if (type == MoveType.SMOOTH) {
             if (frame / 2 < length) {
                 value = (int)((Math.sin(Math.toRadians(frame / (double)length * 180 - 90)) + 1) / 2.0 * (to - from));
             }
