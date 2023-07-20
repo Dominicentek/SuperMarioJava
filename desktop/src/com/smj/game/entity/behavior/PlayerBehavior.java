@@ -19,6 +19,7 @@ public class PlayerBehavior implements EntityBehavior {
     public int jumpTimer = -1;
     public int bubbleTimeout = 60;
     public void update(GameEntity entity, GameLevel level) {
+        entity.priority = 1000;
         if (Game.consoleOpen && Game.playback == null) {
             entity.getPhysics().getMovement().setWalkingLeft(false);
             entity.getPhysics().getMovement().setWalkingRight(false);

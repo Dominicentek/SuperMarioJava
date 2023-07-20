@@ -465,6 +465,7 @@ public class Game {
             }
         }
         Collections.shuffle(currentLevel.getEntityManager().entities);
+        Collections.sort(currentLevel.getEntityManager().entities, Comparator.comparingInt((Entity entity) -> ((GameEntity)entity).priority));
         if (Controls.TOGGLE_HUD.isJustPressed()) Main.options.hiddenHUD = !Main.options.hiddenHUD;
         if (recording != null) recording.recordFrame();
     }
