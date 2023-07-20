@@ -21,7 +21,6 @@ public class GameStrings {
         for (String key : globals.keys()) {
             if (globals.isString(key)) {
                 globalStrings.put(key, globals.getString(key));
-                System.out.println(key + " : " + globalStrings.get(key));
             }
             if (globals.isList(key)) {
                 String text = "";
