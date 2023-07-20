@@ -39,7 +39,4 @@ public class SaveFile implements Saveable {
     public String toString() {
         return "coin=" + coins + " life=" + lives + " point=" + score + " progress=" + levelsCompleted + " playerstate=" + powerupState;
     }
-    public boolean canSave() {
-        return Game.playback == null;
-    }
 }

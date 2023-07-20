@@ -96,7 +96,6 @@ First 4 bytes are the length of the intro ogg file, in big-endian, followed by t
 | `cutscene`    |                 | `<cutscene>`                               | Plays a cutscene                                   |
 | `bump`        |                 | `<position>`                               | Bumps a tile at a certain position                 |
 | `music`       |                 | `<id> [faster: true,false]`                | Plays music                                        |
-| `record`      |                 | `<record,playback <filename>,stop,cancel>` | Manages movement recordings                        |
 | `screenshake` |                 | `<x>` `<y>` `[duration]`                   |                                                    |
 
 The position argument is a set of 2 numeric values.

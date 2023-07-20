@@ -2,9 +2,7 @@ package com.smj.game.options;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.smj.Main;
 import com.smj.gui.menu.MenuControlsItem;
-import com.smj.util.Recording;
 
 public enum Controls {
     UP(Input.Keys.W),

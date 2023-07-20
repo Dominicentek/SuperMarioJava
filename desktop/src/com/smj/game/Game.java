@@ -77,11 +77,7 @@ public class Game {
     public static boolean consoleOpen = false;
     public static TextConsole console = new TextConsole();
     public static String cmd = "";
-    public static Recording recording = null;
-    public static boolean recordNextLevel = false;
-    public static int demoTimeout = 600;
     public static int displayLevelID = 0;
-    public static Recording playback;
     public static double cameraX = 0;
     public static double cameraY = 0;
     public static int finalFightSwitchesPressed = 0;
@@ -286,15 +282,8 @@ public class Game {
                 }
             }
         }
-        if (paused || (title && playback == null)) return;
+        if (paused || title) return;
         HUDLayout.SPEEDRUN_TIMER.frames++;
-        if (playback != null) {
-            playback.next();
-            if (playback.done()) {
-                Game.loadSavefile();
-                playback = null;
-            }
-        }
         for (Entity entity : Arrays.asList(currentLevel.getEntityManager().array())) {
             entity.update(currentLevel);
             Physics physics = entity.getPhysics();
@@ -432,8 +421,7 @@ public class Game {
             physics.setSpeedX(0);
         }
         if (savefile.powerupState > 0 && !physics.isInAir()) {
-            Recording.RecordingFrame pressed = playback == null ? null : playback.pressed();
-            isCrouching = currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN ? (pressed == null ? Controls.UP.isPressed() : pressed.up) : (pressed == null ? Controls.DOWN.isPressed() : pressed.down);
+            isCrouching = currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN ? Controls.UP.isPressed() : Controls.DOWN.isPressed();
             if (hitbox.height > 100 && isCrouching) {
                 hitbox.height -= 100;
                 hitbox.y += 100;
@@ -473,7 +461,6 @@ public class Game {
         Collections.shuffle(currentLevel.getEntityManager().entities);
         Collections.sort(currentLevel.getEntityManager().entities, Comparator.comparingInt((Entity entity) -> ((GameEntity)entity).priority));
         if (Controls.TOGGLE_HUD.isJustPressed()) Main.options.hiddenHUD = !Main.options.hiddenHUD;
-        if (recording != null) recording.recordFrame();
     }
     public static void loadThemes() {
         for (int i = 0; i < THEMES.length; i++) {
@@ -536,12 +523,6 @@ public class Game {
             timeTimeout = 60;
             spedUpMusicTimeout = -1;
             HUDLayout.SCORE.set(savefile.score);
-            if (recording != null) {
-                Saveable.save(recording, Gdx.files.local(Saveable.ensureNotExists(Gdx.files.local("smj_recordings/" + Saveable.getTimestamp() + ".smjrec"))));
-                recording = null;
-            }
-            Game.loadSavefile();
-            playback = null;
             savefile = Readable.read(Gdx.files.local("save.sav").readBytes(), SaveFile.class);
             displayLevelID = id;
         }
@@ -590,10 +571,6 @@ public class Game {
             player.getPhysics().getConfig().underwaterGravity = 0;
             player.getPhysics().getHitbox().x += 50;
             player.getPhysics().getHitbox().y += warp.goDown ? -200 : 200;
-        }
-        if (recordNextLevel && newLevel) {
-            recordNextLevel = false;
-            recording = new Recording(id);
         }
         GameLevel.onOffTreatment = true;
     }
@@ -748,16 +725,5 @@ public class Game {
         player.getProperties().drawInBG = true;
         Game.warp = warp;
         AudioPlayer.WARP.play();
-    }
-    public static void playbackRecording(Recording recording) {
-        recording.seek(0);
-        Main.setTransition(new Transition(0.5, () -> {
-            loadLevel(recording.level, true);
-            Game.recording = null;
-            savefile = new SaveFile();
-            Rectangle hitbox = player.getPhysics().getHitbox();
-            if (hitbox.height > 100) player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y + 100, hitbox.width, hitbox.height - 100));
-            playback = recording;
-        }));
     }
 }

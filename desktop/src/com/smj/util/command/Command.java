@@ -303,48 +303,6 @@ public class Command {
                 console.log("Playing " + (faster ? "a fast version of " : "") + AudioPlayer.MUSIC[id].name);
             }
         ).get());
-        commands.addPath("record", new CommandBuilder().addNode(
-            new CommandLiteral().addPath("begin", new CommandBuilder().addNode(
-                (CommandExecution)context -> {
-                    console.log("Next level's movement will be recorded.");
-                    Game.recordNextLevel = true;
-                }
-            ).get()).addPath("playback", new CommandBuilder().addNode(
-                new StringArgument("filename")
-            ).addNode(
-                (CommandExecution)context -> {
-                    FileHandle recFile = Gdx.files.local("smj_recordings/" + context.get("filename") + ".smjrec");
-                    if (!recFile.exists()) {
-                        console.err("File " + context.get("filename") + " doesn't exist");
-                        return;
-                    }
-                    console.log("Playing " + context.get("filename"));
-                    Game.playbackRecording(Readable.read(recFile.readBytes(), Recording.class));
-                }
-            ).get()).addPath("cancel", new CommandBuilder().addNode(
-                (CommandExecution)context -> {
-                    console.log("Recording cancelled");
-                    Game.recordNextLevel = false;
-                    Game.recording = null;
-                }
-            ).get()).addPath("stop", new CommandBuilder().addNode(
-                (CommandExecution)context -> {
-                    if (Game.recording == null && Game.playback == null) {
-                        console.err("Nothing to stop");
-                    }
-                    if (Game.recording != null) {
-                        console.log("Stopped recording");
-                        Saveable.save(Game.recording, Gdx.files.local(Saveable.ensureNotExists(Gdx.files.local("smj_recordings/" + Saveable.getTimestamp() + ".smjrec"))));
-                        Game.recording = null;
-                    }
-                    if (Game.playback != null) {
-                        console.log("Playback stopped");
-                        Game.loadSavefile();
-                        Game.playback = null;
-                    }
-                }
-            ).get())
-        ).get());
         commands.addPath("screenshake", new CommandBuilder().addNode(
             new DoubleArgument("x")
         ).addNode(

@@ -1,7 +1,5 @@
 package com.smj.game.entity.behavior;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.smj.game.Game;
 import com.smj.game.GameLevel;
 import com.smj.game.Location;
@@ -9,10 +7,8 @@ import com.smj.game.entity.EntityType;
 import com.smj.game.entity.GameEntity;
 import com.smj.game.options.Controls;
 import com.smj.game.particle.BubbleParticle;
-import com.smj.gui.hud.HUDLayout;
 import com.smj.jmario.entity.Entity;
 import com.smj.util.AudioPlayer;
-import com.smj.util.Recording;
 
 public class PlayerBehavior implements EntityBehavior {
     public boolean facingLeft = false;
@@ -20,20 +16,18 @@ public class PlayerBehavior implements EntityBehavior {
     public int bubbleTimeout = 60;
     public void update(GameEntity entity, GameLevel level) {
         entity.priority = 1000;
-        if (Game.consoleOpen && Game.playback == null) {
+        if (Game.consoleOpen) {
             entity.getPhysics().getMovement().setWalkingLeft(false);
             entity.getPhysics().getMovement().setWalkingRight(false);
             entity.getPhysics().getMovement().setJumping(false);
             entity.getPhysics().getMovement().setRunning(false);
             return;
         }
-        Recording.RecordingFrame pressed = Game.playback == null ? null : Game.playback.pressed();
-        Recording.RecordingFrame justPressed = Game.playback == null ? null : Game.playback.justPressed();
-        boolean left = (pressed == null ? Controls.LEFT.isPressed() : pressed.left) && Game.stunTimer == 0;
-        boolean right = (pressed == null ? Controls.RIGHT.isPressed() : pressed.right) && Game.stunTimer == 0;
-        boolean jump = (pressed == null ? Controls.JUMP.isPressed() : pressed.jump) && Game.stunTimer == 0;
-        boolean run = (pressed == null ? Controls.RUN.isPressed() : pressed.run) && Game.stunTimer == 0;
-        boolean justRun = justPressed == null ? Controls.RUN.isJustPressed() : justPressed.run;
+        boolean left = Controls.LEFT.isPressed() && Game.stunTimer == 0;
+        boolean right = Controls.RIGHT.isPressed() && Game.stunTimer == 0;
+        boolean jump = Controls.JUMP.isPressed() && Game.stunTimer == 0;
+        boolean run = Controls.RUN.isPressed() && Game.stunTimer == 0;
+        boolean justRun = Controls.RUN.isJustPressed();
         if (left) facingLeft = true;
         if (right) facingLeft = false;
         entity.getPhysics().getMovement().setWalkingLeft(left);

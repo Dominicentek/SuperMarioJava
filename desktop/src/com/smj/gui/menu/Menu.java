@@ -6,7 +6,6 @@ import com.smj.game.options.Controls;
 import com.smj.gui.font.Font;
 import com.smj.util.GameStrings;
 import com.smj.util.RNG;
-import com.smj.util.Recording;
 import com.smj.util.Renderer;
 
 import java.util.Stack;
@@ -54,14 +53,6 @@ public class Menu {
             if (Controls.UP.isJustPressed() && selectedIndex != 0) selectedIndex--;
         }
         items[selectedIndex].overrideInput(false);
-        if (Game.title && Game.playback == null) {
-            Game.demoTimeout--;
-            if (Game.demoTimeout == 0) {
-                Game.playbackRecording(RNG.choose(Recording.DEMOS));
-                Game.demoTimeout = 600;
-            }
-        }
-        else Game.demoTimeout = 600;
     }
     public Menu offset(int x, int y) {
         offsetX = x;
