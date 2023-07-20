@@ -27,7 +27,8 @@ public class Movement {
         }
         else if (type == MoveType.SMOOTH) {
             if (frame / 2 < length) {
-                value = (int)((Math.sin(Math.toRadians(frame / (double)length * 180 - 90)) + 1) / 2.0 * (to - from));
+                double x = frame / (double)length;
+                value = (int)((x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2) * (to - from));
             }
         }
         instance.set(value + from);
