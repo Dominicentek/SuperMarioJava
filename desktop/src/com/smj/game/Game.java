@@ -84,6 +84,8 @@ public class Game {
     public static Recording playback;
     public static double cameraX = 0;
     public static double cameraY = 0;
+    public static int finalFightSwitchesPressed = 0;
+    public static int stunTimer = 0;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -216,7 +218,7 @@ public class Game {
             else {
                 finishTimeout = 999;
                 if (playCastleCutscene) {
-                    if (savefile.levelsCompleted == 39) Main.startCutscene("peach_saved", () -> {
+                    if (savefile.levelsCompleted == 40) Main.startCutscene("peach_saved", () -> {
                         Game.title = true;
                         Game.loadLevel(Game.savefile.levelsCompleted, true);
                         Menu.loadMenu(null);
@@ -412,6 +414,7 @@ public class Game {
                 }
             }
         }
+        if (stunTimer > 0) stunTimer--;
         if (WarperBehavior.warperTimeout > 0) WarperBehavior.warperTimeout--;
         if (invincibilityTimeout % 2 == 1) {
             spawnSparklesHitbox(hitbox, 1);
@@ -460,7 +463,7 @@ public class Game {
             }
         }
         for (Entity entity : new ArrayList<>(currentLevel.getEntityManager().entities)) {
-            if (entity.getPhysics().getHitbox().y > (currentLevel.getLevelBoundaries().height + 5) * 100) {
+            if (entity.getPhysics().getHitbox().y > (currentLevel.getLevelBoundaries().height + 5) * 100 && !((GameEntity)entity).immuneToDeathBarrier) {
                 currentLevel.getEntityManager().unloadEntity(entity);
             }
         }
@@ -501,6 +504,7 @@ public class Game {
         warpTimeout = -1;
         keycoinsCollected = 0;
         dead = false;
+        finalFightSwitchesPressed = 0;
         particles.clear();
         snowCache.clear();
         GameLevel level;

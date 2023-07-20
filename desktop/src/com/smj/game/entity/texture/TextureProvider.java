@@ -9,6 +9,8 @@ public abstract class TextureProvider {
     private final Texture texture;
     public boolean flipX;
     public boolean flipY;
+    public float scaleX = 1;
+    public float scaleY = 1;
     public TextureProvider(Texture texture) {
         this.texture = texture;
     }

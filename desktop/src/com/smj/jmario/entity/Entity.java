@@ -21,7 +21,9 @@ public abstract class Entity {
     public abstract void onTileTouchRight(Level level, int x, int y);
     public abstract void onEntityCollide(Level level, Entity entity);
     public final double[] getTextureOrigin(int unitWidth, int unitHeight) {
-        return new double[]{physics.getHitbox().x / 100.0 + physics.getHitbox().width / 200.0 - (this instanceof GameEntity ? ((GameEntity)this).textureRegion.width : properties.texture.getWidth()) / (double)unitWidth / 2, physics.getHitbox().y / 100.0 + physics.getHitbox().height / 100.0 - (this instanceof GameEntity ? ((GameEntity)this).textureRegion.height : properties.texture.getHeight()) / (double)unitHeight};
+        return new double[]{
+            physics.getHitbox().x / 100.0 + physics.getHitbox().width / 200.0 - (this instanceof GameEntity ? (((GameEntity)this).textureRegion.width * ((GameEntity)this).provider.scaleX) : properties.texture.getWidth()) / (double)unitWidth / 2,
+            physics.getHitbox().y / 100.0 + physics.getHitbox().height / 100.0 - (this instanceof GameEntity ? (((GameEntity)this).textureRegion.height * ((GameEntity)this).provider.scaleY) : properties.texture.getHeight()) / (double)unitHeight};
     }
     public final EntityProperties getProperties() {
         return properties;

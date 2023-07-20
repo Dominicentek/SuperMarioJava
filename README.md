@@ -160,6 +160,10 @@ Here is the list of entities in the game:
 * `moving_block`
 * `meteorite`
 * `meteorite_fragment`
+* `final_fight_switch`
+* `final_fight_switch_collision`
+* `big_bowser`
+* `big_bowser_fire`
 
 ### Tile IDs
 

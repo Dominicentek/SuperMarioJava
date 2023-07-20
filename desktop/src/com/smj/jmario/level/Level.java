@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.util.*;
 
 public class Level {
+    public static final boolean displayHitboxes = false;
     private int[][] tilemap;
     private LevelTileList tileList = new LevelTileList();
     private EntityManager entities = new EntityManager(this);
@@ -177,14 +178,14 @@ public class Level {
             if (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height <= 0) {
                 if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(null);
                 renderer.setColor(0x000000AF);
-                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), 0, ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
+                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), 0, (int)(((GameEntity)entity).textureRegion.width * ((GameEntity)entity).provider.scaleX), (int)(((GameEntity)entity).textureRegion.height * ((GameEntity)entity).provider.scaleY), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
                 renderer.setColor(0xFFFFFFFF);
                 if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
             }
             else {
                 if (((GameLevel)this).gimmick != GameLevel.Gimmick.FOG && ((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityTimeout > 0) renderer.setShader(Main.hueshiftShader);
                 Main.hueshiftShader.setUniformf("hueshift", System.currentTimeMillis() % 1000 / 1000f);
-                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), (int)(origin[1] * unitHeight), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
+                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), (int)(origin[1] * unitHeight), (int)(((GameEntity)entity).textureRegion.width * ((GameEntity)entity).provider.scaleX), (int)(((GameEntity)entity).textureRegion.height * ((GameEntity)entity).provider.scaleY), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
                 if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
                 else renderer.setShader(null);
             }
@@ -224,17 +225,24 @@ public class Level {
             if (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height <= 0) {
                 if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(null);
                 renderer.setColor(0x000000AF);
-                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), 0, ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
+                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), 0, (int)(((GameEntity)entity).textureRegion.width * ((GameEntity)entity).provider.scaleX), (int)(((GameEntity)entity).textureRegion.height * ((GameEntity)entity).provider.scaleY), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
                 renderer.setColor(0xFFFFFFFF);
                 if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
             }
             else {
                 if (((GameLevel)this).gimmick != GameLevel.Gimmick.FOG && ((GameEntity)entity).entityType == EntityType.PLAYER && Game.invincibilityTimeout > 0) renderer.setShader(Main.hueshiftShader);
                 Main.hueshiftShader.setUniformf("hueshift", System.currentTimeMillis() % 1000 / 1000f);
-                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), (int)(origin[1] * unitHeight), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
+                renderer.draw(entity.getProperties().texture, ((GameEntity)entity).textureRegion, (int)(origin[0] * unitWidth), (int)(origin[1] * unitHeight), (int)(((GameEntity)entity).textureRegion.width * ((GameEntity)entity).provider.scaleX), (int)(((GameEntity)entity).textureRegion.height * ((GameEntity)entity).provider.scaleY), ((GameEntity)entity).provider.flipX, ((GameEntity)entity).provider.flipY);
                 if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
                 else renderer.setShader(null);
             }
+        }
+        if (displayHitboxes) {
+            renderer.setColor(0xFF00007F);
+            for (Entity entity : entities) {
+                renderer.rect(entity.getPhysics().getHitbox().x * 16 / 100, entity.getPhysics().getHitbox().y * 16 / 100, entity.getPhysics().getHitbox().width * 16 / 100, entity.getPhysics().getHitbox().height * 16 / 100);
+            }
+            renderer.setColor(0xFFFFFFFF);
         }
         Fluid fluid = ((GameLevel)this).fluid;
         if (fluid != null) {

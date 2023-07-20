@@ -29,10 +29,10 @@ public class PlayerBehavior implements EntityBehavior {
         }
         Recording.RecordingFrame pressed = Game.playback == null ? null : Game.playback.pressed();
         Recording.RecordingFrame justPressed = Game.playback == null ? null : Game.playback.justPressed();
-        boolean left = pressed == null ? Controls.LEFT.isPressed() : pressed.left;
-        boolean right = pressed == null ? Controls.RIGHT.isPressed() : pressed.right;
-        boolean jump = pressed == null ? Controls.JUMP.isPressed() : pressed.jump;
-        boolean run = pressed == null ? Controls.RUN.isPressed() : pressed.run;
+        boolean left = (pressed == null ? Controls.LEFT.isPressed() : pressed.left) && Game.stunTimer == 0;
+        boolean right = (pressed == null ? Controls.RIGHT.isPressed() : pressed.right) && Game.stunTimer == 0;
+        boolean jump = (pressed == null ? Controls.JUMP.isPressed() : pressed.jump) && Game.stunTimer == 0;
+        boolean run = (pressed == null ? Controls.RUN.isPressed() : pressed.run) && Game.stunTimer == 0;
         boolean justRun = justPressed == null ? Controls.RUN.isJustPressed() : justPressed.run;
         if (left) facingLeft = true;
         if (right) facingLeft = false;

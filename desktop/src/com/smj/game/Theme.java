@@ -141,6 +141,8 @@ public class Theme {
         addTile(Tiles.RIGHT_STREAM, new EntitySpawnerTile(EntityType.RIGHT_PIPE_STREAM), tileset, 0x00);
         addTile(Tiles.WARPER, new EntitySpawnerTile(EntityType.WARPER), tileset, 0x00);
         addTile(Tiles.MOVING_BLOCK, new EntitySpawnerTile(EntityType.MOVING_BLOCK).loadGlobally(), tileset, 0x00);
+        addTile(Tiles.FINAL_BOWSER_SWITCH, new EntitySpawnerTile(EntityType.FINAL_FIGHT_SWITCH, EntityType.FINAL_FIGHT_SWITCH_COLLISION), tileset, 0x00);
+        addTile(Tiles.FINAL_BOWSER, new EntitySpawnerTile(EntityType.BIG_BOWSER), tileset, 0x00);
     }
     private void addTile(int id, LevelTile tile, Texture tileset, Integer... locations) {
         tileList.set(id, ((GameTile)tile).setTextureLocations(locations).setTexture(tileset));

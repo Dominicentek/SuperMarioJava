@@ -124,4 +124,6 @@ public class Tiles {
     public static final int RIGHT_STREAM = 0xF5;
     public static final int WARPER = 0xF6;
     public static final int MOVING_BLOCK = 0xF7;
+    public static final int FINAL_BOWSER_SWITCH = 0xF8;
+    public static final int FINAL_BOWSER = 0xF9;
 }

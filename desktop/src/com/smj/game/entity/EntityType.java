@@ -62,6 +62,10 @@ public enum EntityType {
     MOVING_BLOCK(new InstanceBuilder<>(StaticTextureProvider.class, get("images/entities/moving_block.png")), new Dimension(100, 100), new InstanceBuilder<>(MovingBlockBehavior.class, 0.17578125), new InstanceBuilder<>(SolidHitboxBehavior.class)),
     METEORITE(new InstanceBuilder<>(RotatingTextureProvider.class, get("images/entities/meteorite.png")), new Dimension(100, 100), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(MeteoriteBehavior.class), new InstanceBuilder<>(HarmfulBehavior.class)),
     METEORITE_FRAGMENT(new InstanceBuilder<>(BrickTextureProvider.class, get("images/entities/meteorite_fragment.png")), new Dimension(50, 50), new EntityProperties().setImmuneToFluid(true), new InstanceBuilder<>(BrickBehavior.class), new InstanceBuilder<>(WindBehavior.class)),
+    FINAL_FIGHT_SWITCH(new InstanceBuilder<>(SwitchTextureProvider.class, get("images/entities/switch.png")), new Dimension(100, 100), new InstanceBuilder<>(FinalFightSwitchBehavior.class)),
+    FINAL_FIGHT_SWITCH_COLLISION(new InstanceBuilder<>(BlankTextureProvider.class), new Dimension(100, 25), new InstanceBuilder<>(SolidHitboxBehavior.class)),
+    BIG_BOWSER(new InstanceBuilder<>(BigBowserTextureProvider.class, get("images/entities/bowserfront.png")), new Dimension(1200, 1200), new EntityProperties().setDrawInBG(true), new InstanceBuilder<>(BigBowserBehavior.class)),
+    BIG_BOWSER_FIRE(new InstanceBuilder<>(BigBowserFireTextureProvider.class, get("images/entities/bowserfrontfire.png")), new Dimension(100, 100), new EntityProperties().setDrawInBG(true), new InstanceBuilder<>(BigBowserFireBehavior.class))
     ;
     private final InstanceBuilder<? extends EntityBehavior>[] behaviors;
     private final EntityProperties properties;
