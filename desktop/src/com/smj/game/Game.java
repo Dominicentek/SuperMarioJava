@@ -290,7 +290,10 @@ public class Game {
         HUDLayout.SPEEDRUN_TIMER.frames++;
         if (playback != null) {
             playback.next();
-            if (playback.done()) playback = null;
+            if (playback.done()) {
+                Game.loadSavefile();
+                playback = null;
+            }
         }
         for (Entity entity : Arrays.asList(currentLevel.getEntityManager().array())) {
             entity.update(currentLevel);
@@ -537,6 +540,7 @@ public class Game {
                 Saveable.save(recording, Gdx.files.local(Saveable.ensureNotExists(Gdx.files.local("smj_recordings/" + Saveable.getTimestamp() + ".smjrec"))));
                 recording = null;
             }
+            Game.loadSavefile();
             playback = null;
             savefile = Readable.read(Gdx.files.local("save.sav").readBytes(), SaveFile.class);
             displayLevelID = id;

@@ -339,6 +339,7 @@ public class Command {
                     }
                     if (Game.playback != null) {
                         console.log("Playback stopped");
+                        Game.loadSavefile();
                         Game.playback = null;
                     }
                 }

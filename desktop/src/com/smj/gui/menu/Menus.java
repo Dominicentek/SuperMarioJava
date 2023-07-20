@@ -128,6 +128,7 @@ public class Menus {
                 Game.title = false;
                 Game.playback = null;
                 Menu.loadMenu(null);
+                Game.loadSavefile();
                 Game.loadLevel(Game.savefile.levelsCompleted, true);
             }));
         }),
