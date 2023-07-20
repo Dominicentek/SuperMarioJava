@@ -78,25 +78,26 @@ First 4 bytes are the length of the intro ogg file, in big-endian, followed by t
 5. Recompile
 
 ## Console Commands
-| Name        | Aliases         | Syntax                                     | Description                                        |
-|-------------|-----------------|--------------------------------------------|----------------------------------------------------|
-| `life`      |                 | `<set,add> <amount>`                       | Manages the amount of lives                        |
-| `coin`      |                 | `<set,add> <amount>`                       | Manages the amount of coins                        |
-| `time`      |                 | `<set,add> <amount>`                       | Manages the time remaining                         |
-| `score`     |                 | `<set,add> <amount>`                       | Manages the score                                  |
-| `powerup`   |                 | `<state>`                                  | Sets the powerup state for the player              |
-| `superstar` | `star`          | `<seconds>`                                | Adds an amount of seconds to player's star powerup |
-| `entity`    |                 | `<type> <position>`                        | Spawns an entity                                   |
-| `tile`      |                 | `<type> <position>`                        | Sets a tile to a position                          |
-| `position`  | `teleport` `tp` | `<position>`                               | Teleport player to position                        |
-| `die`       |                 |                                            | Makes Mario die                                    |
-| `finish`    |                 |                                            | Finishes the level                                 |
-| `save`      |                 |                                            | Saves the game                                     |
-| `clear`     |                 |                                            | Clears the console                                 |
-| `cutscene`  |                 | `<cutscene>`                               | Plays a cutscene                                   |
-| `bump`      |                 | `<position>`                               | Bumps a tile at a certain position                 |
-| `music`     |                 | `<id> [faster: true,false]`                | Plays music                                        |
-| `record`    |                 | `<record,playback <filename>,stop,cancel>` | Manages movement recordings                        |
+| Name          | Aliases         | Syntax                                     | Description                                        |
+|---------------|-----------------|--------------------------------------------|----------------------------------------------------|
+| `life`        |                 | `<set,add> <amount>`                       | Manages the amount of lives                        |
+| `coin`        |                 | `<set,add> <amount>`                       | Manages the amount of coins                        |
+| `time`        |                 | `<set,add> <amount>`                       | Manages the time remaining                         |
+| `score`       |                 | `<set,add> <amount>`                       | Manages the score                                  |
+| `powerup`     |                 | `<state>`                                  | Sets the powerup state for the player              |
+| `superstar`   | `star`          | `<seconds>`                                | Adds an amount of seconds to player's star powerup |
+| `entity`      |                 | `<type> <position>`                        | Spawns an entity                                   |
+| `tile`        |                 | `<type> <position>`                        | Sets a tile to a position                          |
+| `position`    | `teleport` `tp` | `<position>`                               | Teleport player to position                        |
+| `die`         |                 |                                            | Makes Mario die                                    |
+| `finish`      |                 |                                            | Finishes the level                                 |
+| `save`        |                 |                                            | Saves the game                                     |
+| `clear`       |                 |                                            | Clears the console                                 |
+| `cutscene`    |                 | `<cutscene>`                               | Plays a cutscene                                   |
+| `bump`        |                 | `<position>`                               | Bumps a tile at a certain position                 |
+| `music`       |                 | `<id> [faster: true,false]`                | Plays music                                        |
+| `record`      |                 | `<record,playback <filename>,stop,cancel>` | Manages movement recordings                        |
+| `screenshake` |                 | `<x>` `<y>` `[duration]`                   |                                                    |
 
 The position argument is a set of 2 numeric values.
 Those value are the X and Y coordinates of the position.

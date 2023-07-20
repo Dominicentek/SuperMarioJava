@@ -344,5 +344,20 @@ public class Command {
                 }
             ).get())
         ).get());
+        commands.addPath("screenshake", new CommandBuilder().addNode(
+            new DoubleArgument("x")
+        ).addNode(
+            new DoubleArgument("y")
+        ).addNode(
+            (CommandExecution)context -> {
+                Game.currentLevel.camera.screenshake(context.get("x"), context.get("y"), 60);
+            }
+        ).addNode(
+            new IntegerArgument("duration")
+        ).addNode(
+            (CommandExecution)context -> {
+                Game.currentLevel.camera.screenshake(context.get("x"), context.get("y"), context.get("duration"));
+            }
+        ).get());
     }
 }

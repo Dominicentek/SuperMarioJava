@@ -147,6 +147,8 @@ public class Level {
         if (Game.cameraY > 0) Game.cameraY = 0;
         if (Game.cameraX > fullWidth - width) Game.cameraX = fullWidth - width;
         if (Game.cameraY < height - fullHeight) Game.cameraY = height - fullHeight;
+        Game.cameraX += RNG.range(-camera.screenshakeX, camera.screenshakeX);
+        Game.cameraY += RNG.range(-camera.screenshakeY, camera.screenshakeY);
         if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
         Main.solidColorShader.setUniformf("color", 0, 0, 0, 1);
         Texture bgImage = bg.getImage();
