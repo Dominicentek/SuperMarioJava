@@ -104,6 +104,7 @@ public class Game {
             return;
         }
         if (levelIntroTimeout > 0) {
+            paused = true;
             renderer.setColor(0xFFFFFF3F);
             renderer.draw(currentLevel.getBackground().getImage(), -(int)(128 * (1 - levelIntroTimeout / 300.0)), 0);
             renderer.setColor(0xFFFFFFFF);
