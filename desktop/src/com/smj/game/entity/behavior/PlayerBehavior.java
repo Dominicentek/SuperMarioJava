@@ -59,6 +59,7 @@ public class PlayerBehavior implements EntityBehavior {
                 }
             }
         }
+        if (Controls.JUMP.isJustPressed() && entity.getPhysics().getConfig().underwater) AudioPlayer.STOMP.play();
         if (jumpTimer >= 0) jumpTimer--;
         bubbleTimeout--;
         if (bubbleTimeout == 0) {
