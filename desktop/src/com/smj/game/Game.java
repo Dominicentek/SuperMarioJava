@@ -604,7 +604,7 @@ public class Game {
             player.getPhysics().getConfig().gravity = 0;
             player.getPhysics().getConfig().underwaterGravity = 0;
             player.getPhysics().getHitbox().x += 50;
-            player.getPhysics().getHitbox().y += warp.goDown ? -200 : 200;
+            player.getPhysics().getHitbox().y += warp.goDown ? (savefile.powerupState > 0 ? -100 : -200) : 200;
         }
         GameLevel.onOffTreatment = true;
     }
