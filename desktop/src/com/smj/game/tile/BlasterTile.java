@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class BlasterTile extends GameTile {
     public void update(GameLevel level, int x, int y) {
+        if (Game.paused) return;
         if (RNG.chance(0.005f)) {
             int mx = Game.player.getPhysics().getHitbox().x;
             int my = Game.player.getPhysics().getHitbox().y;
