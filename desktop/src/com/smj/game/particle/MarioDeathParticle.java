@@ -48,7 +48,7 @@ public class MarioDeathParticle extends Particle {
                             Game.currentLevelID = 0;
                         }
                         Saveable.save(Game.savefile, Gdx.files.local("save.sav"));
-                        Game.loadLevel(Game.savefile.levelsCompleted, true);
+                        Game.levelIntro(0);
                     }));
                 }
                 else gameOverTimeout--;
