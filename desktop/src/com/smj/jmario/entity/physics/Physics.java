@@ -23,6 +23,8 @@ public final class Physics {
     private PlayerMovement movement = new PlayerMovement();
     private PhysicsConfig config;
     private Rectangle hitbox;
+    private Rectangle collideBoxBounds;
+    private Rectangle collideBox = new Rectangle();
     private Level level;
     private boolean begun;
     private double speedX = 0;
@@ -83,13 +85,15 @@ public final class Physics {
             for (Entity entity : new ArrayList<>(Arrays.asList(level.getEntityManager().array()))) {
                 if (this.entity == entity || !entity.getPhysics().getConfig().solidHitbox || (!collideWithOwnType && ((GameEntity)this.entity).entityType == ((GameEntity)entity).entityType)) continue;
                 Rectangle entityHitbox = entity.getPhysics().hitbox;
+                if (entity.getPhysics().collideBox.intersects(collideBox)) {
+                    entity.onEntityCollide(level, this.entity);
+                    this.entity.onEntityCollide(level, entity);
+                }
                 if (hitbox.intersects(entityHitbox)) {
                     Rectangle upCollision = new Rectangle(hitbox.x, hitbox.y - 1, hitbox.width, 1);
                     speedY = 0;
                     int x = (entityHitbox.x + entityHitbox.width / 2) / 100;
                     int y = (entityHitbox.y + entityHitbox.height / 2) / 100;
-                    entity.onEntityCollide(level, this.entity);
-                    this.entity.onEntityCollide(level, entity);
                     int prevTile = level.getTileAt(x, y);
                     level.setTileAt(Tiles.BARRIER, x, y);
                     if (upCollision.intersects(entityHitbox)) {
@@ -157,6 +161,10 @@ public final class Physics {
             for (Entity entity : new ArrayList<>(Arrays.asList(level.getEntityManager().array()))) {
                 if (this.entity == entity || !entity.getPhysics().getConfig().solidHitbox || (!collideWithOwnType && ((GameEntity)this.entity).entityType == ((GameEntity)entity).entityType)) continue;
                 Rectangle entityHitbox = entity.getPhysics().hitbox;
+                if (entity.getPhysics().collideBox.intersects(collideBox)) {
+                    entity.onEntityCollide(level, this.entity);
+                    this.entity.onEntityCollide(level, entity);
+                }
                 if (hitbox.intersects(entityHitbox)) {
                     Rectangle leftCollision = new Rectangle(hitbox.x - 1, hitbox.y, 1, hitbox.height);
                     boolean collisionOnLeft = leftCollision.intersects(entityHitbox);
@@ -167,8 +175,6 @@ public final class Physics {
                     }
                     int x = (entityHitbox.x + entityHitbox.width / 2) / 100;
                     int y = (entityHitbox.y + entityHitbox.height / 2) / 100;
-                    entity.onEntityCollide(level, this.entity);
-                    this.entity.onEntityCollide(level, entity);
                     int prevTile = level.getTileAt(x, y);
                     level.setTileAt(Tiles.BARRIER, x, y);
                     if (collisionOnLeft) {
@@ -208,8 +214,8 @@ public final class Physics {
         Entity[] entities = level.getEntityManager().array();
         for (Entity entity : entities) {
             if (entity == this.entity) continue;
-            Rectangle hitbox = entity.getPhysics().getHitbox();
-            if (this.hitbox.intersects(hitbox)) {
+            Rectangle collideBox = entity.getPhysics().getCollideBox();
+            if (this.collideBox.intersects(collideBox)) {
                 this.entity.onEntityCollide(level, entity);
             }
         }
@@ -258,6 +264,10 @@ public final class Physics {
         if (nextSpeedY != null) speedY = nextSpeedY;
         nextSpeedX = null;
         nextSpeedY = null;
+        collideBox.width = collideBoxBounds.width;
+        collideBox.height = collideBoxBounds.height;
+        collideBox.x = hitbox.x + collideBoxBounds.x;
+        collideBox.y = hitbox.y + collideBoxBounds.y;
         return this;
     }
     public void jump(boolean playSound) {
@@ -288,6 +298,12 @@ public final class Physics {
     public Rectangle getHitbox() {
         return hitbox;
     }
+    public Rectangle getCollideBox() {
+        return collideBox;
+    }
+    public Rectangle getCollideBoxBounds() {
+        return collideBoxBounds;
+    }
     public PlayerMovement getMovement() {
         return movement;
     }
@@ -308,6 +324,9 @@ public final class Physics {
     }
     public void setHitbox(Rectangle hitbox) {
         this.hitbox = hitbox;
+    }
+    public void setCollideBoxBounds(Rectangle collideBoxBounds) {
+        this.collideBoxBounds = collideBoxBounds;
     }
     public void updateCollisionMap() {
         for (int x = 0; x < collision.length; x++) {

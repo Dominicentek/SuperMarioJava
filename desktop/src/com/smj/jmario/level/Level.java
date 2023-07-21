@@ -234,9 +234,13 @@ public class Level {
             }
         }
         if (displayHitboxes) {
-            renderer.setColor(0xFF00007F);
+            renderer.setColor(0xFFFF007F);
             for (Entity entity : entities) {
                 renderer.rect(entity.getPhysics().getHitbox().x * 16 / 100, entity.getPhysics().getHitbox().y * 16 / 100, entity.getPhysics().getHitbox().width * 16 / 100, entity.getPhysics().getHitbox().height * 16 / 100);
+            }
+            renderer.setColor(0xFF00007F);
+            for (Entity entity : entities) {
+                renderer.rect(entity.getPhysics().getCollideBox().x * 16 / 100, entity.getPhysics().getCollideBox().y * 16 / 100, entity.getPhysics().getCollideBox().width * 16 / 100, entity.getPhysics().getCollideBox().height * 16 / 100);
             }
             renderer.setColor(0xFFFFFFFF);
         }

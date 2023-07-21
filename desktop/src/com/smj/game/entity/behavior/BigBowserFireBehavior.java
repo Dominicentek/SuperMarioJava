@@ -48,6 +48,10 @@ public class BigBowserFireBehavior implements EntityBehavior {
         entity.getPhysics().getHitbox().height = (int)(100 * scale);
         entity.getPhysics().getHitbox().x = currentPosX - entity.getPhysics().getHitbox().width / 2;
         entity.getPhysics().getHitbox().y = currentPosY - entity.getPhysics().getHitbox().height / 2;
+        entity.getPhysics().getCollideBoxBounds().x = (int)(25 * scale);
+        entity.getPhysics().getCollideBoxBounds().y = (int)(25 * scale);
+        entity.getPhysics().getCollideBoxBounds().width = (int)(50 * scale);
+        entity.getPhysics().getCollideBoxBounds().height = (int)(50 * scale);
     }
     public void onEntityCollide(GameEntity entity, GameLevel level, GameEntity collider) {
         if (collider.entityType != EntityType.PLAYER || timeout > 60) return;
