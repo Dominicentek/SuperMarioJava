@@ -35,6 +35,8 @@ public class BigBowserBehavior implements EntityBehavior {
                 Game.particles.add(new StunParticle(Game.player.getPhysics().getHitbox().x * 16 / 100 - 6, (Game.player.getPhysics().getHitbox().y + Game.player.getPhysics().getHitbox().height) * 16 / 100 - 6, false, condition));
                 Game.particles.add(new StunParticle((Game.player.getPhysics().getHitbox().x + Game.player.getPhysics().getHitbox().width) * 16 / 100 + 6, (Game.player.getPhysics().getHitbox().y + Game.player.getPhysics().getHitbox().height) * 16 / 100 - 6, true, condition));
             }
+            AudioPlayer.BURNER.play();
+            EntityType.BIG_BOWSER_FIRE.spawn(level, entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2 - 50, entity.getPhysics().getHitbox().y + 350);
             for (int i = 0; i < 50; i++) {
                 int x = RNG.range(4, 380);
                 int y = RNG.range(-252, -4);
