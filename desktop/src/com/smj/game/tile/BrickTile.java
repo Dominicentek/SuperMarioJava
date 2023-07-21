@@ -39,6 +39,7 @@ public class BrickTile extends GameTile {
     public static void destroy(GameLevel level, int x, int y) {
         level.setTileAt(Tiles.AIR, x, y);
         Game.particles.add(new SmokeParticle(x * 16 + 8, y * 16 + 8));
+        Game.addTileReplacement(x, y, Tiles.AIR);
         AudioPlayer.BRICK.play();
         EntityType.BRICK.spawn(level, x * 100, y * 100);
         EntityType.BRICK.spawn(level, x * 100 + 50, y * 100);

@@ -34,6 +34,7 @@ public class ContainerTile extends GameTile {
         return progressive && Game.savefile.powerupState == 0 ? EntityType.MUSHROOM : entity;
     }
     public void hit(GameLevel level, int x, int y) {
+        Game.addTileReplacement(x, y, Tiles.EMPTY_BLOCK);
         if (setEmptyBlockBeforeBump) level.setTileAt(Tiles.EMPTY_BLOCK, x, y);
         GameTile.bump(level, x, y, () -> {
             EntityType type = getEntity();

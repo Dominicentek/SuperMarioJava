@@ -25,6 +25,10 @@ public class CheckpointTile extends GameTile {
         level.setTileAt(Tiles.COLLECTED_CHECKPOINT_TOP_RIGHT, topLeftX + 1, topLeftY);
         level.setTileAt(Tiles.COLLECTED_CHECKPOINT_BOTTOM_LEFT, topLeftX, topLeftY + 1);
         level.setTileAt(Tiles.COLLECTED_CHECKPOINT_BOTTOM_RIGHT, topLeftX + 1, topLeftY + 1);
+        Game.addTileReplacement(topLeftX, topLeftY, Tiles.COLLECTED_CHECKPOINT_TOP_LEFT);
+        Game.addTileReplacement(topLeftX + 1, topLeftY, Tiles.COLLECTED_CHECKPOINT_TOP_RIGHT);
+        Game.addTileReplacement(topLeftX, topLeftY + 1, Tiles.COLLECTED_CHECKPOINT_BOTTOM_LEFT);
+        Game.addTileReplacement(topLeftX + 1, topLeftY + 1, Tiles.COLLECTED_CHECKPOINT_BOTTOM_RIGHT);
         AudioPlayer.CHECKPOINT.play(Location.entity(entity));
         Game.awardScore(StaticScore.CHECKPOINT);
     }

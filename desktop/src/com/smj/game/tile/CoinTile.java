@@ -16,6 +16,7 @@ public class CoinTile extends GameTile {
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER && entity.getBehavior(ShellBehavior.class) == null) return;
         level.setTileAt(Tiles.AIR, x, y);
+        Game.addTileReplacement(x, y, Tiles.AIR);
         Game.addCoins(1);
         AudioPlayer.COIN.play();
         Game.awardScore(StaticScore.COIN, Location.tile(x, y, level));

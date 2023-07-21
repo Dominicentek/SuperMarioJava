@@ -85,6 +85,7 @@ public class Game {
     public static int stunTimer = 0;
     public static int levelIntroTimeout = 0;
     public static String[] levelNames;
+    public static HashMap<Integer, HashMap<Point, Integer>> tileReplacements = new HashMap<>();
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -555,11 +556,19 @@ public class Game {
             HUDLayout.SCORE.set(savefile.score);
             savefile = Readable.read(Gdx.files.local("save.sav").readBytes(), SaveFile.class);
             displayLevelID = id;
+            tileReplacements.clear();
         }
         else {
             if (timeRunningOut || spedUpMusicTimeout > 0) {
                 AudioPlayer.MUSIC[level.music].stop();
                 AudioPlayer.MUSIC[level.music].play(true);
+            }
+            HashMap<Point, Integer> replacements = tileReplacements.get(currentLevelID);
+            if (replacements != null) {
+                for (Map.Entry<Point, Integer> replacement : replacements.entrySet()) {
+                    Point point = replacement.getKey();
+                    level.setTileAt(replacement.getValue(), point.x, point.y);
+                }
             }
         }
         if (level.gimmick == GameLevel.Gimmick.ENEMY) {
@@ -773,5 +782,10 @@ public class Game {
         Game.loadLevel(levelID, true);
         levelIntroTimeout = 300;
         SMJMusic.stopMusic();
+    }
+    public static void addTileReplacement(int x, int y, int tile) {
+        HashMap<Point, Integer> replacements = tileReplacements.getOrDefault(currentLevelID, new HashMap<>());
+        replacements.put(new Point(x, y), tile);
+        tileReplacements.put(currentLevelID, replacements);
     }
 }

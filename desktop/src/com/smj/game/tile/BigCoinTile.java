@@ -33,5 +33,9 @@ public class BigCoinTile extends GameTile {
         level.setTileAt(Tiles.AIR, topLeftX + 1, topLeftY);
         level.setTileAt(Tiles.AIR, topLeftX, topLeftY + 1);
         level.setTileAt(Tiles.AIR, topLeftX + 1, topLeftY + 1);
+        Game.addTileReplacement(topLeftX, topLeftY, Tiles.AIR);
+        Game.addTileReplacement(topLeftX + 1, topLeftY, Tiles.AIR);
+        Game.addTileReplacement(topLeftX, topLeftY + 1, Tiles.AIR);
+        Game.addTileReplacement(topLeftX + 1, topLeftY + 1, Tiles.AIR);
     }
 }

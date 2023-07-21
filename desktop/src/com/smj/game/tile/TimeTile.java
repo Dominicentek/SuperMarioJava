@@ -21,6 +21,7 @@ public class TimeTile extends GameTile {
         if (entity.entityType != EntityType.PLAYER && entity.getBehavior(ShellBehavior.class) == null) return;
         Game.time += amount;
         AudioPlayer.KEY_COIN.play(Location.entity(entity));
+        Game.addTileReplacement(x, y, Tiles.AIR);
         Game.awardScore(StaticScore.COIN, Location.tile(x, y, level));
         level.setTileAt(Tiles.AIR, x, y);
     }
