@@ -14,6 +14,7 @@ public class PlayerBehavior implements EntityBehavior {
     public boolean facingLeft = false;
     public int jumpTimer = -1;
     public int bubbleTimeout = 60;
+    public boolean wasPreviouslyInWater = false;
     public void update(GameEntity entity, GameLevel level) {
         entity.priority = 1000;
         if (Game.consoleOpen) {
@@ -60,6 +61,10 @@ public class PlayerBehavior implements EntityBehavior {
             }
         }
         if (Controls.JUMP.isJustPressed() && entity.getPhysics().getConfig().underwater) AudioPlayer.STOMP.play();
+        if (!entity.getPhysics().getConfig().underwater && wasPreviouslyInWater) {
+            entity.getPhysics().setSpeedY(-entity.getPhysics().getConfig().jumpingSpeed * 1.5);
+        }
+        wasPreviouslyInWater = entity.getPhysics().getConfig().underwater;
         if (jumpTimer >= 0) jumpTimer--;
         bubbleTimeout--;
         if (bubbleTimeout == 0) {
