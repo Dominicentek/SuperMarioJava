@@ -39,6 +39,7 @@ public class PlayerTextureProvider extends TextureProvider {
         int y = powerup == 0 ? 0 : powerup * 32 - 16;
         int width = 16;
         int height = powerup == 0 ? 16 : 32;
+        flipX = entity.getBehavior(PlayerBehavior.class).facingLeft;
         if (Game.isCrouching) x = STATE_CROUCHING;
         else if (entity.getPhysics().getConfig().underwater && entity.getPhysics().isVisuallyInAir()) {
             int jumpTimer = entity.getBehavior(PlayerBehavior.class).jumpTimer;
@@ -50,8 +51,7 @@ public class PlayerTextureProvider extends TextureProvider {
         else if (entity.getPhysics().isVisuallyInAir()) x = STATE_JUMPING;
         else if (speedX == 0) x = STATE_STANDING;
         else if ((speedX < 0 && flipX) || (speedX > 0 && !flipX)) x = STATE_TURNING;
-        else x = entity.getPhysics().getHitbox().x % 150 < 50 ? STATE_WALKING_1 : entity.getPhysics().getHitbox().x % 150 < 100 ? STATE_WALKING_2 : STATE_WALKING_3;
-        flipX = entity.getBehavior(PlayerBehavior.class).facingLeft;
+        else x = flipX ? STATE_WALKING_1 + entity.getPhysics().getHitbox().x % 150 / 50 : STATE_WALKING_3 - entity.getPhysics().getHitbox().x % 150 / 50;
         x = MathUtils.clamp(x, 0, STATE_SWIMMING_UP_4);
         x *= 16;
         return new Rectangle(x, y, width, height);
