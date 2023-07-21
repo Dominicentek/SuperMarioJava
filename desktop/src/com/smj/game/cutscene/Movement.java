@@ -28,7 +28,7 @@ public class Movement {
         else if (type == MoveType.SMOOTH) {
             if (frame / 2 < length) {
                 double x = frame / (double)length;
-                value = (int)((x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2) * (to - from));
+                value = (int)((x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2) * (to - from));
             }
         }
         instance.set(value + from);
