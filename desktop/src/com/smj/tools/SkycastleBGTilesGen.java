@@ -11,7 +11,7 @@ import java.io.OutputStream;
 
 public class SkycastleBGTilesGen {
     public static void main(String[] args) throws Exception {
-        InputStream in = new FileInputStream("assets/assets/skycastle_bgtiles.json");
+        InputStream in = new FileInputStream("leveldata/skycastle_bgtiles.json");
         byte[] data = new byte[in.available()];
         in.read(data);
         in.close();
