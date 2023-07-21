@@ -32,6 +32,7 @@ import com.smj.util.command.console.TextConsole;
 import com.smj.util.mask.Circle;
 import com.smj.util.*;
 import com.smj.util.Readable;
+import org.w3c.dom.css.Rect;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -451,10 +452,12 @@ public class Game {
             isCrouching = currentLevel.gimmick == GameLevel.Gimmick.UPSIDE_DOWN ? Controls.UP.isPressed() : Controls.DOWN.isPressed();
             if (hitbox.height > 100 && isCrouching) {
                 hitbox.height -= 100;
+                player.getPhysics().getCollideBoxBounds().height -= 100;
                 hitbox.y += 100;
             }
             else if (hitbox.height < 100 && !isCrouching){
                 hitbox.height += 100;
+                player.getPhysics().getCollideBoxBounds().height += 100;
                 hitbox.y -= 100;
             }
         }
@@ -569,7 +572,11 @@ public class Game {
         player = EntityType.PLAYER.spawn(level, x * 100 + 50 - EntityType.PLAYER.getHitbox().width / 2, y * 100 + 100 - EntityType.PLAYER.getHitbox().height);
         player.onLoad(currentLevel);
         Rectangle hitbox = player.getPhysics().getHitbox();
-        if (savefile.powerupState != 0) player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y - 100, hitbox.width, hitbox.height + 100));
+        Rectangle collideBox = player.getPhysics().getCollideBoxBounds();
+        if (savefile.powerupState != 0) {
+            player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y - 100, hitbox.width, hitbox.height + 100));
+            player.getPhysics().setCollideBoxBounds(new Rectangle(collideBox.x, collideBox.y, collideBox.width, collideBox.height + 100));
+        }
         if (currentLevel.gimmick == GameLevel.Gimmick.CASTLE) EntityType.BOWSER.spawn(level, currentLevel.getLevelBoundaries().width * 100 - 300, 0);
         if (currentLevel.gimmick == GameLevel.Gimmick.WIND) {
             for (int X = 0; X < currentLevel.getLevelBoundaries().width * 16; X++) {
@@ -676,9 +683,11 @@ public class Game {
     }
     public static void setPowerup(int state) {
         Rectangle hitbox = player.getPhysics().getHitbox();
+        Rectangle collideBox = player.getPhysics().getCollideBoxBounds();
         if (state == 0 && savefile.powerupState > 0 && isCrouching) {
             hitbox.height += 100;
             hitbox.y -= 100;
+            collideBox.height += 100;
             isCrouching = false;
         }
         if (savefile.powerupState == state) {
@@ -700,9 +709,11 @@ public class Game {
         savefile.powerupState = state;
         if (prevState != 0 && state == 0) {
             player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y + 100, hitbox.width, hitbox.height - 100));
+            player.getPhysics().setCollideBoxBounds(new Rectangle(collideBox.x, collideBox.y, collideBox.width, collideBox.height - 100));
         }
         if (prevState == 0 && state != 0) {
             player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y - 100, hitbox.width, hitbox.height + 100));
+            player.getPhysics().setCollideBoxBounds(new Rectangle(collideBox.x, collideBox.y, collideBox.width, collideBox.height + 100));
         }
     }
     public static void getSuperstar(int seconds) {
