@@ -58,7 +58,7 @@ public class BigBowserBehavior implements EntityBehavior {
             Game.playCastleCutscene = true;
             Game.finishLevel();
         }
-        if (RNG.chance(0.005f) && entity.getPhysics().getConfig().gravity == 0) {
+        if (RNG.chance(0.01f) && entity.getPhysics().getConfig().gravity == 0) {
             if (RNG.chance(0.2f)) {
                 entity.getPhysics().getConfig().gravity = level.getPhysicsConfig().gravity / 4;
                 entity.getPhysics().setSpeedY(-level.getPhysicsConfig().jumpingSpeed);
