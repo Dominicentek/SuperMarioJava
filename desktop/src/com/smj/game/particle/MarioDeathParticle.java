@@ -40,15 +40,17 @@ public class MarioDeathParticle extends Particle {
                 if (gameOverTimeout == 0) {
                     despawn();
                     Main.setTransition(new Transition(0.5, () -> {
+                        boolean gameOver = false;
                         if (Game.savefile.lives == 0) {
                             Game.savefile = new SaveFile();
                             Game.checkpointX = -1;
                             Game.checkpointY = -1;
                             Game.checkpointTime = -1;
                             Game.currentLevelID = 0;
+                            gameOver = true;
                         }
                         Saveable.save(Game.savefile, Gdx.files.local("save.sav"));
-                        Game.levelIntro(Game.savefile.levelsCompleted);
+                        if (gameOver) Game.levelIntro(Game.savefile.levelsCompleted);
                     }));
                 }
                 else gameOverTimeout--;
