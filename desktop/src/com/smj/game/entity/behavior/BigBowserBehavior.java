@@ -7,7 +7,9 @@ import com.smj.game.Location;
 import com.smj.game.entity.EntityType;
 import com.smj.game.entity.GameEntity;
 import com.smj.game.particle.FinalFightBrickParticle;
+import com.smj.game.particle.StunParticle;
 import com.smj.util.AudioPlayer;
+import com.smj.util.Condition;
 import com.smj.util.RNG;
 
 public class BigBowserBehavior implements EntityBehavior {
@@ -25,7 +27,14 @@ public class BigBowserBehavior implements EntityBehavior {
         if (entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height > 1600 && !finished) {
             entity.getPhysics().getConfig().gravity = 0;
             level.camera.screenshake(16, 60);
-            if (!Game.player.getPhysics().inAir) Game.stunTimer = 90;
+            if (!Game.player.getPhysics().inAir) {
+                Condition condition = () -> {
+                    return Game.stunTimer == 0;
+                };
+                Game.stunTimer = 90;
+                Game.particles.add(new StunParticle(Game.player.getPhysics().getHitbox().x * 16 / 100 - 6, (Game.player.getPhysics().getHitbox().y + Game.player.getPhysics().getHitbox().height) * 16 / 100 - 6, false, condition));
+                Game.particles.add(new StunParticle((Game.player.getPhysics().getHitbox().x + Game.player.getPhysics().getHitbox().width) * 16 / 100 + 6, (Game.player.getPhysics().getHitbox().y + Game.player.getPhysics().getHitbox().height) * 16 / 100 - 6, true, condition));
+            }
             for (int i = 0; i < 50; i++) {
                 int x = RNG.range(4, 380);
                 int y = RNG.range(-252, -4);
