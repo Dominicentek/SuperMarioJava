@@ -154,14 +154,10 @@ public class Level {
         Main.solidColorShader.setUniformf("color", 0, 0, 0, 1);
         Texture bgImage = bg.getImage();
         int bgRepeatX = (int)Math.ceil((double)width / bgImage.getWidth()) + 1;
-        int bgRepeatY = (int)Math.ceil((double)height / bgImage.getHeight()) + 1;
         int bgX = (int)Math.abs(Game.cameraX % (2 / ((double)width / bgImage.getWidth()) * width));
-        int bgY = (int)Math.abs(Game.cameraY % (2 / ((double)height / bgImage.getHeight()) * width));
-        renderer.translate(-bgX / 2, -bgY / 2);
+        renderer.translate(-bgX / 2, 0);
         for (int x = 0; x < bgRepeatX; x++) {
-            for (int y = 0; y < bgRepeatY; y++) {
-                renderer.draw(bgImage, x * bgImage.getWidth(), y * bgImage.getHeight());
-            }
+            renderer.draw(bgImage, x * bgImage.getWidth(), 0);
         }
         if (((GameLevel)this).gimmick == GameLevel.Gimmick.FOG) renderer.setShader(Main.solidColorShader);
         Main.solidColorShader.setUniformf("color", 0.5f, 0.5f, 0.5f, 1);
