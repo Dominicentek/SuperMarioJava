@@ -78,6 +78,7 @@ public class Main extends ApplicationAdapter {
         Command.loadCommands();
         Game.loadThemes();
         Game.loadSavefile();
+        Game.levelNames = FileLoader.read("strings/levelnames.txt").asString().split("\n");
         transition.stage = 1;
         transition.start();
         HUDLayout.LIFE_COUNTER.attachment.set(Game.savefile.lives);

@@ -127,7 +127,8 @@ public class Menus {
                 Game.pauseMenuOpen = false;
                 Game.title = false;
                 Menu.loadMenu(null);
-                Game.loadLevel(Game.savefile.levelsCompleted, true);
+                SMJMusic.stopMusic();
+                Game.levelIntro(Game.savefile.levelsCompleted);
             }));
         }),
         new MenuButtonItem((menu, index, item) -> {
@@ -138,7 +139,7 @@ public class Menus {
                 Game.savefile = new SaveFile();
                 Saveable.save(Game.savefile, Gdx.files.local("save.sav"));
                 SMJMusic.stopMusic();
-                Game.loadLevel(Game.savefile.levelsCompleted, true);
+                Game.levelIntro(Game.savefile.levelsCompleted);
             });
         }),
         new MenuButtonItem((menu, index, item) -> {

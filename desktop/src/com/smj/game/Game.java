@@ -82,6 +82,8 @@ public class Game {
     public static double cameraY = 0;
     public static int finalFightSwitchesPressed = 0;
     public static int stunTimer = 0;
+    public static int levelIntroTimeout = 0;
+    public static String[] levelNames;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -99,6 +101,24 @@ public class Game {
                 renderer.drawString(line, x, y);
                 y += 12;
             }
+            return;
+        }
+        if (levelIntroTimeout > 0) {
+            renderer.setColor(0xFFFFFF3F);
+            renderer.draw(currentLevel.getBackground().getImage(), -(int)(128 * (1 - levelIntroTimeout / 300.0)), 0);
+            renderer.setColor(0xFFFFFFFF);
+            renderer.draw(TextureLoader.get("images/entities/mario.png"), new Rectangle(0, 0, 16, 16), 148, 112, 32, 32);
+            Font.render(renderer, 188, 136, "x");
+            Font.render(renderer, 204, 128, String.format("%1$2s", savefile.lives).replaceAll(" ", "0"), 2);
+            for (int x = 0; x < 22; x++) {
+                for (int y = 0; y < 2; y++) {
+                    int tx = x == 0 ? 208 : x == 21 ? 240 : 224;
+                    int ty = y * 32 + 144;
+                    renderer.draw(THEMES[currentLevel.theme].tileset, new Rectangle(tx, ty, 16, 16), x * 16 + 16, y * 16 + 16);
+                }
+            }
+            Font.render(renderer, 192 - Font.stringWidth(getLevelName()) / 2, 28, getLevelName());
+            Font.render(renderer, 192 - Font.stringWidth(HUDLayout.WORLD_TEXT.text) / 2, 188, HUDLayout.WORLD_TEXT.text);
             return;
         }
         if (currentLevel != null) {
@@ -281,6 +301,12 @@ public class Game {
                     t.cycleTexture();
                 }
             }
+        }
+        if (levelIntroTimeout > 0) {
+            levelIntroTimeout--;
+            if (levelIntroTimeout == 30) Main.setTransition(new Transition(0.5, () -> {
+                loadLevel(currentLevelID, true);
+            }));
         }
         if (paused || title) return;
         HUDLayout.SPEEDRUN_TIMER.frames++;
@@ -717,7 +743,7 @@ public class Game {
         checkpointY = -1;
         Game.checkpointTime = -1;
         Saveable.save(savefile, Gdx.files.local("save.sav"));
-        loadLevel(savefile.levelsCompleted, true);
+        levelIntro(savefile.levelsCompleted);
     }
     public static void warp(Warp warp) {
         warpTimeout = 64;
@@ -725,5 +751,15 @@ public class Game {
         player.getProperties().drawInBG = true;
         Game.warp = warp;
         AudioPlayer.WARP.play();
+    }
+    public static String getLevelName() {
+        if (currentLevel == null) return GameStrings.get("level_not_loaded");
+        if (currentLevelID < 0 || currentLevelID >= levelNames.length) return "???";
+        return levelNames[currentLevelID];
+    }
+    public static void levelIntro(int levelID) {
+        Game.loadLevel(levelID, true);
+        levelIntroTimeout = 300;
+        SMJMusic.stopMusic();
     }
 }
