@@ -37,9 +37,9 @@ public class LevelCamera {
         y = targetY;
     }
     public void screenshake(double xAmount, double yAmount, int duration) {
-        this.initialScreenshakeX += xAmount;
-        this.initialScreenshakeY += yAmount;
-        this.screenshakeDuration += duration;
+        this.initialScreenshakeX = screenshakeX + xAmount;
+        this.initialScreenshakeY = screenshakeY + yAmount;
+        this.screenshakeDuration = Math.max(0, screenshakeDuration - screenshakeTimer) + duration;
         screenshakeTimer = 0;
     }
     public void screenshake(double amount, int duration) {
