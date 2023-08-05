@@ -236,13 +236,10 @@ public class Game {
             else {
                 finishTimeout = 999;
                 if (playCastleCutscene) {
-                    if (savefile.levelsCompleted == 40) Main.startCutscene("peach_saved", () -> {
-                        Game.title = true;
-                        Game.loadLevel(Game.savefile.levelsCompleted, true);
-                        Menu.loadMenu(null);
-                        Menu.loadMenu(Menus.MAIN);
-                    });
-                    else Main.startCutscene("in_another_castle_" + (savefile.levelsCompleted / 5 + 1), Game::nextLevel);
+                    int cutscene = savefile.levelsCompleted / 5 + 1;
+                    String cutsceneID = "in_another_castle_" + cutscene;
+                    if (cutscene >= 8) cutsceneID = "peach_saved";
+                    Main.startCutscene(cutsceneID, Game::nextLevel);
                 }
                 else Main.setTransition(new Transition(0.5, Game::nextLevel));
                 playCastleCutscene = false;
