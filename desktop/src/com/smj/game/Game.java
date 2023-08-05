@@ -146,7 +146,6 @@ public class Game {
             renderer.drawString(error, Main.WIDTH / 2 - Font.stringWidth(error) / 2, Main.HEIGHT / 2 - Font.getHeight() / 2);
         }
         if ((!Main.options.hiddenHUD && !title) || Menu.currentMenu == Menus.HUD_LAYOUT) HUDLayout.renderAll(renderer);
-        if (Menu.currentMenu == Menus.MAIN) renderer.draw(TextureLoader.get("images/logo.png"), Main.WIDTH / 2 - 168 / 2, 24);
         if (consoleOpen) {
             renderer.setColor(0x0000007F);
             renderer.rect(4, 4, Main.WIDTH - 8, Main.HEIGHT - 20 - Font.getHeight());

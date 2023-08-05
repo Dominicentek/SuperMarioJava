@@ -1,7 +1,8 @@
 package com.smj.gui.menu;
 
 public abstract class MenuItem {
-    public String label;
+    public String label = "";
+    public String right = "";
     private boolean overriddenInput;
     public abstract void update(Menu menu);
     public abstract void updateSelected(Menu menu, int index);

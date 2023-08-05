@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.smj.game.options.Controls;
 
 public class MenuControlsItem extends MenuItem {
-    public String rawLabel;
     public int keycode;
     public boolean checkingForKeycode;
     public MenuControlsItemAction action;
@@ -14,8 +13,7 @@ public class MenuControlsItem extends MenuItem {
         this.action = action;
     }
     public void update(Menu menu) {
-        if (rawLabel == null) rawLabel = label;
-        label = checkingForKeycode ? "[PRESS ANY KEY]" : rawLabel + ": " + Input.Keys.toString(keycode);
+        right = checkingForKeycode ? "[PRESS ANY KEY]" : Input.Keys.toString(keycode);
     }
     public void updateSelected(Menu menu, int index) {
         if (checkingForKeycode) {

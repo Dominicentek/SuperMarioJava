@@ -46,7 +46,6 @@ public class Main extends ApplicationAdapter {
     public static Transition transition = new Transition(0.5, () -> {});
     public static Queue<Runnable> actionQueue = new Queue<>();
     public static Mask mask;
-    public static Menu menu;
     public static Cutscene currentCutscene = null;
     public static Runnable afterCutscene = null;
     public static ShaderProgram solidColorShader;
@@ -114,7 +113,7 @@ public class Main extends ApplicationAdapter {
         if (currentCutscene == null) {
             Game.render(renderer);
             renderer.resetTranslation();
-            if (menu != null) menu.render(renderer);
+            if (Menu.currentMenu != null) Menu.currentMenu.render(renderer);
         }
         else currentCutscene.render(renderer);
         renderer.rect(0, 0, WIDTH, HEIGHT, transition.alpha);

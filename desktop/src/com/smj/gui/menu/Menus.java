@@ -67,24 +67,24 @@ public class Menus {
         new MenuValueItem((menu, index, item) -> {
             HUDLayout.SPEEDRUN_TIMER.position.y = item.value;
         }, 0, HUDLayout.SPEEDRUN_TIMER.position.y, 62)
-    ).text("hud_layout");
+    ).text("hud_layout").backButton(0);
     public static final Menu CONTROLS = new Menu(
         Stream.concat(Arrays.stream(new MenuItem[] {
             new MenuButtonItem((menu, index, item) -> {
                 Menu.goBack();
             })
         }), Arrays.stream(Controls.getMenuItems())).toArray(MenuItem[]::new)
-    ).text("controls");
+    ).text("controls").backButton(0);
     public static final Menu OPTIONS = new Menu(
         new MenuButtonItem((menu, index, item) -> {
             Saveable.save(Main.options, Gdx.files.local("options.dat"));
             Menu.goBack();
         }),
         new MenuButtonItem((menu, index, item) -> {
-            Menu.loadMenu(HUD_LAYOUT);
+            Menu.switchMenu(HUD_LAYOUT);
         }),
         new MenuButtonItem((menu, index, item) -> {
-            Menu.loadMenu(CONTROLS);
+            Menu.switchMenu(CONTROLS);
         }),
         new MenuToggleItem((menu, index, item) -> {
             Main.options.stereoSound = item.value != 0;
@@ -106,7 +106,7 @@ public class Menus {
         new MenuToggleItem((menu, index, item) -> {
             Main.options.speedrunTimer = item.value != 0;
         }, Main.options.speedrunTimer)
-    ).text("options");
+    ).text("options").backButton(0);
     public static final Menu JUKEBOX = new Menu(
         Stream.concat(Arrays.stream(new MenuItem[]{
                 new MenuButtonItem((menu, index, item) -> {
@@ -120,7 +120,7 @@ public class Menus {
             }),
             Arrays.stream(SMJMusic.getJukeboxMenuItems())
         ).toArray(MenuItem[]::new)
-    ).text("jukebox");
+    ).text("jukebox").backButton(0);
     public static final Menu MAIN = new Menu(
         new MenuButtonItem((menu, index, item) -> {
             Main.setTransition(new Transition(0.5, () -> {
@@ -143,15 +143,15 @@ public class Menus {
             });
         }),
         new MenuButtonItem((menu, index, item) -> {
-            Menu.loadMenu(OPTIONS);
+            Menu.switchMenu(OPTIONS);
         }),
         new MenuButtonItem((menu, index, item) -> {
-            Menu.loadMenu(JUKEBOX);
+            Menu.switchMenu(JUKEBOX);
         }),
         new MenuButtonItem((menu, index, item) -> {
             System.exit(0);
         })
-    ).text("main").offset(0, 24);
+    ).text("main").offset(24);
     public static final Menu PAUSE = new Menu(
         new MenuButtonItem((menu, index, item) -> {
             AudioPlayer.PAUSE.play();
@@ -161,7 +161,7 @@ public class Menus {
             Menu.goBack();
         }),
         new MenuButtonItem((menu, index, item) -> {
-            Menu.loadMenu(OPTIONS);
+            Menu.switchMenu(OPTIONS);
         }),
         new MenuButtonItem((menu, index, item) -> {
             Saveable.save(Game.savefile, Gdx.files.local("save.sav"));
@@ -175,7 +175,7 @@ public class Menus {
             }));
         }),
         new MenuButtonItem((menu, index, item) -> {
-            Menu.loadMenu(JUKEBOX);
+            Menu.switchMenu(JUKEBOX);
         })
-    ).text("pause");
+    ).text("pause").backButton(0);
 }

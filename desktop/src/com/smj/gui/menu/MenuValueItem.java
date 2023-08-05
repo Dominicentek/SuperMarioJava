@@ -11,7 +11,6 @@ public class MenuValueItem extends MenuItem {
     public int min;
     public int value;
     public int max;
-    public String labelRaw;
     public MenuValueItem(MenuValueItemAction action, int min, int value, int max) {
         this.action = action;
         if (min > max) throw new RuntimeException("Min is bigger than max");
@@ -22,8 +21,7 @@ public class MenuValueItem extends MenuItem {
         this.max = max;
     }
     public void update(Menu menu) {
-        if (labelRaw == null) labelRaw = label;
-        label = getLabel();
+        right = getRight();
     }
     public void updateSelected(Menu menu, int index) {
         int prevValue = value;
@@ -41,8 +39,8 @@ public class MenuValueItem extends MenuItem {
         if (value > max) value = max;
         if (prevValue != value) action.selected(menu, index, this);
     }
-    public String getLabel() {
-        return labelRaw + ": " + value;
+    public String getRight() {
+        return "" + value;
     }
     public interface MenuValueItemAction {
         void selected(Menu menu, int index, MenuValueItem item);

@@ -13,7 +13,7 @@ public class MenuToggleItem extends MenuValueItem {
             action.selected(menu, index, this);
         }
     }
-    public String getLabel() {
-        return labelRaw + ": " + (value == 0 ? "OFF" : "ON");
+    public String getRight() {
+        return (value == 0 ? "OFF" : "ON");
     }
 }
