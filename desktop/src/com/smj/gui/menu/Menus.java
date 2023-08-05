@@ -15,6 +15,11 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Menus {
+    public static final Menu SAVED = new Menu(
+        new MenuButtonItem((menu, index, item) -> {
+            Menu.goBack();
+        })
+    ).text("saved").backButton(0);
     public static final Menu HUD_LAYOUT = new Menu(
         new MenuButtonItem((menu, index, item) -> {
             Menu.goBack();
@@ -165,6 +170,7 @@ public class Menus {
         }),
         new MenuButtonItem((menu, index, item) -> {
             Saveable.save(Game.savefile, Gdx.files.local("save.sav"));
+            Menu.switchMenu(SAVED);
         }),
         new MenuButtonItem((menu, index, item) -> {
             Main.setTransition(new Transition(0.5, () -> {
