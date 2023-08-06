@@ -136,7 +136,14 @@
       "title": "Challenges",
       "options": [
         "Back",
-        "Test Challenge"
+        "Coin Collector"
+      ]
+    },
+    "challenge_confirm": {
+      "title": "",
+      "options": [
+        "Start",
+        "Go Back"
       ]
     }
   }

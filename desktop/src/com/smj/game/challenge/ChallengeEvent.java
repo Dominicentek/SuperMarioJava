@@ -8,4 +8,5 @@ public interface ChallengeEvent {
     int update(Medals medals);
     void render(Renderer renderer, Medals medals);
     boolean show(HUDElement element);
+    String getString(Medals medals, Integer value);
 }

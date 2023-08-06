@@ -7,6 +7,7 @@ import com.smj.gui.hud.HUDLayout;
 import com.smj.gui.menu.Menu;
 import com.smj.gui.menu.MenuButtonItem;
 import com.smj.gui.menu.MenuItem;
+import com.smj.gui.menu.Menus;
 import com.smj.util.Saveable;
 import com.smj.util.StringUtils;
 import com.smj.util.Transition;
@@ -20,12 +21,12 @@ public class Challenges {
     public static final File file = new File("challenges.dat");
     public static final LinkedHashMap<String, Challenge> challenges = new LinkedHashMap<>();
     public static final Challenge TEST = challenges.put("test", new Challenge()
-        .medals(new Medals(60, 90, 120).comparator(Medals.LESS_THAN))
+        .medals(new Medals(1500, 2100, 3000).comparator(Medals.LESS_THAN))
         .difficulty(1)
         .level(0)
-        .timer(120)
+        .timer(50)
         .event(new CoinsChallengeEvent(50))
-        .type(ChallengeType.TIME));
+        .type(ChallengeType.COIN));
     public static void load() {
         if (file.exists()) read(BJSONFile.read(file));
         else save();
@@ -34,15 +35,15 @@ public class Challenges {
         for (String key : element.keys()) {
             Challenge challenge = Challenges.challenges.get(key);
             if (challenge == null) continue;
-            challenge.highScore = element.getInt(key);
+            if (element.isNull(key)) challenge.highScore = null;
+            else challenge.highScore = element.getInt(key);
         }
     }
     public static void save() {
         ObjectElement element = new ObjectElement();
         for (String key : Challenges.challenges.keySet()) {
             Integer highScore = Challenges.challenges.get(key).highScore;
-            if (highScore == null) element.setNull(key);
-            else element.setInt(key, highScore);
+            element.setInt(key, highScore);
         }
         BJSONFile.write(file, element);
     }
@@ -52,15 +53,12 @@ public class Challenges {
         for (String key : challenges.keySet()) {
             Challenge challenge = challenges.get(key);
             items[i] = new MenuChallengeItem((menu, index, item) -> {
-                Main.setTransition(new Transition(0.5, () -> {
-                    Game.title = false;
-                    Menu.loadMenu(null);
-                    Game.currentChallenge = challenge;
-                    Game.loadLevel(challenge.level, true);
-                    Game.setInstantPowerup(challenge.powerup);
-                    Game.time = challenge.timer;
-                    challenge.init();
-                }));
+                Game.currentChallenge = challenge;
+                Game.currentChallengeName = item.label.substring(12);
+                Game.currentChallengeIndex = index - 1;
+                Menus.CHALLENGE_CONFIRM.selector = 0;
+                Menus.CHALLENGE_CONFIRM.selectedIndex = 0;
+                Menu.switchMenu(Menus.CHALLENGE_CONFIRM);
             }, challenge);
             i++;
         }

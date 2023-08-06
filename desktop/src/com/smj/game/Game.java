@@ -88,6 +88,8 @@ public class Game {
     public static String[] levelNames;
     public static HashMap<Integer, HashMap<Point, Integer>> tileReplacements = new HashMap<>();
     public static Challenge currentChallenge;
+    public static String currentChallengeName;
+    public static int currentChallengeIndex;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -256,6 +258,7 @@ public class Game {
                     Menu.loadMenu(null);
                     Menu.loadMenu(Menus.MAIN);
                     Menu.loadMenu(Menus.CHALLENGES);
+                    Menu.loadMenu(Menus.CHALLENGE_CONFIRM);
                 }));
             }
             if (time > 0) {

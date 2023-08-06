@@ -4,18 +4,17 @@ import com.smj.Main;
 import com.smj.game.Game;
 import com.smj.game.options.Controls;
 import com.smj.gui.font.Font;
-import com.smj.util.GameStrings;
-import com.smj.util.RNG;
-import com.smj.util.Renderer;
-import com.smj.util.TextureLoader;
+import com.smj.util.*;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class Menu {
     public static Stack<Menu> menuHistory = new Stack<>();
     public static Menu currentMenu = null;
-    private MenuItem[] items;
-    private int selectedIndex = 0;
+    public static final String[] challengeDescriptions = FileLoader.read("strings/challengedesc.txt").asString().split("\n");
+    public MenuItem[] items;
+    public int selectedIndex = 0;
     public String title;
     public int offsetY = 0;
     public double selector = 0;
@@ -25,10 +24,12 @@ public class Menu {
     public boolean interpolationInvert = false;
     public Menu nextMenu;
     public int backButton = -1;
+    public boolean noScroll = false;
     public Menu(MenuItem... items) {
         this.items = items;
     }
     public void render(Renderer renderer) {
+        double selector = (noScroll ? 0 : this.selector);
         double interpolation = 1;
         if (interpolationRaw < 1) {
             interpolationRaw += 0.1;
@@ -45,18 +46,61 @@ public class Menu {
         width -= 24;
         int height = 24;
         x += 12;
-        y += selector * 24;
+        if (!noScroll) y += selector * 24;
+        if (this == Menus.CHALLENGE_CONFIRM) renderChallengeDescription(renderer, y, offset);
         int rightX = x + width;
         Font.render(renderer, Main.WIDTH / 2 - Font.stringWidth(title) / 2 + offset, (int)(y + 8 + ((-1 - selector) * 24)), title);
         for (int i = 0; i < items.length; i++) {
             Font.render(renderer, x + 12, (int)(y + 8 + ((i - selector) * 24)), items[i].label);
             Font.render(renderer, rightX - 12 - Font.stringWidth(items[i].right), (int)(y + 8 + ((i - selector) * 24)), items[i].right);
         }
+        if (noScroll) y += this.selector * 24;
         renderer.rect(x, y, width, 1);
         renderer.rect(x, y, 1, height);
         renderer.rect(x, y + height - 1, width, 1);
         renderer.rect(x + width - 1, y, 1, height);
         if (currentMenu == Menus.MAIN) renderer.draw(TextureLoader.get("images/logo.png"), Main.WIDTH / 2 - 168 / 2 + offset, 24);
+    }
+    public void renderChallengeDescription(Renderer renderer, int y, int offset) {
+        ArrayList<String> description = new ArrayList<>();
+        String[] splitDescription = challengeDescriptions[Game.currentChallengeIndex].split(" ");
+        int length = 0;
+        String line = "";
+        for (int i = 0; i < splitDescription.length; i++) {
+            length += Font.stringWidth(splitDescription[i] + 1);
+            if (length > 32 * 8 && !line.isEmpty()) {
+                description.add(line.substring(0, line.length() - 1));
+                length = 0;
+                line = "";
+            }
+            line += splitDescription[i] + " ";
+        }
+        if (!line.isEmpty()) description.add(line.substring(0, line.length() - 1));
+        Font.render(renderer, Main.WIDTH / 2 - Font.stringWidth(Game.currentChallengeName) / 2 + offset, y - 108 - description.size() * 12, Game.currentChallengeName);
+        int medal = Game.currentChallenge.highScore == null ? 0 : Game.currentChallenge.medals.medal(Game.currentChallenge.highScore);
+        String string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.highScore);
+        renderer.setColor(medal == 0 ? 0x3F3F3FFF : medal == 1 ? 0x7F7F00FF : medal == 2 ? 0xDFDFDFFF : 0xFFCF00FF);
+        renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 92 - description.size() * 12, 8 + Font.stringWidth(string), 16);
+        renderer.setColor(0xFFFFFFFF);
+        Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 88 - description.size() * 12, string);
+        for (int i = 0; i < description.size(); i++) {
+            Font.render(renderer, Main.WIDTH / 2 - Font.stringWidth(description.get(i)) / 2 + offset, y - 68 - description.size() * 12 + i * 12, description.get(i));
+        }
+        string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.gold);
+        renderer.setColor(0xFFCF00FF);
+        renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 62, 8 + Font.stringWidth(string), 16);
+        renderer.setColor(0xFFFFFFFF);
+        Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 58, string);
+        string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.silver);
+        renderer.setColor(0xDFDFDFFF);
+        renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 42, 8 + Font.stringWidth(string), 16);
+        renderer.setColor(0xFFFFFFFF);
+        Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 38, string);
+        string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.bronze);
+        renderer.setColor(0x7F7F00FF);
+        renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 22, 8 + Font.stringWidth(string), 16);
+        renderer.setColor(0xFFFFFFFF);
+        Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 18, string);
     }
     public void update() {
         for (MenuItem item : items) {
@@ -84,6 +128,10 @@ public class Menu {
     }
     public Menu backButton(int index) {
         backButton = index;
+        return this;
+    }
+    public Menu noScroll() {
+        noScroll = true;
         return this;
     }
     public static void loadMenu(Menu menu) {

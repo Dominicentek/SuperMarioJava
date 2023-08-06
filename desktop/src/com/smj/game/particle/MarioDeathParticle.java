@@ -49,6 +49,7 @@ public class MarioDeathParticle extends Particle {
                             Menu.loadMenu(null);
                             Menu.loadMenu(Menus.MAIN);
                             Menu.loadMenu(Menus.CHALLENGES);
+                            Menu.loadMenu(Menus.CHALLENGE_CONFIRM);
                             return;
                         }
                         boolean gameOver = false;

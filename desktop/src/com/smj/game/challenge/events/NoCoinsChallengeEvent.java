@@ -28,4 +28,8 @@ public class NoCoinsChallengeEvent implements ChallengeEvent {
     public boolean show(HUDElement element) {
         return false;
     }
+    public String getString(Medals medals, Integer value) {
+       if (value == null) return "- coins";
+       return "max " + value + " coins";
+    }
 }

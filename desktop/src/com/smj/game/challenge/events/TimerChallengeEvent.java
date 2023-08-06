@@ -9,21 +9,15 @@ import com.smj.util.Renderer;
 
 public class TimerChallengeEvent implements ChallengeEvent {
     public int time;
-    public int timeout;
     public int update(Medals medals) {
-        timeout--;
-        if (timeout == 0) {
-            timeout = 60;
-            time++;
-        }
+        time++;
         return time;
     }
     public void init(Medals medals) {
         time = 0;
-        timeout = 60;
     }
     public void render(Renderer renderer, Medals medals) {
-        String clock = ((time / 60) % 10) + ":" + String.format("%1$2s", time % 60).replaceAll(" ", "0") + "." + String.format("%1$2s", (timeout * 100 / 60) % 100).replaceAll(" ", "0");
+        String clock = getString(medals, time);
         int width = Font.stringWidth(clock) + 8;
         int medal = medals.medal(time);
         renderer.setColor(medal == 0 ? 0x3F3F3FFF : medal == 1 ? 0x7F7F00FF : medal == 2 ? 0xDFDFDFFF : 0xFFCF00FF);
@@ -33,5 +27,11 @@ public class TimerChallengeEvent implements ChallengeEvent {
     }
     public boolean show(HUDElement element) {
         return false;
+    }
+    public String getString(Medals medals, Integer value) {
+        if (value == null) return "-:--.--";
+        int seconds = value / 60;
+        int frames = value % 60;
+        return ((seconds / 60) % 10) + ":" + String.format("%1$2s", seconds % 60).replaceAll(" ", "0") + "." + String.format("%1$2s", (frames * 100 / 60) % 100).replaceAll(" ", "0");
     }
 }

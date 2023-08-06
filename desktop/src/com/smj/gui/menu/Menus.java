@@ -221,4 +221,19 @@ public class Menus {
             Menu.switchMenu(JUKEBOX);
         })
     ).text("challenge_pause").backButton(0);
+    public static final Menu CHALLENGE_CONFIRM = new Menu(
+        new MenuButtonItem((menu, index, item) -> {
+            Main.setTransition(new Transition(0.5, () -> {
+                Game.title = false;
+                Menu.loadMenu(null);
+                Game.loadLevel(Game.currentChallenge.level, true);
+                Game.setInstantPowerup(Game.currentChallenge.powerup);
+                Game.time = Game.currentChallenge.timer;
+                Game.currentChallenge.init();
+            }));
+        }),
+        new MenuButtonItem((menu, index, item) -> {
+            Menu.goBack();
+        })
+    ).offset(48).text("challenge_confirm").backButton(1).noScroll();
 }
