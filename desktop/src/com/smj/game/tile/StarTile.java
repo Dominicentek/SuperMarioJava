@@ -12,6 +12,7 @@ public class StarTile extends GameTile {
     }
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
+        if (Game.currentChallenge != null && !Game.currentChallenge.allowStarFinish) return;
         level.setTileAt(Tiles.AIR, x, y);
         int scoreMultiplier = (int)Math.ceil(Game.invincibilityTimeout / 60f);
         if (scoreMultiplier >= 1) Game.awardScore(StaticScore.STAR_FINISH.applyMultiplier(scoreMultiplier));

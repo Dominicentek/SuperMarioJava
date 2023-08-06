@@ -26,6 +26,7 @@ public class Challenges {
         .level(0)
         .timer(50)
         .event(new CoinsChallengeEvent(50))
+        .disallowStarFinish()
         .type(ChallengeType.COIN));
     public static void load() {
         if (file.exists()) read(BJSONFile.read(file));

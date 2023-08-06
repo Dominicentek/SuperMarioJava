@@ -18,6 +18,7 @@ public class Challenge {
     public int powerup = 0;
     public Integer highScore = null;
     public int score = 0;
+    public boolean allowStarFinish = false;
     public void update() {
         if (event == null) return;
         score = event.update(medals);
@@ -62,6 +63,10 @@ public class Challenge {
     }
     public Challenge timer(int timer) {
         this.timer = timer;
+        return this;
+    }
+    public Challenge disallowStarFinish() {
+        allowStarFinish = false;
         return this;
     }
 }
