@@ -27,7 +27,7 @@ public class MenuControlsItem extends MenuItem {
             }
             overrideInput();
         }
-        else if (Controls.JUMP.isJustPressed()) checkingForKeycode = true;
+        else if (Controls.JUMP.isJustPressed() && !menu.inputDisabled) checkingForKeycode = true;
     }
     public interface MenuControlsItemAction {
         void keybindChanged(Menu menu, int index, MenuControlsItem item);

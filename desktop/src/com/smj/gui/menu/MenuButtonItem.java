@@ -9,7 +9,7 @@ public class MenuButtonItem extends MenuItem {
     }
     public void update(Menu menu) {}
     public void updateSelected(Menu menu, int index) {
-        if (Controls.JUMP.isJustPressed()) action.selected(menu, index, this);
+        if (Controls.JUMP.isJustPressed() && !menu.inputDisabled) action.selected(menu, index, this);
     }
     public interface MenuButtonItemAction {
         void selected(Menu menu, int index, MenuButtonItem item);

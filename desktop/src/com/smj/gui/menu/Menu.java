@@ -25,13 +25,16 @@ public class Menu {
     public Menu nextMenu;
     public int backButton = -1;
     public boolean noScroll = false;
+    public boolean inputDisabled = false;
     public Menu(MenuItem... items) {
         this.items = items;
     }
     public void render(Renderer renderer) {
         double selector = (noScroll ? 0 : this.selector);
         double interpolation = 1;
+        inputDisabled = false;
         if (interpolationRaw < 1) {
+            inputDisabled = true;
             interpolationRaw += 0.1;
             if (interpolationRaw > 1) interpolationRaw = 1;
             else interpolation = interpolationInvert ? 1 - (1 - interpolationRaw) * (1 - interpolationRaw) : interpolationRaw * interpolationRaw;
@@ -107,7 +110,7 @@ public class Menu {
             item.update(this);
         }
         items[selectedIndex].updateSelected(this, selectedIndex);
-        if (!items[selectedIndex].overriddenInput() && interpolationRaw != 1) {
+        if (!items[selectedIndex].overriddenInput() && !inputDisabled) {
             if (Controls.DOWN.isJustPressed() && selectedIndex != items.length - 1) selectedIndex++;
             if (Controls.UP.isJustPressed() && selectedIndex != 0) selectedIndex--;
             if (Controls.RUN.isJustPressed() && backButton != -1) ((MenuButtonItem)items[backButton]).action.selected(this, backButton, (MenuButtonItem)items[backButton]);
