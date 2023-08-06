@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.smj.Main;
 import com.smj.game.Game;
 import com.smj.game.SaveFile;
+import com.smj.game.challenge.Challenges;
 import com.smj.game.options.Controls;
 import com.smj.gui.hud.HUDLayout;
 import com.smj.util.AudioPlayer;
@@ -126,6 +127,15 @@ public class Menus {
             Arrays.stream(SMJMusic.getJukeboxMenuItems())
         ).toArray(MenuItem[]::new)
     ).text("jukebox").backButton(0);
+    public static final Menu CHALLENGES = new Menu(
+        Stream.concat(Arrays.stream(new MenuItem[]{
+                new MenuButtonItem((menu, index, item) -> {
+                    Menu.goBack();
+                })
+            }),
+            Arrays.stream(Challenges.getMenuItems())
+        ).toArray(MenuItem[]::new)
+    ).text("challenges").backButton(0);
     public static final Menu MAIN = new Menu(
         new MenuButtonItem((menu, index, item) -> {
             Main.setTransition(new Transition(0.5, () -> {
@@ -134,6 +144,7 @@ public class Menus {
                 Menu.loadMenu(null);
                 SMJMusic.stopMusic();
                 Game.levelIntro(Game.savefile.levelsCompleted);
+                Game.currentChallenge = null;
             }));
         }),
         new MenuButtonItem((menu, index, item) -> {
@@ -145,7 +156,11 @@ public class Menus {
                 Saveable.save(Game.savefile, Gdx.files.local("save.sav"));
                 SMJMusic.stopMusic();
                 Game.levelIntro(Game.savefile.levelsCompleted);
+                Game.currentChallenge = null;
             });
+        }),
+        new MenuButtonItem((menu, index, item) -> {
+            Menu.switchMenu(CHALLENGES);
         }),
         new MenuButtonItem((menu, index, item) -> {
             Menu.switchMenu(OPTIONS);
@@ -174,6 +189,7 @@ public class Menus {
         }),
         new MenuButtonItem((menu, index, item) -> {
             Main.setTransition(new Transition(0.5, () -> {
+                Game.pauseMenuOpen = false;
                 Game.title = true;
                 Game.loadLevel(Game.savefile.levelsCompleted, true);
                 Menu.loadMenu(null);
@@ -184,4 +200,25 @@ public class Menus {
             Menu.switchMenu(JUKEBOX);
         })
     ).text("pause").backButton(0);
+    public static final Menu CHALLENGE_PAUSE = new Menu(
+        new MenuButtonItem((menu, index, item) -> {
+            AudioPlayer.PAUSE.play();
+            Game.pauseMenuOpen = false;
+            Game.paused = false;
+            SMJMusic.resume();
+            Menu.goBack();
+        }),
+        new MenuButtonItem((menu, index, item) -> {
+            Game.pauseMenuOpen = false;
+            Game.paused = false;
+            Menu.goBack();
+            Game.die();
+        }),
+        new MenuButtonItem((menu, index, item) -> {
+            Menu.switchMenu(OPTIONS);
+        }),
+        new MenuButtonItem((menu, index, item) -> {
+            Menu.switchMenu(JUKEBOX);
+        })
+    ).text("challenge_pause").backButton(0);
 }

@@ -5,6 +5,8 @@ import com.smj.Main;
 import com.smj.game.Game;
 import com.smj.game.SaveFile;
 import com.smj.game.entity.GameEntity;
+import com.smj.gui.menu.Menu;
+import com.smj.gui.menu.Menus;
 import com.smj.util.AudioPlayer;
 import com.smj.util.Saveable;
 import com.smj.util.TextureLoader;
@@ -40,6 +42,15 @@ public class MarioDeathParticle extends Particle {
                 if (gameOverTimeout == 0) {
                     despawn();
                     Main.setTransition(new Transition(0.5, () -> {
+                        if (Game.currentChallenge != null) {
+                            Game.loadSavefile();
+                            Game.title = true;
+                            Game.loadLevel(Game.savefile.levelsCompleted, true);
+                            Menu.loadMenu(null);
+                            Menu.loadMenu(Menus.MAIN);
+                            Menu.loadMenu(Menus.CHALLENGES);
+                            return;
+                        }
                         boolean gameOver = false;
                         if (Game.savefile.lives == 0) {
                             Game.savefile = new SaveFile();

@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.smj.game.challenge.Challenges;
 import com.smj.game.cutscene.Cutscene;
 import com.smj.game.cutscene.Dialog;
 import com.smj.game.options.Controls;
@@ -78,6 +79,7 @@ public class Main extends ApplicationAdapter {
         Game.loadThemes();
         Game.loadSavefile();
         Game.levelNames = FileLoader.read("strings/levelnames.txt").asString().split("\n");
+        Challenges.load();
         transition.stage = 1;
         transition.start();
         HUDLayout.LIFE_COUNTER.attachment.set(Game.savefile.lives);

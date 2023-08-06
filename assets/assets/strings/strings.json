@@ -22,6 +22,7 @@
       "options": [
         "Continue",
         "New Game",
+        "Challenges",
         "Options",
         "Jukebox",
         "Exit Game"
@@ -34,6 +35,15 @@
         "Options",
         "Save",
         "Main Menu",
+        "Jukebox"
+      ]
+    },
+    "challenge_pause": {
+      "title": "Game Paused",
+      "options": [
+        "Continue",
+        "Give Up",
+        "Options",
         "Jukebox"
       ]
     },
@@ -120,6 +130,13 @@
       "title": "Game saved!",
       "options": [
         "Ok"
+      ]
+    },
+    "challenges": {
+      "title": "Challenges",
+      "options": [
+        "Back",
+        "Test Challenge"
       ]
     }
   }

@@ -55,11 +55,13 @@ public class SMJMusic {
         name = Gdx.files.internal(path).nameWithoutExtension();
     }
     public void play(boolean faster) {
-        if (jukebox != null && jukebox != this) {
+        if (jukebox != this) {
             shouldPlay = this;
             shouldPlayFast = faster;
-            if (!SMJMusic.isPlaying()) jukebox.play(faster);
-            return;
+            if (!SMJMusic.isPlaying() && jukebox != null) {
+                jukebox.play(faster);
+                return;
+            }
         }
         if (currentMusic != null) currentMusic.stop();
         currentMusic = this;

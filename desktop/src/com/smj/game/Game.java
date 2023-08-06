@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.smj.Main;
+import com.smj.game.challenge.Challenge;
+import com.smj.game.challenge.Challenges;
 import com.smj.game.entity.EntityType;
 import com.smj.game.entity.GameEntity;
 import com.smj.game.entity.behavior.WarperBehavior;
@@ -13,6 +15,7 @@ import com.smj.game.fluid.FluidType;
 import com.smj.game.options.Controls;
 import com.smj.game.tile.GameTile;
 import com.smj.game.tile.Tiles;
+import com.smj.gui.hud.HUDElement;
 import com.smj.gui.hud.HUDLayout;
 import com.smj.game.particle.*;
 import com.smj.game.score.StaticScore;
@@ -29,10 +32,8 @@ import com.smj.jmario.level.decoration.Decorations;
 import com.smj.jmario.tile.level.LevelTile;
 import com.smj.util.command.Command;
 import com.smj.util.command.console.TextConsole;
-import com.smj.util.mask.Circle;
 import com.smj.util.*;
 import com.smj.util.Readable;
-import org.w3c.dom.css.Rect;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -86,6 +87,7 @@ public class Game {
     public static int levelIntroTimeout = 0;
     public static String[] levelNames;
     public static HashMap<Integer, HashMap<Point, Integer>> tileReplacements = new HashMap<>();
+    public static Challenge currentChallenge;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -145,7 +147,10 @@ public class Game {
             renderer.setColor(0xFFFFFFFF);
             renderer.drawString(error, Main.WIDTH / 2 - Font.stringWidth(error) / 2, Main.HEIGHT / 2 - Font.getHeight() / 2);
         }
-        if ((!Main.options.hiddenHUD && !title) || Menu.currentMenu == Menus.HUD_LAYOUT) HUDLayout.renderAll(renderer);
+        if ((!Main.options.hiddenHUD && !title) || Menu.currentMenu == Menus.HUD_LAYOUT) {
+            HUDLayout.renderAll(renderer);
+            if (currentChallenge != null) currentChallenge.render(renderer);
+        }
         if (consoleOpen) {
             renderer.setColor(0x0000007F);
             renderer.rect(4, 4, Main.WIDTH - 8, Main.HEIGHT - 20 - Font.getHeight());
@@ -202,6 +207,11 @@ public class Game {
     }
     public static void update() {
         if (Menu.currentMenu != null) Menu.currentMenu.update();
+        if (currentChallenge == null) {
+            for (String key : HUDLayout.elements.keySet()) {
+                HUDLayout.elements.get(key).visible = true;
+            }
+        }
         HUDLayout.WORLD_TEXT.text = GameStrings.get("world_prefix") + " " + (displayLevelID / 5 + 1) + "-" + (displayLevelID % 5 + 1);
         if (legalNoticeTimeout > 0) return;
         HUDLayout.COIN_COUNTER.attachment.target = Math.min(savefile.coins, 100);
@@ -221,6 +231,12 @@ public class Game {
             HUDLayout.COIN_COUNTER.attachment.target = savefile.coins;
             addLives(1);
         }
+        if (currentChallenge != null) {
+            for (String key : HUDLayout.elements.keySet()) {
+                HUDElement element = HUDLayout.elements.get(key);
+                element.visible = currentChallenge.show(element);
+            }
+        }
         HUDLayout.updateAll();
         if (powerupTimeout > 0) {
             powerupTimeout--;
@@ -228,12 +244,26 @@ public class Game {
             Game.player.updateTexture();
         }
         if (finishTimeout == 0) {
+            if (Game.currentChallenge != null) {
+                time = 0;
+                finishTimeout = -1;
+                if (currentChallenge.highScore == null || currentChallenge.highScore > currentChallenge.score) currentChallenge.highScore = currentChallenge.score;
+                Challenges.save();
+                Main.setTransition(new Transition(0.5, () -> {
+                    Game.loadSavefile();
+                    Game.title = true;
+                    Game.loadLevel(Game.savefile.levelsCompleted, true);
+                    Menu.loadMenu(null);
+                    Menu.loadMenu(Menus.MAIN);
+                    Menu.loadMenu(Menus.CHALLENGES);
+                }));
+            }
             if (time > 0) {
                 time--;
                 if (time % 4 == 0) AudioPlayer.BEEP.play(Location.entity(player).move(0, 128));
                 awardScore(StaticScore.TIMER, Location.none());
             }
-            else {
+            else if (Game.currentChallenge == null) {
                 finishTimeout = 999;
                 if (playCastleCutscene) {
                     int cutscene = savefile.levelsCompleted / 5 + 1;
@@ -280,7 +310,7 @@ public class Game {
             paused = pauseMenuOpen;
             if (paused) {
                 SMJMusic.pause();
-                Menu.loadMenu(Menus.PAUSE);
+                Menu.loadMenu(currentChallenge == null ? Menus.PAUSE : Menus.CHALLENGE_PAUSE);
             }
             else {
                 SMJMusic.resume();
@@ -320,7 +350,7 @@ public class Game {
         if (timeTimeout == 0) {
             time--;
             timeTimeout = 60;
-            if (time <= 100 && !timeRunningOut) {
+            if (time <= 100 && !timeRunningOut && Game.currentChallenge == null) {
                 timeRunningOut = true;
                 AudioPlayer.MUSIC[currentLevel.music].stop();
                 AudioPlayer.TIMEOUT.play();
@@ -485,6 +515,7 @@ public class Game {
                 currentLevel.getEntityManager().unloadEntity(entity);
             }
         }
+        if (currentChallenge != null) currentChallenge.update();
         Collections.shuffle(currentLevel.getEntityManager().entities);
         Collections.sort(currentLevel.getEntityManager().entities, Comparator.comparingInt((Entity entity) -> ((GameEntity)entity).priority));
         if (Controls.TOGGLE_HUD.isJustPressed()) Main.options.hiddenHUD = !Main.options.hiddenHUD;
@@ -624,12 +655,14 @@ public class Game {
     }
     public static void die() {
         if (dead) return;
+        if (Game.currentChallenge == null) {
+            removeLives(1);
+            savefile.powerupState = 0;
+        }
         dead = true;
         SMJMusic.stopMusic();
         AudioPlayer.DEATH.play();
         paused = true;
-        removeLives(1);
-        savefile.powerupState = 0;
         invincibilityTimeout = 0;
         invincibilityFrames = 0;
         particles.add(new MarioDeathParticle(player));
@@ -710,6 +743,20 @@ public class Game {
             AudioPlayer.WARP.play();
             invincibilityFrames = 180;
         }
+        prevState = savefile.powerupState;
+        savefile.powerupState = state;
+        if (prevState != 0 && state == 0) {
+            player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y + 100, hitbox.width, hitbox.height - 100));
+            player.getPhysics().setCollideBoxBounds(new Rectangle(collideBox.x, collideBox.y, collideBox.width, collideBox.height - 100));
+        }
+        if (prevState == 0 && state != 0) {
+            player.getPhysics().setHitbox(new Rectangle(hitbox.x, hitbox.y - 100, hitbox.width, hitbox.height + 100));
+            player.getPhysics().setCollideBoxBounds(new Rectangle(collideBox.x, collideBox.y, collideBox.width, collideBox.height + 100));
+        }
+    }
+    public static void setInstantPowerup(int state) {
+        Rectangle hitbox = player.getPhysics().getHitbox();
+        Rectangle collideBox = player.getPhysics().getCollideBoxBounds();
         prevState = savefile.powerupState;
         savefile.powerupState = state;
         if (prevState != 0 && state == 0) {
