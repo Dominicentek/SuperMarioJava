@@ -211,6 +211,7 @@ public class Game {
         if (Menu.currentMenu != null) Menu.currentMenu.update();
         if (currentChallenge == null) {
             for (String key : HUDLayout.elements.keySet()) {
+                if (key.equals("key_coin_counter")) continue;
                 HUDLayout.elements.get(key).visible = true;
             }
         }
