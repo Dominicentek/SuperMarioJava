@@ -110,10 +110,10 @@ public class Menu {
             item.update(this);
         }
         items[selectedIndex].updateSelected(this, selectedIndex);
-        if (!items[selectedIndex].overriddenInput() && !inputDisabled) {
+        if (!items[selectedIndex].overriddenInput()) {
             if (Controls.DOWN.isJustPressed() && selectedIndex != items.length - 1) selectedIndex++;
             if (Controls.UP.isJustPressed() && selectedIndex != 0) selectedIndex--;
-            if (Controls.RUN.isJustPressed() && backButton != -1) ((MenuButtonItem)items[backButton]).action.selected(this, backButton, (MenuButtonItem)items[backButton]);
+            if (Controls.RUN.isJustPressed() && backButton != -1 && !inputDisabled) ((MenuButtonItem)items[backButton]).action.selected(this, backButton, (MenuButtonItem)items[backButton]);
         }
         selector += (selectedIndex - selector) * 0.2;
         items[selectedIndex].overrideInput(false);
