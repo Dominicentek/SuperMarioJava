@@ -107,7 +107,7 @@ public class Menu {
             item.update(this);
         }
         items[selectedIndex].updateSelected(this, selectedIndex);
-        if (!items[selectedIndex].overriddenInput()) {
+        if (!items[selectedIndex].overriddenInput() && interpolationRaw != 1) {
             if (Controls.DOWN.isJustPressed() && selectedIndex != items.length - 1) selectedIndex++;
             if (Controls.UP.isJustPressed() && selectedIndex != 0) selectedIndex--;
             if (Controls.RUN.isJustPressed() && backButton != -1) ((MenuButtonItem)items[backButton]).action.selected(this, backButton, (MenuButtonItem)items[backButton]);
