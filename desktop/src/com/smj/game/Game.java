@@ -248,7 +248,6 @@ public class Game {
         }
         if (finishTimeout == 0) {
             if (Game.currentChallenge != null) {
-                time = 0;
                 finishTimeout = -1;
                 if (currentChallenge.highScore == null || currentChallenge.highScore > currentChallenge.score) currentChallenge.highScore = currentChallenge.score;
                 Challenges.save();
@@ -262,12 +261,12 @@ public class Game {
                     Menu.loadMenu(Menus.CHALLENGE_CONFIRM);
                 }));
             }
-            if (time > 0) {
+            else if (time > 0) {
                 time--;
                 if (time % 4 == 0) AudioPlayer.BEEP.play(Location.entity(player).move(0, 128));
                 awardScore(StaticScore.TIMER, Location.none());
             }
-            else if (Game.currentChallenge == null) {
+            else {
                 finishTimeout = 999;
                 if (playCastleCutscene) {
                     int cutscene = savefile.levelsCompleted / 5 + 1;
