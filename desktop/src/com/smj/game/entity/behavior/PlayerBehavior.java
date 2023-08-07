@@ -40,7 +40,7 @@ public class PlayerBehavior implements EntityBehavior {
             entity.getPhysics().getMovement().setWalkingRight(false);
         }
         if (!entity.getPhysics().isInAir() && Game.invincibilityTimeout == 0) entity.score.reset();
-        if (entity.getPhysics().getHitbox().y >= entity.getLevel().getLevelBoundaries().height * 100 + 50) Game.die();
+        if (entity.getPhysics().getHitbox().y >= entity.getLevel().getLevelBoundaries().height * 100 + 100) Game.die();
         if (justRun) {
             int ballCount = 0;
             for (Entity e : level.getEntityManager()) {
