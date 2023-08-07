@@ -45,10 +45,10 @@ Like this: `./gradlew dist`
 
 You can find the level editor here: https://dominicentek.github.io/SuperMarioJava, or you can find it offline in the `<project_root>/assets/assets/levelbuilder/lvledit.html`
 
-The game supports .lvl files which are both uncompressed and compressed using the GZIP algorithm.
+The game supports .lvl files which are compressed using the GZIP algorithm.
 It is best practice to compress them as the game will report a non-fatal error if the level is uncompressed.
 
-When running any built-in tool, remember to put the JAR file
+When running any built-in tool, remember to put the JAR file in the project root.
 
 ### How to compress the .lvl file
 
