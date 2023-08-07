@@ -141,6 +141,10 @@ public class Menu {
         loadMenu(menu, false);
     }
     public static void loadMenu(Menu menu, boolean animated) {
+        if (menu == null && Game.title) {
+            menuHistory.clear();
+            return;
+        }
         currentMenu = menu;
         if (menu != null) {
             if (!animated) menu.interpolationRaw = 1;
