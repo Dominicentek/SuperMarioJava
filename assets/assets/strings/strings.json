@@ -136,7 +136,30 @@
       "title": "Challenges",
       "options": [
         "Back",
-        "Coin Collector"
+        "1-1 Speedrun",
+        "Sandstorm Speedrun",
+        "Key Coins Speedrun",
+        "Ice Cave Speedrun",
+        "Superstar Dash",
+        "Getting Over It",
+        "Coin Collector",
+        "Coin Dodger",
+        "The Coin Problem",
+        "Coin Heaven",
+        "Pyramid Treasure Hunt",
+        "Shiny Pyramid Traps",
+        "Jumpless Pyramids",
+        "Jumpless Snowy Plains",
+        "Jumpless Pipe Problem",
+        "Pacifist Dark Cave",
+        "Extra Lives",
+        "Under(water) Pressure",
+        "Pointless",
+        "Extra Dark Cave",
+        "Professional Stomper",
+        "Underpipe Swimming",
+        "Meteorite Rain",
+        "Very Fast Cheater"
       ]
     },
     "challenge_confirm": {

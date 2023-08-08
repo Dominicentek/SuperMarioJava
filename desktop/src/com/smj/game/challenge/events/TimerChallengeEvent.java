@@ -5,6 +5,7 @@ import com.smj.game.challenge.ChallengeEvent;
 import com.smj.game.challenge.Medals;
 import com.smj.gui.font.Font;
 import com.smj.gui.hud.HUDElement;
+import com.smj.gui.hud.HUDLayout;
 import com.smj.util.Renderer;
 
 public class TimerChallengeEvent implements ChallengeEvent {
@@ -17,7 +18,7 @@ public class TimerChallengeEvent implements ChallengeEvent {
         time = 0;
     }
     public void render(Renderer renderer, Medals medals) {
-        String clock = getString(medals, time);
+        String clock = getString(medals, time, false);
         int width = Font.stringWidth(clock) + 8;
         int medal = medals.medal(time);
         renderer.setColor(medal == 0 ? 0x3F3F3FFF : medal == 1 ? 0x7F7F00FF : medal == 2 ? 0xDFDFDFFF : 0xFFCF00FF);
@@ -26,9 +27,10 @@ public class TimerChallengeEvent implements ChallengeEvent {
         Font.render(renderer, Main.WIDTH / 2 - width / 2 + 4, 8, clock);
     }
     public boolean show(HUDElement element) {
+        if (element == HUDLayout.KEY_COIN_COUNTER && element.visible) return true;
         return false;
     }
-    public String getString(Medals medals, Integer value) {
+    public String getString(Medals medals, Integer value, boolean highScore) {
         if (value == null) return "-:--.--";
         int seconds = value / 60;
         int frames = value % 60;

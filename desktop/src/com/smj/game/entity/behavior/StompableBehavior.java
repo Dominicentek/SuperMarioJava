@@ -32,6 +32,7 @@ public class StompableBehavior implements EntityBehavior {
                     Point center = new Point(entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2, entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height);
                     if (spawn != null) spawn.spawn(level, center.x - spawn.getHitbox().width / 2, center.y - spawn.getHitbox().height);
                     AudioPlayer.STOMP.play(Location.entity(entity));
+                    Game.enemyKills++;
                     Main.actionQueue.push(() -> {
                         collider.getPhysics().setSpeedY(-level.getPhysicsConfig().jumpingSpeed);
                     });

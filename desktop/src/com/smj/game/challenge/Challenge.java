@@ -6,6 +6,7 @@ import com.smj.gui.hud.HUDElement;
 import com.smj.gui.hud.HUDLayout;
 import com.smj.util.Renderer;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public class Challenge {
@@ -18,7 +19,9 @@ public class Challenge {
     public int powerup = 0;
     public Integer highScore = null;
     public int score = 0;
-    public boolean allowStarFinish = false;
+    public boolean allowStarFinish = true;
+    public boolean allowWarps = true;
+    public HashMap<Point, Integer> replacements = new HashMap<>();
     public void update() {
         if (event == null) return;
         score = event.update(medals);
@@ -34,6 +37,7 @@ public class Challenge {
     }
     public boolean show(HUDElement element) {
         if (element == HUDLayout.TIMER) return true;
+        if (element == HUDLayout.KEY_COIN_COUNTER || element == HUDLayout.STAR_TIMER) return element.visible;
         if (event == null) return false;
         return event.show(element);
     }
@@ -67,6 +71,14 @@ public class Challenge {
     }
     public Challenge disallowStarFinish() {
         allowStarFinish = false;
+        return this;
+    }
+    public Challenge disallowWarps() {
+        allowWarps = false;
+        return this;
+    }
+    public Challenge replace(int x, int y, int tile) {
+        replacements.put(new Point(x, y), tile);
         return this;
     }
 }

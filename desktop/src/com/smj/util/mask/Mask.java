@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Mask extends ArrayList<Circle> {
     private static ShapeRenderer renderer = new ShapeRenderer();
+    public boolean extraDark = false;
     public void render() {
         if (size() == 0) return;
         this.sort((Circle a, Circle b) -> {
@@ -23,8 +24,9 @@ public class Mask extends ArrayList<Circle> {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFuncSeparate(GL20.GL_ZERO, GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA, GL20.GL_ONE_MINUS_DST_ALPHA);
         for (Circle circle : this) {
+            if (extraDark && circle.a < 1) continue;
             renderer.setColor(0, 0, 0, 1 - circle.a);
-            renderer.circle(circle.x - (float)Game.cameraX, circle.y - (float)Game.cameraY, circle.r);
+            renderer.circle(circle.x - (float)Game.cameraX, circle.y - (float)Game.cameraY, circle.r * (extraDark ? 2f / 3f : 1f));
         }
         Gdx.gl.glDisable(GL20.GL_BLEND);
         renderer.end();

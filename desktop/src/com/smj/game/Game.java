@@ -90,6 +90,7 @@ public class Game {
     public static Challenge currentChallenge;
     public static String currentChallengeName;
     public static int currentChallengeIndex;
+    public static int enemyKills;
     public static void render(Renderer renderer) {
         if (legalNoticeTimeout > 0) {
             renderer.setColor(0xFFFFFFFF);
@@ -255,6 +256,7 @@ public class Game {
                     Game.loadSavefile();
                     Game.title = true;
                     Game.loadLevel(Game.savefile.levelsCompleted, true);
+                    Challenges.finish();
                     Menu.loadMenu(null);
                     Menu.loadMenu(Menus.MAIN);
                     Menu.loadMenu(Menus.CHALLENGES);
@@ -518,6 +520,7 @@ public class Game {
                 currentLevel.getEntityManager().unloadEntity(entity);
             }
         }
+        Main.mask.extraDark = false;
         if (currentChallenge != null) currentChallenge.update();
         Collections.shuffle(currentLevel.getEntityManager().entities);
         Collections.sort(currentLevel.getEntityManager().entities, Comparator.comparingInt((Entity entity) -> ((GameEntity)entity).priority));
@@ -558,6 +561,7 @@ public class Game {
         finalFightSwitchesPressed = 0;
         particles.clear();
         snowCache.clear();
+        enemyKills = 0;
         GameLevel level;
         try {
             level = Readable.read(FileLoader.read("levels/level" + id + ".lvl").asBytes(), GameLevel.class);

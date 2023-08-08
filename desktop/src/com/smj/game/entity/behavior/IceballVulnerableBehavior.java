@@ -19,6 +19,7 @@ public class IceballVulnerableBehavior implements EntityBehavior {
             Game.particles.add(new IceExplosionParticle((int)((entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2) / 100.0 * 16), (int)((entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height / 2) / 100.0 * 16)));
             EntityType.ICE_CUBE.spawn(level, entity.getPhysics().getHitbox().x + entity.getPhysics().getHitbox().width / 2 - EntityType.ICE_CUBE.getHitbox().width / 2, entity.getPhysics().getHitbox().y + entity.getPhysics().getHitbox().height - EntityType.ICE_CUBE.getHitbox().height);
             AudioPlayer.BUMP.play(Location.entity(entity));
+            Game.enemyKills++;
         }
     }
 }

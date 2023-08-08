@@ -1,12 +1,13 @@
 package com.smj.game.challenge;
 
 public class Medals {
-    public static final Comparator LESS_THAN = (value1, value2) -> value1 < value2;
+    public static final Comparator LESS_THAN = (value1, value2) -> value1 <= value2;
     public static final Comparator GREATER_THAN = (value1, value2) -> value1 >= value2;
+    public static final Comparator ALWAYS = (value1, value2) -> true;
     public int gold;
     public int silver;
     public int bronze;
-    public Comparator comparator;
+    public Comparator comparator = ALWAYS;
     public Medals(int gold, int silver, int bronze) {
         this.gold = gold;
         this.silver = silver;

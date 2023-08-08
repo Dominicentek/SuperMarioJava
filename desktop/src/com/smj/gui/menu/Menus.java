@@ -12,7 +12,9 @@ import com.smj.util.SMJMusic;
 import com.smj.util.Saveable;
 import com.smj.util.Transition;
 
+import java.awt.*;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class Menus {
@@ -230,6 +232,9 @@ public class Menus {
                 Game.setInstantPowerup(Game.currentChallenge.powerup);
                 Game.time = Game.currentChallenge.timer;
                 Game.currentChallenge.init();
+                for (Map.Entry<Point, Integer> entry : Game.currentChallenge.replacements.entrySet()) {
+                    Game.currentLevel.setTileAt(entry.getValue(), entry.getKey().x, entry.getKey().y);
+                }
             }));
         }),
         new MenuButtonItem((menu, index, item) -> {

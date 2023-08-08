@@ -15,7 +15,7 @@ public class StarTile extends GameTile {
         if (Game.currentChallenge != null && !Game.currentChallenge.allowStarFinish) return;
         level.setTileAt(Tiles.AIR, x, y);
         int scoreMultiplier = (int)Math.ceil(Game.invincibilityTimeout / 60f);
-        if (scoreMultiplier >= 1) Game.awardScore(StaticScore.STAR_FINISH.applyMultiplier(scoreMultiplier));
+        if (scoreMultiplier >= 1 && Game.currentChallenge == null) Game.awardScore(StaticScore.STAR_FINISH.applyMultiplier(scoreMultiplier));
         Game.invincibilityTimeout = 0;
         Game.finishLevel();
     }

@@ -16,6 +16,7 @@ public class CheckpointTile extends GameTile {
     }
     public void onTouch(GameEntity entity, GameLevel level, int x, int y) {
         if (entity.entityType != EntityType.PLAYER) return;
+        if (Game.currentChallenge != null) return;
         int topLeftX = x + corner.toTopLeftX;
         int topLeftY = y + corner.toTopLeftY;
         Game.checkpointX = topLeftX;

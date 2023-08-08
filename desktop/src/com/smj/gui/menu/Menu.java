@@ -32,7 +32,7 @@ public class Menu {
     public void render(Renderer renderer) {
         double selector = (noScroll ? 0 : this.selector);
         double interpolation = 1;
-        inputDisabled = false;
+        inputDisabled = Main.transition != null && Main.transition.stage != 2;
         if (interpolationRaw < 1) {
             inputDisabled = true;
             interpolationRaw += 0.1;
@@ -81,7 +81,7 @@ public class Menu {
         if (!line.isEmpty()) description.add(line.substring(0, line.length() - 1));
         Font.render(renderer, Main.WIDTH / 2 - Font.stringWidth(Game.currentChallengeName) / 2 + offset, y - 108 - description.size() * 12, Game.currentChallengeName);
         int medal = Game.currentChallenge.highScore == null ? 0 : Game.currentChallenge.medals.medal(Game.currentChallenge.highScore);
-        String string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.highScore);
+        String string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.highScore, true);
         renderer.setColor(medal == 0 ? 0x3F3F3FFF : medal == 1 ? 0x7F7F00FF : medal == 2 ? 0xDFDFDFFF : 0xFFCF00FF);
         renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 92 - description.size() * 12, 8 + Font.stringWidth(string), 16);
         renderer.setColor(0xFFFFFFFF);
@@ -89,21 +89,23 @@ public class Menu {
         for (int i = 0; i < description.size(); i++) {
             Font.render(renderer, Main.WIDTH / 2 - Font.stringWidth(description.get(i)) / 2 + offset, y - 68 - description.size() * 12 + i * 12, description.get(i));
         }
-        string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.gold);
-        renderer.setColor(0xFFCF00FF);
-        renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 62, 8 + Font.stringWidth(string), 16);
-        renderer.setColor(0xFFFFFFFF);
-        Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 58, string);
-        string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.silver);
-        renderer.setColor(0xDFDFDFFF);
-        renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 42, 8 + Font.stringWidth(string), 16);
-        renderer.setColor(0xFFFFFFFF);
-        Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 38, string);
-        string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.bronze);
-        renderer.setColor(0x7F7F00FF);
-        renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 22, 8 + Font.stringWidth(string), 16);
-        renderer.setColor(0xFFFFFFFF);
-        Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 18, string);
+        string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.gold, false);
+        if (string != null) {
+            renderer.setColor(0xFFCF00FF);
+            renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 62, 8 + Font.stringWidth(string), 16);
+            renderer.setColor(0xFFFFFFFF);
+            Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 58, string);
+            string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.silver, false);
+            renderer.setColor(0xDFDFDFFF);
+            renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 42, 8 + Font.stringWidth(string), 16);
+            renderer.setColor(0xFFFFFFFF);
+            Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 38, string);
+            string = Game.currentChallenge.event.getString(Game.currentChallenge.medals, Game.currentChallenge.medals.bronze, false);
+            renderer.setColor(0x7F7F00FF);
+            renderer.rect(Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + offset, y - 22, 8 + Font.stringWidth(string), 16);
+            renderer.setColor(0xFFFFFFFF);
+            Font.render(renderer, Main.WIDTH / 2 - (8 + Font.stringWidth(string)) / 2 + 4 + offset, y - 18, string);
+        }
     }
     public void update() {
         for (MenuItem item : items) {
@@ -141,10 +143,6 @@ public class Menu {
         loadMenu(menu, false);
     }
     public static void loadMenu(Menu menu, boolean animated) {
-        if (menu == null && Game.title) {
-            menuHistory.clear();
-            return;
-        }
         currentMenu = menu;
         if (menu != null) {
             if (!animated) menu.interpolationRaw = 1;

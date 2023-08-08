@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.smj.game.challenge.Challenge;
 import com.smj.game.challenge.Challenges;
 import com.smj.game.cutscene.Cutscene;
 import com.smj.game.cutscene.Dialog;

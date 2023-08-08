@@ -19,6 +19,7 @@ public class FireballVulnerableBehavior implements EntityBehavior {
             Game.particles.add(new FallingEnemyParticle(entity));
             AudioPlayer.KICK.play(Location.entity(entity));
             Game.awardScore(StaticScore.FIREBALL, Location.entity(entity));
+            Game.enemyKills++;
         }
     }
 }
