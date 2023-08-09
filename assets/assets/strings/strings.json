@@ -24,7 +24,6 @@
         "New Game",
         "Challenges",
         "Options",
-        "Jukebox",
         "Exit Game"
       ]
     },
@@ -34,8 +33,7 @@
         "Continue",
         "Options",
         "Save",
-        "Main Menu",
-        "Jukebox"
+        "Main Menu"
       ]
     },
     "challenge_pause": {
@@ -43,8 +41,7 @@
       "options": [
         "Continue",
         "Give Up",
-        "Options",
-        "Jukebox"
+        "Options"
       ]
     },
     "options": {
@@ -102,28 +99,6 @@
         "Toggle HUD",
         "Screenshot",
         "Toggle Console"
-      ]
-    },
-    "jukebox": {
-      "title": "Jukebox",
-      "options": [
-        "Back",
-        "Stop",
-        "Ground",
-        "Underground",
-        "Desert",
-        "Snow",
-        "Underwater",
-        "Forest",
-        "Sky",
-        "Lava",
-        "Castle",
-        "Bonus",
-        "Enemy",
-        "Superstar",
-        "Boss",
-        "Title",
-        "Ending"
       ]
     },
     "saved": {

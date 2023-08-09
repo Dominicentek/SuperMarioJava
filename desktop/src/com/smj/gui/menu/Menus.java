@@ -115,20 +115,6 @@ public class Menus {
             Main.options.speedrunTimer = item.value != 0;
         }, Main.options.speedrunTimer)
     ).text("options").backButton(0);
-    public static final Menu JUKEBOX = new Menu(
-        Stream.concat(Arrays.stream(new MenuItem[]{
-                new MenuButtonItem((menu, index, item) -> {
-                    Menu.goBack();
-                }),
-                new MenuButtonItem((menu, index, item) -> {
-                    if (SMJMusic.jukebox == null) return;
-                    SMJMusic.jukebox = null;
-                    SMJMusic.shouldPlay.play(SMJMusic.shouldPlayFast);
-                })
-            }),
-            Arrays.stream(SMJMusic.getJukeboxMenuItems())
-        ).toArray(MenuItem[]::new)
-    ).text("jukebox").backButton(0);
     public static final Menu CHALLENGES = new Menu(
         Stream.concat(Arrays.stream(new MenuItem[]{
                 new MenuButtonItem((menu, index, item) -> {
@@ -168,9 +154,6 @@ public class Menus {
             Menu.switchMenu(OPTIONS);
         }),
         new MenuButtonItem((menu, index, item) -> {
-            Menu.switchMenu(JUKEBOX);
-        }),
-        new MenuButtonItem((menu, index, item) -> {
             System.exit(0);
         })
     ).text("main").offset(24);
@@ -197,9 +180,6 @@ public class Menus {
                 Menu.loadMenu(null);
                 Menu.loadMenu(MAIN);
             }));
-        }),
-        new MenuButtonItem((menu, index, item) -> {
-            Menu.switchMenu(JUKEBOX);
         })
     ).text("pause").backButton(0);
     public static final Menu CHALLENGE_PAUSE = new Menu(
@@ -218,9 +198,6 @@ public class Menus {
         }),
         new MenuButtonItem((menu, index, item) -> {
             Menu.switchMenu(OPTIONS);
-        }),
-        new MenuButtonItem((menu, index, item) -> {
-            Menu.switchMenu(JUKEBOX);
         })
     ).text("challenge_pause").backButton(0);
     public static final Menu CHALLENGE_CONFIRM = new Menu(
