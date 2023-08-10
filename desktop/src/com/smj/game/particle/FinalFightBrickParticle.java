@@ -1,6 +1,7 @@
 package com.smj.game.particle;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.smj.game.Game;
 import com.smj.util.TextureLoader;
 
 import java.awt.*;
@@ -29,6 +30,6 @@ public class FinalFightBrickParticle extends Particle {
         return new Rectangle(8 * rotation, 0, 8, 8);
     }
     public Point getPosition() {
-        return new Point(x, y);
+        return new Point(x + (int)(Game.cameraX), y);
     }
 }
