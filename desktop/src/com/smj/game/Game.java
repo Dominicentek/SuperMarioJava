@@ -309,7 +309,7 @@ public class Game {
                 player.getPhysics().getConfig().underwaterGravity = currentLevel.getPhysicsConfig().underwaterGravity;
             }
         }
-        if (Controls.PAUSE.isJustPressed() && paused == pauseMenuOpen) {
+        if (Controls.PAUSE.isJustPressed() && paused == pauseMenuOpen && !title) {
             AudioPlayer.PAUSE.play();
             pauseMenuOpen = !pauseMenuOpen;
             paused = pauseMenuOpen;
