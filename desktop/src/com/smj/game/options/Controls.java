@@ -2,6 +2,10 @@ package com.smj.game.options;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.smj.controller.ControllerInterface;
+import com.smj.game.options.inputmethod.ControllerInputMethod;
+import com.smj.game.options.inputmethod.InputMethod;
+import com.smj.game.options.inputmethod.KeyboardInputMethod;
 import com.smj.gui.menu.MenuControlsItem;
 
 public enum Controls {
@@ -21,25 +25,27 @@ public enum Controls {
     SCREENSHOT(Input.Keys.F2),
     CONSOLE(Input.Keys.F3);
     public int keybind;
+    public InputMethod inputMethod = InputMethod.KEYBOARD;
     Controls(int keybind) {
         this.keybind = keybind;
     }
     public boolean isJustPressed() {
-        return Gdx.input.isKeyJustPressed(keybind);
+        return inputMethod.isJustPressed(keybind);
     }
     public boolean isPressed() {
-        return Gdx.input.isKeyPressed(keybind);
+        return inputMethod.isHeld(keybind);
     }
     public String toString() {
-        return Input.Keys.toString(keybind);
+        return inputMethod.getName(keybind);
     }
     public static MenuControlsItem[] getMenuItems() {
         Controls[] values = values();
         MenuControlsItem[] items = new MenuControlsItem[values.length];
         for (int i = 0; i < items.length; i++) {
             final int index = i;
-            items[i] = new MenuControlsItem(values[i].keybind, (menu, selectedIndex, item) -> {
+            items[i] = new MenuControlsItem(values[i], values[i].keybind, (menu, selectedIndex, item) -> {
                 values[index].keybind = item.keycode;
+                values[index].inputMethod = item.inputMethod;
             });
         }
         return items;

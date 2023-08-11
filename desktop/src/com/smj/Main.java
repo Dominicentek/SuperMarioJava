@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3FileHandle;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.smj.controller.ControllerInterface;
 import com.smj.game.challenge.Challenge;
 import com.smj.game.challenge.Challenges;
 import com.smj.game.cutscene.Cutscene;
@@ -85,6 +87,7 @@ public class Main extends ApplicationAdapter {
         transition.start();
         HUDLayout.LIFE_COUNTER.attachment.set(Game.savefile.lives);
         Command.console = Game.console;
+        Controllers.addListener(new ControllerInterface());
         Gdx.input.setInputProcessor(new InputAdapter() {
             public boolean keyTyped(char character) {
                 Game.keyTyped(character);
@@ -138,6 +141,7 @@ public class Main extends ApplicationAdapter {
                               // time i look at this shit, im so pissed off rn
     }
     public void update() {
+        ControllerInterface.update();
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
             fullscreen = !fullscreen;
             if (fullscreen) {

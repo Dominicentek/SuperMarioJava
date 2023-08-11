@@ -2,6 +2,7 @@ package com.smj.game.options;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.smj.game.options.inputmethod.InputMethod;
 import com.smj.gui.hud.HUDLayout;
 import com.smj.util.Readable;
 import com.smj.util.Saveable;
@@ -26,7 +27,15 @@ public class Options implements Saveable {
         speedrunTimer = element.getBoolean("speedrun");
         ObjectElement input = element.getObject("input");
         for (String inputName : input.keys()) {
-            Controls.valueOf(inputName).keybind = Byte.toUnsignedInt(input.getByte(inputName));
+            Controls control = Controls.valueOf(inputName);
+            if (input.isByte(inputName)) {
+                control.inputMethod = InputMethod.KEYBOARD;
+                control.keybind = Byte.toUnsignedInt(input.getByte(inputName));
+                continue;
+            }
+            ObjectElement controlElement = input.getObject(inputName);
+            control.inputMethod = InputMethod.BY_ID[Byte.toUnsignedInt(controlElement.getByte("input_method"))];
+            control.keybind = Byte.toUnsignedInt(controlElement.getByte("code"));
         }
         HUDLayout.read(element.getObject("hud"));
     }
@@ -41,7 +50,10 @@ public class Options implements Saveable {
         element.setBoolean("speedrun", speedrunTimer);
         ObjectElement input = new ObjectElement();
         for (Controls control : Controls.values()) {
-            input.setByte(control.name(), (byte)control.keybind);
+            ObjectElement controlElement = new ObjectElement();
+            controlElement.setByte("code", (byte)control.keybind);
+            controlElement.setByte("input_method", (byte)control.inputMethod.id());
+            input.setObject(control.name(), controlElement);
         }
         element.setObject("input", input);
         ObjectElement hud = new ObjectElement();
